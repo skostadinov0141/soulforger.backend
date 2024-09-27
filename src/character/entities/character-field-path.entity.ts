@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema()
-class CharacterFieldPath {
+export class CharacterFieldPath {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
   ruleBook: Rulebook;
 
@@ -17,5 +17,5 @@ class CharacterFieldPath {
   value: number;
 }
 
-export const CharacterFieldPathSchema =
+export const CharacterFieldPathEntity =
   SchemaFactory.createForClass(CharacterFieldPath);
