@@ -1,0 +1,19 @@
+name: soulforger-backend-dev
+
+services:
+
+  mongo-db:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: soulforger
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-db-data:/data/db
+
+volumes:
+  mongo-db-data:

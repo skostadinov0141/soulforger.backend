@@ -1,0 +1,44 @@
+name: soulforger-backend-prod
+
+services:
+  backend-db:
+    container_name: backend-db
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    volumes:
+      - backend-db-data:/data/db
+    networks:
+      - default
+
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=backend-db
+      - DB_PORT=27017
+      - DB_NAME=backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend-db
+    networks:
+      - default
+
+networks:
+  default:
+    name: soulforger-network
+
+volumes:
+  backend-db-data:
+    name: soulforger-backend-db-data
