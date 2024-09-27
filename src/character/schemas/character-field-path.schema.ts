@@ -1,8 +1,9 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema()
-export class CharacterFieldPath {
+class CharacterFieldPath {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
   ruleBook: Rulebook;
 
@@ -15,3 +16,6 @@ export class CharacterFieldPath {
   @Prop()
   value: number;
 }
+
+export const CharacterFieldPathSchema =
+  SchemaFactory.createForClass(CharacterFieldPath);
