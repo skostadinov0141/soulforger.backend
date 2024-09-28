@@ -21,5 +21,5 @@ export class FixedNumericValue {
   value: number;
 }
 
-export const FixedNumericValueEntity =
+export const FixedNumericValueSchema =
   SchemaFactory.createForClass(FixedNumericValue);

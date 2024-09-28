@@ -41,6 +41,6 @@ export class CalculatedNumericValue {
   value: number;
 }
 
-export const CalculatedNumericValueEntity = SchemaFactory.createForClass(
+export const CalculatedNumericValueSchema = SchemaFactory.createForClass(
   CalculatedNumericValue,
 );

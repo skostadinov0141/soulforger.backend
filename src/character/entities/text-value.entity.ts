@@ -21,4 +21,4 @@ export class TextValue {
   value: string;
 }
 
-export const TextValueEntity = SchemaFactory.createForClass(TextValue);
+export const TextValueSchema = SchemaFactory.createForClass(TextValue);

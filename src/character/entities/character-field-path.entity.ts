@@ -17,5 +17,5 @@ export class CharacterFieldPath {
   value: number;
 }
 
-export const CharacterFieldPathEntity =
+export const CharacterFieldPathSchema =
   SchemaFactory.createForClass(CharacterFieldPath);

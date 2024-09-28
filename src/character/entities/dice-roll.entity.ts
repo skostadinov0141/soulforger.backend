@@ -33,4 +33,4 @@ export class DiceRoll {
   value: number;
 }
 
-export const DiceRollEntity = SchemaFactory.createForClass(DiceRoll);
+export const DiceRollSchema = SchemaFactory.createForClass(DiceRoll);
