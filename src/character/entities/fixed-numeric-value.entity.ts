@@ -1,16 +1,16 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
 
 @Schema()
-export class TextValue {
+export class FixedNumericValue {
   @ApiProperty()
   _id: string;
 
   @ApiProperty()
   @Prop()
-  type: 'TextValue';
+  type: 'FixedNumericValue';
 
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
@@ -18,7 +18,5 @@ export class TextValue {
 
   @ApiProperty()
   @Prop()
-  value: string;
+  value: number;
 }
-
-export const TextValueEntity = SchemaFactory.createForClass(TextValue);
