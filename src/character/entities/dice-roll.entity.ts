@@ -30,7 +30,7 @@ export class DiceRoll {
 
   @ApiProperty()
   @Prop()
-  result: number;
+  value: number;
 }
 
 export const DiceRollEntity = SchemaFactory.createForClass(DiceRoll);
