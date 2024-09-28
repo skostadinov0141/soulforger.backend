@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRulebookDto } from './dto/create-rulebook.dto';
 import { UpdateRulebookDto } from './dto/update-rulebook.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Rulebook } from './entities/rulebook.entity';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class RulebookService {
-  create(createRulebookDto: CreateRulebookDto) {
-    return 'This action adds a new rulebook';
+  constructor(
+    @InjectModel(Rulebook.name) private readonly rulebookModel: Model<Rulebook>,
+  ) {}
+
+  async create(createRulebookDto: CreateRulebookDto): Promise<Rulebook> {
+    const doc = await this.rulebookModel.create(createRulebookDto);
+    return doc.save();
   }
 
-  findAll() {
-    return `This action returns all rulebook`;
+  findAll(): Promise<Rulebook[]> {
+    return this.rulebookModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rulebook`;
+  findOne(id: number): Promise<Rulebook> {
+    return this.rulebookModel.findById(id).exec();
   }
 
-  update(id: number, updateRulebookDto: UpdateRulebookDto) {
-    return `This action updates a #${id} rulebook`;
+  update(id: number, updateRulebookDto: UpdateRulebookDto): Promise<Rulebook> {
+    return this.rulebookModel.findByIdAndUpdate(id, updateRulebookDto).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rulebook`;
+  remove(id: number): Promise<Rulebook> {
+    return this.rulebookModel.findByIdAndDelete(id).exec();
   }
 }
