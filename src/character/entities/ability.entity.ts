@@ -2,9 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import { DiceRoll } from './dice-roll.entity';
-import { CharacterFieldPath } from './character-field-path.entity';
-import { Tag } from './tag.entity';
+import { DiceRoll, DiceRollSchema } from './dice-roll.entity';
+import {
+  CharacterFieldPath,
+  CharacterFieldPathSchema,
+} from './character-field-path.entity';
+import { Tag, TagSchema } from './tag.entity';
 
 @Schema()
 export class Ability {
@@ -50,4 +53,15 @@ export class Ability {
   tags: Tag[];
 }
 
-export const AbilitySchema = SchemaFactory.createForClass(Ability);
+const AbilitySchema = SchemaFactory.createForClass(Ability).pre(
+  'deleteOne',
+  { document: true },
+  function (next) {
+    CharacterFieldPathSchema.remove({ _id: { $in: this.variables } });
+    DiceRollSchema.remove({ _id: { $in: this.diceRolls } });
+    TagSchema.remove({ _id: { $in: this.tags } });
+    next();
+  },
+);
+
+export { AbilitySchema };
