@@ -9,10 +9,6 @@ export class FixedNumericValue {
   _id: string;
 
   @ApiProperty()
-  @Prop()
-  type: 'FixedNumericValue';
-
-  @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
   rulebook: Rulebook;
 

@@ -11,10 +11,6 @@ export class CalculatedNumericValue {
   _id: string;
 
   @ApiProperty()
-  @Prop()
-  type: 'CalculatedNumericValue';
-
-  @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
   rulebook: Rulebook;
 

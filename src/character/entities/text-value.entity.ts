@@ -9,10 +9,6 @@ export class TextValue {
   _id: string;
 
   @ApiProperty()
-  @Prop()
-  type: 'TextValue';
-
-  @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
   rulebook: Rulebook;
 
