@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
@@ -16,3 +16,5 @@ export class TextValue {
   @Prop()
   value: string;
 }
+
+export const TextValueEntity = SchemaFactory.createForClass(TextValue);
