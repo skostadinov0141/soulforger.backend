@@ -51,7 +51,7 @@ export class Attribute {
     refPath: 'attributeType',
     required: true,
   })
-  attribute: FixedNumericValue | CalculatedNumericValue | TextValue;
+  attributeValue: FixedNumericValue | CalculatedNumericValue | TextValue;
 }
 
 const AttributeSchema = SchemaFactory.createForClass(Attribute).pre(
@@ -59,11 +59,11 @@ const AttributeSchema = SchemaFactory.createForClass(Attribute).pre(
   { document: true },
   function (next) {
     if (this.attributeType === FixedNumericValue.name) {
-      FixedNumericValueSchema.remove({ _id: this.attribute });
+      FixedNumericValueSchema.remove({ _id: this.attributeValue });
     } else if (this.attributeType === CalculatedNumericValue.name) {
-      CalculatedNumericValueSchema.remove({ _id: this.attribute });
+      CalculatedNumericValueSchema.remove({ _id: this.attributeValue });
     } else if (this.attributeType === TextValue.name) {
-      TextValueSchema.remove({ _id: this.attribute });
+      TextValueSchema.remove({ _id: this.attributeValue });
     }
     next();
   },

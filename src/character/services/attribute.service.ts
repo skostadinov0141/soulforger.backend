@@ -7,12 +7,13 @@ import { CharacterFieldPath } from '../entities/character-field-path.entity';
 import { DiceRoll } from '../entities/dice-roll.entity';
 import { CalculatedNumericValue } from '../entities/calculated-numeric-value.entity';
 import {
-  CalculatedNumericValueDto,
-  CreateAttributeDto,
-  FixedNumericValueDto,
-  TextValueDto,
-} from '../dto/create-attribute.dto';
+  CalculatedNumericValueTemplateDto,
+  CreateAttributeTemplateDto,
+  FixedNumericValueTemplateDto,
+  TextValueTemplateDto,
+} from '../dto/create-attribute-template.dto';
 import { Attribute } from '../entities/attribute.entity';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Injectable()
 export class AttributeService {
@@ -26,28 +27,36 @@ export class AttributeService {
     @InjectModel(DiceRoll.name) private diceRollModel: Model<DiceRoll>,
     @InjectModel(CalculatedNumericValue.name)
     private calculatedNumericValueModel: Model<CalculatedNumericValue>,
+    @InjectModel('Rulebook') private rulebookModel: Model<Rulebook>,
   ) {}
 
-  async create(payload: CreateAttributeDto) {
+  async create(payload: CreateAttributeTemplateDto) {
+    const rulebook = await this.rulebookModel.findById(payload.rulebook).exec();
     let createdValue: FixedNumericValue | TextValue | CalculatedNumericValue;
     switch (payload.attributeType) {
       case 'FixedNumericValue':
         createdValue = await this.createValue(
           'FixedNumericValue',
-          payload.attributeValue as FixedNumericValueDto,
+          payload.attributeValue as FixedNumericValueTemplateDto,
+          rulebook,
         );
+        createdValue.rulebook = rulebook;
         break;
       case 'TextValue':
         createdValue = await this.createValue(
           'TextValue',
-          payload.attributeValue as TextValueDto,
+          payload.attributeValue as TextValueTemplateDto,
+          rulebook,
         );
+        createdValue.rulebook = rulebook;
         break;
       case 'CalculatedNumericValue':
         createdValue = await this.createValue(
           'CalculatedNumericValue',
-          payload.attributeValue as CalculatedNumericValueDto,
+          payload.attributeValue as CalculatedNumericValueTemplateDto,
+          rulebook,
         );
+        createdValue.rulebook = rulebook;
         break;
       default:
         throw new Error(`Unsupported value type: ${payload.attributeType}`);
@@ -62,37 +71,53 @@ export class AttributeService {
   // Function overloads
   private createValue(
     type: 'FixedNumericValue',
-    payload: FixedNumericValueDto,
+    payload: FixedNumericValueTemplateDto,
+    rulebook: Rulebook,
   ): Promise<FixedNumericValue>;
   private createValue(
     type: 'TextValue',
-    payload: TextValueDto,
+    payload: TextValueTemplateDto,
+    rulebook: Rulebook,
   ): Promise<TextValue>;
   private createValue(
     type: 'CalculatedNumericValue',
-    payload: CalculatedNumericValueDto,
+    payload: CalculatedNumericValueTemplateDto,
+    rulebook: Rulebook,
   ): Promise<CalculatedNumericValue>;
 
   // Implementation
   private async createValue(
     type: 'FixedNumericValue' | 'TextValue' | 'CalculatedNumericValue',
-    payload: FixedNumericValueDto | TextValueDto | CalculatedNumericValueDto,
+    payload:
+      | FixedNumericValueTemplateDto
+      | TextValueTemplateDto
+      | CalculatedNumericValueTemplateDto,
+    rulebook: Rulebook,
   ): Promise<FixedNumericValue | TextValue | CalculatedNumericValue> {
     switch (type) {
       case 'FixedNumericValue':
+        payload.rulebook = rulebook;
         const createdFixedValue = new this.fixedNumericValueModel(
-          payload as FixedNumericValueDto,
+          payload as FixedNumericValueTemplateDto,
         );
         return await createdFixedValue.save();
 
       case 'TextValue':
+        payload.rulebook = rulebook;
         const createdTextValue = new this.textValueModel(
-          payload as TextValueDto,
+          payload as TextValueTemplateDto,
         );
         return await createdTextValue.save();
 
       case 'CalculatedNumericValue':
-        const calculatedPayload = payload as CalculatedNumericValueDto;
+        payload.rulebook = rulebook;
+        (payload as CalculatedNumericValueTemplateDto).variables.forEach(
+          (variable) => (variable.rulebook = rulebook),
+        );
+        (payload as CalculatedNumericValueTemplateDto).diceRolls.forEach(
+          (diceRoll) => (diceRoll.rulebook = rulebook),
+        );
+        const calculatedPayload = payload as CalculatedNumericValueTemplateDto;
         const createdVariables = calculatedPayload.variables.map(
           (variable) => new this.characterFieldPathModel(variable),
         );

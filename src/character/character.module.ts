@@ -20,11 +20,14 @@ import {
 } from './entities/fixed-numeric-value.entity';
 import { Tag, TagSchema } from './entities/tag.entity';
 import { TextValue, TextValueSchema } from './entities/text-value.entity';
+import { AttributeService } from './services/attribute.service';
+import { RulebookModule } from '../rulebook/rulebook.module';
 
 @Module({
   controllers: [CharacterController],
-  providers: [CharacterService],
+  providers: [CharacterService, AttributeService],
   imports: [
+    RulebookModule,
     MongooseModule.forFeatureAsync([
       {
         name: CharacterFieldPath.name,

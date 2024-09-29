@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
-export class CreateAttributeDto {
+export class CreateAttributeTemplateDto {
   @ApiProperty()
   @IsString()
   rulebook: string;
@@ -22,12 +23,14 @@ export class CreateAttributeDto {
   @ApiProperty()
   @IsString()
   attributeValue:
-    | TextValueDto
-    | FixedNumericValueDto
-    | CalculatedNumericValueDto;
+    | TextValueTemplateDto
+    | FixedNumericValueTemplateDto
+    | CalculatedNumericValueTemplateDto;
 }
 
-export class TextValueDto {
+export class TextValueTemplateDto {
+  rulebook: Rulebook;
+
   @ApiProperty()
   @IsString()
   value: string;
@@ -37,25 +40,31 @@ export class TextValueDto {
   options: string[];
 }
 
-export class FixedNumericValueDto {
+export class FixedNumericValueTemplateDto {
+  rulebook: Rulebook;
+
   @ApiProperty()
   @IsString()
   value: string;
 }
 
-export class CalculatedNumericValueDto {
+export class CalculatedNumericValueTemplateDto {
+  rulebook: Rulebook;
+
   @ApiProperty()
   @IsString()
   formula: string;
 
   @ApiProperty()
-  variables: CharacterFieldPathDto[];
+  variables: CharacterFieldPathTemplateDto[];
 
   @ApiProperty()
-  diceRolls: DiceRollDto[];
+  diceRolls: DiceRollTemplateDto[];
 }
 
-export class CharacterFieldPathDto {
+export class CharacterFieldPathTemplateDto {
+  rulebook: Rulebook;
+
   @ApiProperty()
   @IsString()
   name: string;
@@ -65,7 +74,9 @@ export class CharacterFieldPathDto {
   path: string;
 }
 
-export class DiceRollDto {
+export class DiceRollTemplateDto {
+  rulebook: Rulebook;
+
   @ApiProperty()
   @IsString()
   name: string;

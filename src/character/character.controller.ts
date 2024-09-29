@@ -10,10 +10,38 @@ import {
 import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AttributeService } from './services/attribute.service';
+import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
+import { Attribute } from './entities/attribute.entity';
 
 @Controller('character')
+@ApiTags('character')
 export class CharacterController {
-  constructor(private readonly characterService: CharacterService) {}
+  constructor(
+    private readonly characterService: CharacterService,
+    private readonly attributeService: AttributeService,
+  ) {}
+
+  @Post('attribute/template')
+  @ApiOkResponse({ type: Attribute })
+  createAttribute(
+    @Body() payload: CreateAttributeTemplateDto,
+  ): Promise<Attribute> {
+    return this.attributeService.create(payload);
+  }
+
+  @Get('attribute/template')
+  @ApiOkResponse({ type: [Attribute] })
+  findAllAttributes(): Promise<Attribute[]> {
+    return this.attributeService.findAll();
+  }
+
+  @Get('attribute/template/:id')
+  @ApiOkResponse({ type: Attribute })
+  findOneAttribute(@Param('id') id: string): Promise<Attribute> {
+    return this.attributeService.findOne(id);
+  }
 
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto) {
