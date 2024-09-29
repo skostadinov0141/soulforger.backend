@@ -28,42 +28,42 @@ import { RulebookModule } from '../rulebook/rulebook.module';
   providers: [CharacterService, AttributeService],
   imports: [
     RulebookModule,
-    MongooseModule.forFeatureAsync([
+    MongooseModule.forFeature([
       {
         name: CharacterFieldPath.name,
-        useFactory: () => CharacterFieldPathSchema,
+        schema: CharacterFieldPathSchema,
       },
       {
         name: Ability.name,
-        useFactory: () => AbilitySchema,
+        schema: AbilitySchema,
       },
       {
         name: Attribute.name,
-        useFactory: () => AttributeSchema,
+        schema: AttributeSchema,
       },
       {
         name: CalculatedNumericValue.name,
-        useFactory: () => CalculatedNumericValueSchema,
+        schema: CalculatedNumericValueSchema,
       },
       {
         name: Character.name,
-        useFactory: () => CharacterSchema,
+        schema: CharacterSchema,
       },
       {
         name: DiceRoll.name,
-        useFactory: () => DiceRollSchema,
+        schema: DiceRollSchema,
       },
       {
         name: FixedNumericValue.name,
-        useFactory: () => FixedNumericValueSchema,
+        schema: FixedNumericValueSchema,
       },
       {
         name: Tag.name,
-        useFactory: () => TagSchema,
+        schema: TagSchema,
       },
       {
         name: TextValue.name,
-        useFactory: () => TextValueSchema,
+        schema: TextValueSchema,
       },
     ]),
   ],

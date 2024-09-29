@@ -2,11 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import {
-  CharacterFieldPath,
-  CharacterFieldPathSchema,
-} from './character-field-path.entity';
-import { DiceRoll, DiceRollSchema } from './dice-roll.entity';
+import { CharacterFieldPath } from './character-field-path.entity';
+import { DiceRoll } from './dice-roll.entity';
 
 @Schema()
 export class CalculatedNumericValue {
@@ -46,12 +43,6 @@ export class CalculatedNumericValue {
   value?: number;
 }
 
-const CalculatedNumericValueSchema = SchemaFactory.createForClass(
+export const CalculatedNumericValueSchema = SchemaFactory.createForClass(
   CalculatedNumericValue,
-).pre('deleteOne', { document: true }, function (next) {
-  CharacterFieldPathSchema.remove({ _id: { $in: this.variables } });
-  DiceRollSchema.remove({ _id: { $in: this.diceRolls } });
-  next();
-});
-
-export { CalculatedNumericValueSchema };
+);

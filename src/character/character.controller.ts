@@ -10,7 +10,7 @@ import {
 import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AttributeService } from './services/attribute.service';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
 import { Attribute } from './entities/attribute.entity';
@@ -32,15 +32,21 @@ export class CharacterController {
   }
 
   @Get('attribute/template')
-  @ApiOkResponse({ type: [Attribute] })
+  @ApiResponse({ type: [Attribute] })
   findAllAttributes(): Promise<Attribute[]> {
     return this.attributeService.findAll();
   }
 
   @Get('attribute/template/:id')
-  @ApiOkResponse({ type: Attribute })
+  @ApiResponse({ type: Attribute })
   findOneAttribute(@Param('id') id: string): Promise<Attribute> {
     return this.attributeService.findOne(id);
+  }
+
+  @Delete('attribute/template/:id')
+  @ApiResponse({ type: Attribute })
+  removeAttribute(@Param('id') id: string) {
+    return this.attributeService.remove(id);
   }
 
   @Post()

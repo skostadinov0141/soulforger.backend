@@ -153,4 +153,8 @@ export class AttributeService {
   }
 
   update() {}
+
+  remove(id: string) {
+    return this.attributeModel.deleteOne({ _id: id }).exec();
+  }
 }
