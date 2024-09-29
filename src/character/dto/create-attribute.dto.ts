@@ -27,7 +27,7 @@ export class CreateAttributeDto {
     | CalculatedNumericValueDto;
 }
 
-class TextValueDto {
+export class TextValueDto {
   @ApiProperty()
   @IsString()
   value: string;
@@ -37,13 +37,13 @@ class TextValueDto {
   options: string[];
 }
 
-class FixedNumericValueDto {
+export class FixedNumericValueDto {
   @ApiProperty()
   @IsString()
   value: string;
 }
 
-class CalculatedNumericValueDto {
+export class CalculatedNumericValueDto {
   @ApiProperty()
   @IsString()
   formula: string;
@@ -55,7 +55,7 @@ class CalculatedNumericValueDto {
   diceRolls: DiceRollDto[];
 }
 
-class CharacterFieldPathDto {
+export class CharacterFieldPathDto {
   @ApiProperty()
   @IsString()
   name: string;
@@ -65,7 +65,7 @@ class CharacterFieldPathDto {
   path: string;
 }
 
-class DiceRollDto {
+export class DiceRollDto {
   @ApiProperty()
   @IsString()
   name: string;
