@@ -14,6 +14,7 @@ import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AttributeService } from './services/attribute.service';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
 import { Attribute } from './entities/attribute.entity';
+import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 
 @Controller('character')
 @ApiTags('character')
@@ -41,6 +42,15 @@ export class CharacterController {
   @ApiResponse({ type: Attribute })
   findOneAttribute(@Param('id') id: string): Promise<Attribute> {
     return this.attributeService.findOne(id);
+  }
+
+  @Patch('attribute/template/:id')
+  @ApiResponse({ type: Attribute })
+  updateAttribute(
+    @Param('id') id: string,
+    @Body() payload: UpdateAttributeTemplateDto,
+  ): Promise<Attribute> {
+    return this.attributeService.update(id, payload);
   }
 
   @Delete('attribute/template/:id')
