@@ -9,7 +9,11 @@ export class TextValue {
   _id: string;
 
   @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Rulebook.name,
+    required: true,
+  })
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -18,7 +22,7 @@ export class TextValue {
 
   @ApiProperty()
   @Prop()
-  value: string;
+  value?: string;
 }
 
 export const TextValueSchema = SchemaFactory.createForClass(TextValue);

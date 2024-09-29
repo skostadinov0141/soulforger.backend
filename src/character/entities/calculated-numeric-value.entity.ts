@@ -14,7 +14,11 @@ export class CalculatedNumericValue {
   _id: string;
 
   @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Rulebook.name,
+    required: true,
+  })
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -22,22 +26,24 @@ export class CalculatedNumericValue {
     type: [
       { type: mongoose.Schema.Types.ObjectId, ref: CharacterFieldPath.name },
     ],
+    required: true,
   })
   variables: CharacterFieldPath[];
 
   @ApiProperty()
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: DiceRoll.name }],
+    required: true,
   })
   diceRolls: DiceRoll[];
 
   @ApiProperty()
-  @Prop()
+  @Prop({ required: true })
   formula: string;
 
   @ApiProperty()
   @Prop()
-  value: number;
+  value?: number;
 }
 
 const CalculatedNumericValueSchema = SchemaFactory.createForClass(

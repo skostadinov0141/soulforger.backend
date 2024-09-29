@@ -4,17 +4,21 @@ import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema()
 export class CharacterFieldPath {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Rulebook.name,
+    required: true,
+  })
   ruleBook: Rulebook;
 
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   path: string;
 
   @Prop()
-  value: number;
+  value?: number;
 }
 
 export const CharacterFieldPathSchema =

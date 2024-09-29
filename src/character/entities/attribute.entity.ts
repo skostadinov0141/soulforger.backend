@@ -18,15 +18,23 @@ export class Attribute {
   _id: string;
 
   @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Rulebook.name })
+  @Prop()
+  template?: boolean;
+
+  @ApiProperty()
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Rulebook.name,
+    required: true,
+  })
   rulebook: Rulebook;
 
   @ApiProperty()
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   @ApiProperty()
-  @Prop()
+  @Prop({ required: true })
   description: string;
 
   @ApiProperty()
