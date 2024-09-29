@@ -14,6 +14,10 @@ export class TextValue {
 
   @ApiProperty()
   @Prop()
+  options: string[];
+
+  @ApiProperty()
+  @Prop()
   value: string;
 }
 
