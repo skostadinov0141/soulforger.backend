@@ -154,7 +154,42 @@ export class AttributeService {
 
   update() {}
 
-  remove(id: string) {
+  async remove(id: string) {
+    const attribute = await this.attributeModel.findById(id).exec();
+    if (!attribute) {
+      throw new Error('Attribute not found');
+    }
+    switch (attribute.attributeType) {
+      case 'FixedNumericValue':
+        await this.fixedNumericValueModel
+          .deleteOne({ _id: attribute.attributeValue })
+          .exec();
+        break;
+      case 'TextValue':
+        await this.textValueModel
+          .deleteOne({ _id: attribute.attributeValue })
+          .exec();
+        break;
+      case 'CalculatedNumericValue':
+        const calculatedValue = await this.calculatedNumericValueModel
+          .findById(attribute.attributeValue)
+          .exec();
+        if (!calculatedValue) {
+          throw new Error('Calculated value not found');
+        }
+        await this.characterFieldPathModel
+          .deleteMany({ _id: { $in: calculatedValue.variables } })
+          .exec();
+        await this.diceRollModel
+          .deleteMany({ _id: { $in: calculatedValue.diceRolls } })
+          .exec();
+        await this.calculatedNumericValueModel
+          .deleteOne({ _id: attribute.attributeValue })
+          .exec();
+        break;
+      default:
+        throw new Error(`Unsupported value type: ${attribute.attributeType}`);
+    }
     return this.attributeModel.deleteOne({ _id: id }).exec();
   }
 }
