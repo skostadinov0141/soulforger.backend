@@ -14,6 +14,10 @@ import {
 } from '../dto/create-attribute-template.dto';
 import { Attribute } from '../entities/attribute.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
+import {
+  UpdateAttributeTemplateDto,
+  UpdateCalculatedNumericValueTemplateDto,
+} from '../dto/update-attribute-template.dto';
 
 @Injectable()
 export class AttributeService {
@@ -152,7 +156,71 @@ export class AttributeService {
       .exec();
   }
 
-  update() {}
+  async update(
+    id: string,
+    payload: UpdateAttributeTemplateDto,
+  ): Promise<Attribute> {
+    const rulebook = await this.rulebookModel.findById(payload.rulebook).exec();
+    switch (payload.attributeType) {
+      case 'FixedNumericValue':
+        await this.fixedNumericValueModel
+          .findByIdAndUpdate(payload.attributeValue._id, payload.attributeValue)
+          .exec();
+        break;
+      case 'TextValue':
+        await this.textValueModel
+          .findByIdAndUpdate(payload.attributeValue._id, payload.attributeValue)
+          .exec();
+        break;
+      case 'CalculatedNumericValue':
+        const value: UpdateCalculatedNumericValueTemplateDto =
+          payload.attributeValue as UpdateCalculatedNumericValueTemplateDto;
+        for (const variable of value.variables) {
+          if (!variable._id) {
+            variable.rulebook = rulebook;
+            const createdVariable =
+              await this.characterFieldPathModel.create(variable);
+            value.variables.push({
+              _id: createdVariable._id.toString(),
+              rulebook: rulebook,
+              name: variable.name,
+              path: variable.path,
+            });
+          } else {
+            await this.characterFieldPathModel
+              .findByIdAndUpdate(variable._id, variable)
+              .exec();
+          }
+        }
+        for (const diceRoll of value.diceRolls) {
+          if (!diceRoll._id) {
+            diceRoll.rulebook = rulebook;
+            const createdDiceRoll = await this.diceRollModel.create(diceRoll);
+            value.diceRolls.push({
+              _id: createdDiceRoll._id.toString(),
+              rulebook: rulebook,
+              name: diceRoll.name,
+              diceAmount: diceRoll.diceAmount,
+              diceSides: diceRoll.diceSides,
+            });
+          } else {
+            await this.diceRollModel
+              .findByIdAndUpdate(diceRoll._id, diceRoll)
+              .exec();
+          }
+        }
+        await this.calculatedNumericValueModel.findByIdAndUpdate(
+          payload.attributeValue._id,
+          value,
+        );
+        break;
+      default:
+        throw new Error(`Unsupported value type: ${payload.attributeType}`);
+    }
+    return this.attributeModel
+      .findByIdAndUpdate(id, payload, { new: true })
+      .exec();
+  }
 
   async remove(id: string) {
     const attribute = await this.attributeModel.findById(id).exec();

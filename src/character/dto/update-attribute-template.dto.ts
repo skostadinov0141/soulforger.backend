@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 export class UpdateAttributeTemplateDto {
   @ApiProperty()
@@ -68,9 +69,7 @@ export class UpdateCalculatedNumericValueTemplateDto {
   @IsString()
   _id: string;
 
-  @ApiProperty()
-  @IsString()
-  rulebook: string;
+  rulebook?: Rulebook;
 
   @ApiProperty()
   @IsString()
@@ -86,11 +85,10 @@ export class UpdateCalculatedNumericValueTemplateDto {
 export class UpdateCharacterFieldPathTemplateDto {
   @ApiProperty()
   @IsString()
-  _id: string;
+  @IsOptional()
+  _id?: string;
 
-  @ApiProperty()
-  @IsString()
-  rulebook: string;
+  rulebook?: Rulebook;
 
   @ApiProperty()
   @IsString()
@@ -104,11 +102,10 @@ export class UpdateCharacterFieldPathTemplateDto {
 export class UpdateDiceRollTemplateDto {
   @ApiProperty()
   @IsString()
-  _id: string;
+  @IsOptional()
+  _id?: string;
 
-  @ApiProperty()
-  @IsString()
-  rulebook: string;
+  rulebook?: Rulebook;
 
   @ApiProperty()
   @IsString()
