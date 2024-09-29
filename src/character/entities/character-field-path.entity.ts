@@ -9,7 +9,7 @@ export class CharacterFieldPath {
     ref: Rulebook.name,
     required: true,
   })
-  ruleBook: Rulebook;
+  rulebook: Rulebook;
 
   @Prop({ required: true })
   name: string;

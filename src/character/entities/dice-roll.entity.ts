@@ -22,7 +22,7 @@ export class DiceRoll {
 
   @ApiProperty()
   @Prop()
-  diceCount: number;
+  diceAmount: number;
 
   @ApiProperty()
   @Prop()
