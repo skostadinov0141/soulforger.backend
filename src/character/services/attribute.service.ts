@@ -137,11 +137,19 @@ export class AttributeService {
   }
 
   findAll() {
-    return this.attributeModel.find().exec();
+    return this.attributeModel
+      .find({}, { __v: 0 })
+      .populate('attributeValue', { __v: 0 })
+      .populate('rulebook', { __v: 0 })
+      .exec();
   }
 
   findOne(id: string) {
-    return this.attributeModel.findById(id).exec();
+    return this.attributeModel
+      .findById(id, { __v: 0 })
+      .populate('attributeValue', { __v: 0 })
+      .populate('rulebook', { __v: 0 })
+      .exec();
   }
 
   update() {}
