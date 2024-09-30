@@ -19,6 +19,12 @@ export class Tag {
   @ApiProperty()
   @Prop()
   description: string;
+
+  @ApiProperty()
+  @Prop({
+    enum: ['attribute', 'ability'],
+  })
+  for: string;
 }
 
 export const TagSchema = SchemaFactory.createForClass(Tag);
