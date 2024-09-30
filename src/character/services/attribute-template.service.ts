@@ -23,6 +23,7 @@ import {
 import { PathDto } from '../dto/path.dto';
 import { Tag } from '../entities/tag.entity';
 import { Group } from '../entities/group.entity';
+import { SearchAttributeTemplateDto } from '../dto/search-attribute-template.dto';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -400,5 +401,51 @@ export class AttributeTemplateService {
       name: attribute.name,
       path: `attributes[name=${attribute.name}].value`,
     }));
+  }
+
+  async search(payload: SearchAttributeTemplateDto): Promise<Attribute[]> {
+    let tagsQuery: any = { tags: {} };
+    if (payload.includeTags && payload.excludeTags) {
+      tagsQuery.tags = {
+        $and: [{ $in: payload.includeTags }, { $nin: payload.excludeTags }],
+      };
+    } else if (payload.includeTags && !payload.excludeTags) {
+      tagsQuery.tags = { $in: payload.includeTags };
+    } else if (!payload.includeTags && payload.excludeTags) {
+      tagsQuery.tags = { $nin: payload.excludeTags };
+    } else {
+      tagsQuery = {};
+    }
+    let groupQuery: any = { group: {} };
+    if (payload.includeGroups && payload.excludeGroups) {
+      groupQuery.group = {
+        $and: [{ $in: payload.includeGroups }, { $nin: payload.excludeGroups }],
+      };
+    } else if (payload.includeGroups && !payload.excludeGroups) {
+      groupQuery.group = { $in: payload.includeGroups };
+    } else if (!payload.includeGroups && payload.excludeGroups) {
+      groupQuery.group = { $nin: payload.excludeGroups };
+    } else {
+      groupQuery = {};
+    }
+    const finalQuery = { ...tagsQuery, ...groupQuery };
+    console.log(finalQuery);
+    const sort = {};
+    sort[payload.sortBy] = payload.sortOrder;
+    return this.attributeModel
+      .find(finalQuery, { __v: 0 })
+      .populate({
+        path: 'attributeValue',
+        populate: [
+          { path: 'variables', select: { __v: 0 } },
+          { path: 'diceRolls', select: { __v: 0 } },
+        ],
+      })
+      .populate('tags', { __v: 0 })
+      .populate('group', { __v: 0 })
+      .limit(payload.limit)
+      .skip(payload.page * payload.limit)
+      .sort(sort)
+      .exec();
   }
 }

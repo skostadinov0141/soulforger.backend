@@ -16,6 +16,7 @@ import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto'
 import { Attribute } from './entities/attribute.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 import { PathDto } from './dto/path.dto';
+import { SearchAttributeTemplateDto } from './dto/search-attribute-template.dto';
 
 @Controller('character')
 @ApiTags('character')
@@ -31,6 +32,14 @@ export class CharacterController {
     @Body() payload: CreateAttributeTemplateDto,
   ): Promise<Attribute> {
     return this.attributeService.create(payload);
+  }
+
+  @Post('attribute/template/search')
+  @ApiOkResponse({ type: [Attribute] })
+  searchAttribute(
+    @Body() payload: SearchAttributeTemplateDto,
+  ): Promise<Attribute[]> {
+    return this.attributeService.search(payload);
   }
 
   @Get('attribute/template')
