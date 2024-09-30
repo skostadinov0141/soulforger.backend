@@ -39,7 +39,7 @@ export class CharacterController {
     return this.attributeService.findAll();
   }
 
-  @Get('attribute/pathRegistry/:rulebookId')
+  @Get('attribute/template/pathRegistry/:rulebookId')
   @ApiResponse({ type: [PathDto] })
   getPathRegistry(@Param('rulebookId') rulebookId: string): Promise<PathDto[]> {
     return this.attributeService.getPathRegistry(rulebookId);
