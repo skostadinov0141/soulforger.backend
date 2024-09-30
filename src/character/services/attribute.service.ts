@@ -69,6 +69,7 @@ export class AttributeService {
     const createdAttribute = await this.attributeModel.create({
       ...payload,
       attributeValue: createdValue,
+      template: true,
     });
     return createdAttribute.save();
   }
@@ -309,7 +310,12 @@ export class AttributeService {
     if (!rulebook) {
       throw new Error('Rulebook not found');
     }
-    return this.attributeModel.deleteMany({ rulebook: rulebookId }).exec();
+    const attributes = await this.attributeModel
+      .find({ rulebook: rulebookId })
+      .exec();
+    return Promise.all(
+      attributes.map(async (attribute) => await this.remove(attribute._id)),
+    );
   }
 
   async findByRulebook(rulebookId: string) {
@@ -325,8 +331,6 @@ export class AttributeService {
         },
       )
       .exec();
-    console.log('binhier');
-    console.log(attributes);
     return attributes.map((attribute) => ({
       name: attribute.name,
       path: `attributes[name=${attribute.name}].value`,

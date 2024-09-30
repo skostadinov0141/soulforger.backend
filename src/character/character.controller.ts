@@ -66,6 +66,12 @@ export class CharacterController {
     return this.attributeService.remove(id);
   }
 
+  @Delete('attribute/template/deleteByRulebook/:rulebookId')
+  @ApiResponse({ type: Attribute })
+  removeAttributesByRulebook(@Param('rulebookId') rulebookId: string) {
+    return this.attributeService.removeByRulebook(rulebookId);
+  }
+
   @Post()
   create(@Body() createCharacterDto: CreateCharacterDto) {
     return this.characterService.create(createCharacterDto);
