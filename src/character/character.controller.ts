@@ -17,6 +17,8 @@ import { Attribute } from './entities/attribute.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 import { PathDto } from './dto/path.dto';
 import { SearchAttributeTemplateDto } from './dto/search-attribute-template.dto';
+import { Tag } from './entities/tag.entity';
+import { Group } from './entities/group.entity';
 
 @Controller('character')
 @ApiTags('character')
@@ -60,6 +62,18 @@ export class CharacterController {
     @Param('rulebookId') rulebookId: string,
   ): Promise<Attribute[]> {
     return this.attributeService.findByRulebook(rulebookId);
+  }
+
+  @Get('attribute/template/tags')
+  @ApiResponse({ type: [Tag] })
+  getTags(): Promise<Tag[]> {
+    return this.attributeService.getAttributeTags();
+  }
+
+  @Get('attribute/template/groups')
+  @ApiResponse({ type: [Group] })
+  getGroups(): Promise<Group[]> {
+    return this.attributeService.getAttributeGroups();
   }
 
   @Get('attribute/template/:id')

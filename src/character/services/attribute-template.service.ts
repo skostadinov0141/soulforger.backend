@@ -448,4 +448,12 @@ export class AttributeTemplateService {
       .sort(sort)
       .exec();
   }
+
+  async getAttributeTags(): Promise<Tag[]> {
+    return this.tagModel.find({ for: 'attribute' }).exec();
+  }
+
+  async getAttributeGroups(): Promise<Group[]> {
+    return this.groupModel.find({ for: 'attribute' }).exec();
+  }
 }
