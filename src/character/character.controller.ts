@@ -45,6 +45,14 @@ export class CharacterController {
     return this.attributeService.getPathRegistry(rulebookId);
   }
 
+  @Get('attribute/template/getByRulebook/:rulebookId')
+  @ApiResponse({ type: [Attribute] })
+  getAttributesByRulebook(
+    @Param('rulebookId') rulebookId: string,
+  ): Promise<Attribute[]> {
+    return this.attributeService.findByRulebook(rulebookId);
+  }
+
   @Get('attribute/template/:id')
   @ApiResponse({ type: Attribute })
   findOneAttribute(@Param('id') id: string): Promise<Attribute> {
