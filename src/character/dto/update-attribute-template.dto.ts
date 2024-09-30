@@ -10,41 +10,6 @@ import {
 } from 'class-validator';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
-export class UpdateAttributeTemplateDto {
-  @ApiProperty()
-  @IsString()
-  rulebook: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  description: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsEnum(['FixedNumericValue', 'TextValue', 'CalculatedNumericValue'])
-  attributeType: string;
-
-  @ApiProperty()
-  @IsObject()
-  attributeValue:
-    | UpdateTextValueTemplateDto
-    | UpdateFixedNumericValueTemplateDto
-    | UpdateCalculatedNumericValueTemplateDto;
-
-  @ApiProperty()
-  @IsArray()
-  @IsObject({ each: true })
-  tags: UpdateAttributeTag[];
-
-  @ApiProperty()
-  @IsObject()
-  group: UpdateGroup;
-}
-
 export class UpdateGroup {
   rulebook: Rulebook;
 
@@ -167,4 +132,39 @@ export class UpdateDiceRollTemplateDto {
   @ApiProperty()
   @IsNumber()
   diceAmount: number;
+}
+
+export class UpdateAttributeTemplateDto {
+  @ApiProperty()
+  @IsString()
+  rulebook: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  description: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsEnum(['FixedNumericValue', 'TextValue', 'CalculatedNumericValue'])
+  attributeType: string;
+
+  @ApiProperty()
+  @IsObject()
+  attributeValue:
+    | UpdateTextValueTemplateDto
+    | UpdateFixedNumericValueTemplateDto
+    | UpdateCalculatedNumericValueTemplateDto;
+
+  @ApiProperty()
+  @IsArray()
+  @IsObject({ each: true })
+  tags: UpdateAttributeTag[];
+
+  @ApiProperty()
+  @IsObject()
+  group: UpdateGroup;
 }
