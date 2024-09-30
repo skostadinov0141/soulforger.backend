@@ -325,6 +325,8 @@ export class AttributeService {
         },
       )
       .exec();
+    console.log('binhier');
+    console.log(attributes);
     return attributes.map((attribute) => ({
       name: attribute.name,
       path: `attributes[name=${attribute.name}].value`,

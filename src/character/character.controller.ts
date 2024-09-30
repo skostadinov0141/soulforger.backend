@@ -15,6 +15,7 @@ import { AttributeService } from './services/attribute.service';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
 import { Attribute } from './entities/attribute.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
+import { PathDto } from './dto/path.dto';
 
 @Controller('character')
 @ApiTags('character')
@@ -36,6 +37,12 @@ export class CharacterController {
   @ApiResponse({ type: [Attribute] })
   findAllAttributes(): Promise<Attribute[]> {
     return this.attributeService.findAll();
+  }
+
+  @Get('attribute/pathRegistry/:rulebookId')
+  @ApiResponse({ type: [PathDto] })
+  getPathRegistry(@Param('rulebookId') rulebookId: string): Promise<PathDto[]> {
+    return this.attributeService.getPathRegistry(rulebookId);
   }
 
   @Get('attribute/template/:id')
