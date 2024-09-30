@@ -323,7 +323,16 @@ export class AttributeService {
   }
 
   async findByRulebook(rulebookId: string) {
-    return this.attributeModel.find({ rulebook: rulebookId }).exec();
+    return this.attributeModel
+      .find({ rulebook: rulebookId, template: true }, { __v: 0 })
+      .populate({
+        path: 'attributeValue',
+        populate: [
+          { path: 'variables', select: { __v: 0 } },
+          { path: 'diceRolls', select: { __v: 0 } },
+        ],
+      })
+      .exec();
   }
 
   async getPathRegistry(rulebookId: string): Promise<PathDto[]> {
