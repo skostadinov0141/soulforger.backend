@@ -65,7 +65,7 @@ export class Attribute {
     type: mongoose.Schema.Types.ObjectId,
     ref: Group.name,
   })
-  group: Group[];
+  group: Group;
 }
 
 export const AttributeSchema = SchemaFactory.createForClass(Attribute);

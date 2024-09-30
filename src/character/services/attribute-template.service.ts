@@ -11,6 +11,8 @@ import {
   CreateAttributeTemplateDto,
   CreateAttributeFixedNumericValueTemplateDto,
   CreateAttributeTextValueTemplateDto,
+  CreateAttributeTag,
+  CreateAttributeGroup,
 } from '../dto/create-attribute-template.dto';
 import { Attribute } from '../entities/attribute.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
@@ -19,6 +21,8 @@ import {
   UpdateCalculatedNumericValueTemplateDto,
 } from '../dto/update-attribute-template.dto';
 import { PathDto } from '../dto/path.dto';
+import { Tag } from '../entities/tag.entity';
+import { Group } from '../entities/group.entity';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -32,7 +36,9 @@ export class AttributeTemplateService {
     @InjectModel(DiceRoll.name) private diceRollModel: Model<DiceRoll>,
     @InjectModel(CalculatedNumericValue.name)
     private calculatedNumericValueModel: Model<CalculatedNumericValue>,
-    @InjectModel('Rulebook') private rulebookModel: Model<Rulebook>,
+    @InjectModel(Rulebook.name) private rulebookModel: Model<Rulebook>,
+    @InjectModel(Tag.name) private tagModel: Model<Tag>,
+    @InjectModel(Group.name) private groupModel: Model<Group>,
   ) {}
 
   async create(payload: CreateAttributeTemplateDto) {
@@ -68,13 +74,48 @@ export class AttributeTemplateService {
     }
     const createdAttribute = await this.attributeModel.create({
       ...payload,
+      tags: [],
+      group: null,
       attributeValue: createdValue,
       template: true,
     });
+    createdAttribute.tags = await Promise.all([
+      ...payload.tags.map((tag) => this.createTag(tag, rulebook)),
+    ]);
+    createdAttribute.group = await this.createGroup(payload.group, rulebook);
     return createdAttribute.save();
   }
 
-  // Function overloads
+  private createTag(
+    payload: CreateAttributeTag,
+    rulebook: Rulebook,
+  ): Promise<Tag> {
+    if (payload._id) {
+      return this.tagModel.findOne({ _id: payload._id }).exec();
+    } else {
+      return this.tagModel.create({
+        ...payload,
+        for: 'attribute',
+        rulebook,
+      });
+    }
+  }
+
+  private createGroup(
+    payload: CreateAttributeGroup,
+    rulebook: Rulebook,
+  ): Promise<Group> {
+    if (payload._id) {
+      return this.groupModel.findOne({ _id: payload._id }).exec();
+    } else {
+      return this.groupModel.create({
+        ...payload,
+        for: 'attribute',
+        rulebook,
+      });
+    }
+  }
+
   private createValue(
     type: 'FixedNumericValue',
     payload: CreateAttributeFixedNumericValueTemplateDto,
@@ -91,7 +132,6 @@ export class AttributeTemplateService {
     rulebook: Rulebook,
   ): Promise<CalculatedNumericValue>;
 
-  // Implementation
   private async createValue(
     type: 'FixedNumericValue' | 'TextValue' | 'CalculatedNumericValue',
     payload:
@@ -159,6 +199,8 @@ export class AttributeTemplateService {
           { path: 'diceRolls', select: { __v: 0 } },
         ],
       })
+      .populate('tags', { __v: 0 })
+      .populate('group', { __v: 0 })
       .exec();
   }
 
@@ -172,11 +214,12 @@ export class AttributeTemplateService {
           {
             path: 'variables',
             select: { __v: 0 },
-            model: CharacterFieldPath.name,
           },
-          { path: 'diceRolls', select: { __v: 0 }, model: DiceRoll.name },
+          { path: 'diceRolls', select: { __v: 0 } },
         ],
       })
+      .populate('tags', { __v: 0 })
+      .populate('group', { __v: 0 })
       .exec();
   }
 
@@ -208,6 +251,10 @@ export class AttributeTemplateService {
       default:
         throw new Error(`Unsupported value type: ${payload.attributeType}`);
     }
+    attribute.tags = await Promise.all([
+      ...payload.tags.map((tag) => this.createTag(tag, rulebook)),
+    ]);
+    attribute.group = await this.createGroup(payload.group, rulebook);
     return attribute.save();
   }
 
@@ -230,6 +277,10 @@ export class AttributeTemplateService {
         { path: 'diceRolls', model: DiceRoll.name },
       ])
       .exec();
+
+    if (!calculatedValue) {
+      throw new Error('Calculated value not found');
+    }
 
     // Update existing variables and add new ones
     calculatedValue.variables = await Promise.all(
