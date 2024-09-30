@@ -11,7 +11,7 @@ import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { UpdateCharacterDto } from './dto/update-character.dto';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AttributeService } from './services/attribute.service';
+import { AttributeTemplateService } from './services/attribute-template.service';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
 import { Attribute } from './entities/attribute.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
@@ -22,7 +22,7 @@ import { PathDto } from './dto/path.dto';
 export class CharacterController {
   constructor(
     private readonly characterService: CharacterService,
-    private readonly attributeService: AttributeService,
+    private readonly attributeService: AttributeTemplateService,
   ) {}
 
   @Post('attribute/template')

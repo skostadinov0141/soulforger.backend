@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  Equals,
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 export class UpdateAttributeTemplateDto {
   @ApiProperty()
@@ -20,11 +29,56 @@ export class UpdateAttributeTemplateDto {
   attributeType: string;
 
   @ApiProperty()
-  @IsString()
+  @IsObject()
   attributeValue:
     | UpdateTextValueTemplateDto
     | UpdateFixedNumericValueTemplateDto
     | UpdateCalculatedNumericValueTemplateDto;
+
+  @ApiProperty()
+  @IsArray()
+  @IsObject({ each: true })
+  tags: UpdateAttributeTag[];
+
+  @ApiProperty()
+  @IsObject()
+  group: UpdateGroup;
+}
+
+export class UpdateGroup {
+  rulebook: Rulebook;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  _id?: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @Equals('attribute')
+  for: string;
+}
+
+export class UpdateAttributeTag {
+  rulebook: Rulebook;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  _id?: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @Equals('attribute')
+  for: string;
 }
 
 export class UpdateTextValueTemplateDto {

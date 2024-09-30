@@ -7,10 +7,10 @@ import { CharacterFieldPath } from '../entities/character-field-path.entity';
 import { DiceRoll } from '../entities/dice-roll.entity';
 import { CalculatedNumericValue } from '../entities/calculated-numeric-value.entity';
 import {
-  CalculatedNumericValueTemplateDto,
+  CreateAttributeCalculatedNumericValueTemplateDto,
   CreateAttributeTemplateDto,
-  FixedNumericValueTemplateDto,
-  TextValueTemplateDto,
+  CreateAttributeFixedNumericValueTemplateDto,
+  CreateAttributeTextValueTemplateDto,
 } from '../dto/create-attribute-template.dto';
 import { Attribute } from '../entities/attribute.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
@@ -21,7 +21,7 @@ import {
 import { PathDto } from '../dto/path.dto';
 
 @Injectable()
-export class AttributeService {
+export class AttributeTemplateService {
   constructor(
     @InjectModel(Attribute.name) private attributeModel: Model<Attribute>,
     @InjectModel(FixedNumericValue.name)
@@ -42,7 +42,7 @@ export class AttributeService {
       case 'FixedNumericValue':
         createdValue = await this.createValue(
           'FixedNumericValue',
-          payload.attributeValue as FixedNumericValueTemplateDto,
+          payload.attributeValue as CreateAttributeFixedNumericValueTemplateDto,
           rulebook,
         );
         createdValue.rulebook = rulebook;
@@ -50,7 +50,7 @@ export class AttributeService {
       case 'TextValue':
         createdValue = await this.createValue(
           'TextValue',
-          payload.attributeValue as TextValueTemplateDto,
+          payload.attributeValue as CreateAttributeTextValueTemplateDto,
           rulebook,
         );
         createdValue.rulebook = rulebook;
@@ -58,7 +58,7 @@ export class AttributeService {
       case 'CalculatedNumericValue':
         createdValue = await this.createValue(
           'CalculatedNumericValue',
-          payload.attributeValue as CalculatedNumericValueTemplateDto,
+          payload.attributeValue as CreateAttributeCalculatedNumericValueTemplateDto,
           rulebook,
         );
         createdValue.rulebook = rulebook;
@@ -77,17 +77,17 @@ export class AttributeService {
   // Function overloads
   private createValue(
     type: 'FixedNumericValue',
-    payload: FixedNumericValueTemplateDto,
+    payload: CreateAttributeFixedNumericValueTemplateDto,
     rulebook: Rulebook,
   ): Promise<FixedNumericValue>;
   private createValue(
     type: 'TextValue',
-    payload: TextValueTemplateDto,
+    payload: CreateAttributeTextValueTemplateDto,
     rulebook: Rulebook,
   ): Promise<TextValue>;
   private createValue(
     type: 'CalculatedNumericValue',
-    payload: CalculatedNumericValueTemplateDto,
+    payload: CreateAttributeCalculatedNumericValueTemplateDto,
     rulebook: Rulebook,
   ): Promise<CalculatedNumericValue>;
 
@@ -95,35 +95,36 @@ export class AttributeService {
   private async createValue(
     type: 'FixedNumericValue' | 'TextValue' | 'CalculatedNumericValue',
     payload:
-      | FixedNumericValueTemplateDto
-      | TextValueTemplateDto
-      | CalculatedNumericValueTemplateDto,
+      | CreateAttributeFixedNumericValueTemplateDto
+      | CreateAttributeTextValueTemplateDto
+      | CreateAttributeCalculatedNumericValueTemplateDto,
     rulebook: Rulebook,
   ): Promise<FixedNumericValue | TextValue | CalculatedNumericValue> {
     switch (type) {
       case 'FixedNumericValue':
         payload.rulebook = rulebook;
         const createdFixedValue = new this.fixedNumericValueModel(
-          payload as FixedNumericValueTemplateDto,
+          payload as CreateAttributeFixedNumericValueTemplateDto,
         );
         return await createdFixedValue.save();
 
       case 'TextValue':
         payload.rulebook = rulebook;
         const createdTextValue = new this.textValueModel(
-          payload as TextValueTemplateDto,
+          payload as CreateAttributeTextValueTemplateDto,
         );
         return await createdTextValue.save();
 
       case 'CalculatedNumericValue':
         payload.rulebook = rulebook;
-        (payload as CalculatedNumericValueTemplateDto).variables.forEach(
-          (variable) => (variable.rulebook = rulebook),
-        );
-        (payload as CalculatedNumericValueTemplateDto).diceRolls.forEach(
-          (diceRoll) => (diceRoll.rulebook = rulebook),
-        );
-        const calculatedPayload = payload as CalculatedNumericValueTemplateDto;
+        (
+          payload as CreateAttributeCalculatedNumericValueTemplateDto
+        ).variables.forEach((variable) => (variable.rulebook = rulebook));
+        (
+          payload as CreateAttributeCalculatedNumericValueTemplateDto
+        ).diceRolls.forEach((diceRoll) => (diceRoll.rulebook = rulebook));
+        const calculatedPayload =
+          payload as CreateAttributeCalculatedNumericValueTemplateDto;
         const createdVariables = calculatedPayload.variables.map(
           (variable) => new this.characterFieldPathModel(variable),
         );

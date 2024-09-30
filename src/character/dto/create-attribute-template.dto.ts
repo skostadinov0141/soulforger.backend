@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import {
+  Equals,
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 export class CreateAttributeTemplateDto {
@@ -21,14 +29,59 @@ export class CreateAttributeTemplateDto {
   attributeType: string;
 
   @ApiProperty()
-  @IsString()
+  @IsObject()
   attributeValue:
-    | TextValueTemplateDto
-    | FixedNumericValueTemplateDto
-    | CalculatedNumericValueTemplateDto;
+    | CreateAttributeTextValueTemplateDto
+    | CreateAttributeFixedNumericValueTemplateDto
+    | CreateAttributeCalculatedNumericValueTemplateDto;
+
+  @ApiProperty()
+  @IsArray()
+  @IsObject({ each: true })
+  tags: CreateAttributeTag[];
+
+  @ApiProperty()
+  @IsObject()
+  group: CreateAttributeGroup;
 }
 
-export class TextValueTemplateDto {
+export class CreateAttributeTag {
+  rulebook: Rulebook;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  _id?: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @Equals('attribute')
+  for: string;
+}
+
+export class CreateAttributeGroup {
+  rulebook: Rulebook;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  _id?: string;
+
+  @ApiProperty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @Equals('attribute')
+  for: string;
+}
+
+export class CreateAttributeTextValueTemplateDto {
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -40,7 +93,7 @@ export class TextValueTemplateDto {
   options: string[];
 }
 
-export class FixedNumericValueTemplateDto {
+export class CreateAttributeFixedNumericValueTemplateDto {
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -48,7 +101,7 @@ export class FixedNumericValueTemplateDto {
   value: string;
 }
 
-export class CalculatedNumericValueTemplateDto {
+export class CreateAttributeCalculatedNumericValueTemplateDto {
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -56,13 +109,13 @@ export class CalculatedNumericValueTemplateDto {
   formula: string;
 
   @ApiProperty()
-  variables: CharacterFieldPathTemplateDto[];
+  variables: CreateAttributeCharacterFieldPathTemplateDto[];
 
   @ApiProperty()
-  diceRolls: DiceRollTemplateDto[];
+  diceRolls: CreateAttributeDiceRollTemplateDto[];
 }
 
-export class CharacterFieldPathTemplateDto {
+export class CreateAttributeCharacterFieldPathTemplateDto {
   rulebook: Rulebook;
 
   @ApiProperty()
@@ -74,7 +127,7 @@ export class CharacterFieldPathTemplateDto {
   path: string;
 }
 
-export class DiceRollTemplateDto {
+export class CreateAttributeDiceRollTemplateDto {
   rulebook: Rulebook;
 
   @ApiProperty()
