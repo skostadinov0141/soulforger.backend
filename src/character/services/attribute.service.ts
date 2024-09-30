@@ -18,6 +18,7 @@ import {
   UpdateAttributeTemplateDto,
   UpdateCalculatedNumericValueTemplateDto,
 } from '../dto/update-attribute-template.dto';
+import { PathDto } from '../dto/path.dto';
 
 @Injectable()
 export class AttributeService {
@@ -301,5 +302,32 @@ export class AttributeService {
         throw new Error(`Unsupported value type: ${attribute.attributeType}`);
     }
     return this.attributeModel.deleteOne({ _id: id }).exec();
+  }
+
+  async removeByRulebook(rulebookId: string) {
+    const rulebook = await this.rulebookModel.findById(rulebookId).exec();
+    if (!rulebook) {
+      throw new Error('Rulebook not found');
+    }
+    return this.attributeModel.deleteMany({ rulebook: rulebookId }).exec();
+  }
+
+  async findByRulebook(rulebookId: string) {
+    return this.attributeModel.find({ rulebook: rulebookId }).exec();
+  }
+
+  async getPathRegistry(rulebookId: string): Promise<PathDto[]> {
+    const attributes = await this.attributeModel
+      .find(
+        { rulebook: rulebookId },
+        {
+          name: 1,
+        },
+      )
+      .exec();
+    return attributes.map((attribute) => ({
+      name: attribute.name,
+      path: `attributes[name=${attribute.name}].value`,
+    }));
   }
 }
