@@ -150,7 +150,7 @@ export class AttributeService {
 
   findAll() {
     return this.attributeModel
-      .find({}, { __v: 0 })
+      .find({ template: true }, { __v: 0 })
       .populate({
         path: 'attributeValue',
         populate: [
@@ -163,7 +163,7 @@ export class AttributeService {
 
   findOne(id: string) {
     return this.attributeModel
-      .findById(id, { __v: 0 })
+      .findOne({ _id: id, template: true }, { __v: 0 })
       .populate({
         path: 'attributeValue',
         select: { __v: 0 },
@@ -183,7 +183,9 @@ export class AttributeService {
     id: string,
     payload: UpdateAttributeTemplateDto,
   ): Promise<Attribute> {
-    const attribute = await this.attributeModel.findById(id).exec();
+    const attribute = await this.attributeModel
+      .findOne({ _id: id, template: true })
+      .exec();
     if (!attribute) {
       throw new Error('Attribute not found');
     }
@@ -267,7 +269,9 @@ export class AttributeService {
   }
 
   async remove(id: string) {
-    const attribute = await this.attributeModel.findById(id).exec();
+    const attribute = await this.attributeModel
+      .findOne({ _id: id, template: true })
+      .exec();
     if (!attribute) {
       throw new Error('Attribute not found');
     }
@@ -311,7 +315,7 @@ export class AttributeService {
       throw new Error('Rulebook not found');
     }
     const attributes = await this.attributeModel
-      .find({ rulebook: rulebookId })
+      .find({ rulebook: rulebookId, template: true })
       .exec();
     return Promise.all(
       attributes.map(async (attribute) => await this.remove(attribute._id)),
@@ -325,7 +329,7 @@ export class AttributeService {
   async getPathRegistry(rulebookId: string): Promise<PathDto[]> {
     const attributes = await this.attributeModel
       .find(
-        { rulebook: rulebookId },
+        { rulebook: rulebookId, template: true },
         {
           name: 1,
         },
