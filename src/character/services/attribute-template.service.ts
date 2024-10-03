@@ -424,7 +424,6 @@ export class AttributeTemplateService {
       };
     }
     const finalQuery = { ...tagsQuery, ...groupQuery, ...searchStringQuery };
-    console.log(finalQuery);
     const sort = {};
     sort[payload.sortBy] = payload.sortOrder;
     return this.attributeModel
