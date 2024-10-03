@@ -404,29 +404,13 @@ export class AttributeTemplateService {
   }
 
   async search(payload: SearchAttributeTemplateDto): Promise<Attribute[]> {
-    let tagsQuery: any = { tags: {} };
-    if (payload.includeTags && payload.excludeTags) {
-      tagsQuery.tags = {
-        $and: [{ $in: payload.includeTags }, { $nin: payload.excludeTags }],
-      };
-    } else if (payload.includeTags && !payload.excludeTags) {
+    const tagsQuery: any = { tags: {} };
+    if (payload.includeTags) {
       tagsQuery.tags = { $in: payload.includeTags };
-    } else if (!payload.includeTags && payload.excludeTags) {
-      tagsQuery.tags = { $nin: payload.excludeTags };
-    } else {
-      tagsQuery = {};
     }
-    let groupQuery: any = { group: {} };
-    if (payload.includeGroups && payload.excludeGroups) {
-      groupQuery.group = {
-        $and: [{ $in: payload.includeGroups }, { $nin: payload.excludeGroups }],
-      };
-    } else if (payload.includeGroups && !payload.excludeGroups) {
+    const groupQuery: any = { group: {} };
+    if (payload.includeGroups) {
       groupQuery.group = { $in: payload.includeGroups };
-    } else if (!payload.includeGroups && payload.excludeGroups) {
-      groupQuery.group = { $nin: payload.excludeGroups };
-    } else {
-      groupQuery = {};
     }
     const searchStringQuery: any = {};
     if (payload.searchString) {

@@ -33,17 +33,5 @@ export class SearchAttributeTemplateDto {
   @IsString({ each: true })
   @IsArray()
   @IsOptional()
-  excludeTags?: string[];
-
-  @ApiProperty()
-  @IsString({ each: true })
-  @IsArray()
-  @IsOptional()
   includeGroups?: string[];
-
-  @ApiProperty()
-  @IsString({ each: true })
-  @IsArray()
-  @IsOptional()
-  excludeGroups?: string[];
 }
