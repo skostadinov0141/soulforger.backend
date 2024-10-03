@@ -443,8 +443,6 @@ export class AttributeTemplateService {
       })
       .populate('tags', { __v: 0 })
       .populate('group', { __v: 0 })
-      .limit(payload.limit)
-      .skip(payload.page * payload.limit)
       .sort(sort)
       .exec();
   }

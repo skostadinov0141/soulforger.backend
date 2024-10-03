@@ -4,7 +4,6 @@ import {
   IsEnum,
   IsNumber,
   IsOptional,
-  IsPositive,
   IsString,
 } from 'class-validator';
 
@@ -23,16 +22,6 @@ export class SearchAttributeTemplateDto {
   @IsString()
   @IsEnum(['name', 'createdAt', 'updatedAt'])
   sortBy: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsEnum([10, 20, 50, 100])
-  limit: number;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsPositive()
-  page: number;
 
   @ApiProperty()
   @IsString({ each: true })
