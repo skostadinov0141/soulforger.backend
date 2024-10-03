@@ -428,8 +428,14 @@ export class AttributeTemplateService {
     } else {
       groupQuery = {};
     }
-    const finalQuery = { ...tagsQuery, ...groupQuery };
-    console.log(finalQuery);
+    const searchStringQuery: any = {};
+    if (payload.searchString) {
+      searchStringQuery.name = {
+        $regex: payload.searchString,
+        $options: 'i',
+      };
+    }
+    const finalQuery = { ...tagsQuery, ...groupQuery, ...searchStringQuery };
     const sort = {};
     sort[payload.sortBy] = payload.sortOrder;
     return this.attributeModel
