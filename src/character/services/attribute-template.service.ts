@@ -404,13 +404,17 @@ export class AttributeTemplateService {
   }
 
   async search(payload: SearchAttributeTemplateDto): Promise<Attribute[]> {
-    const tagsQuery: any = { tags: {} };
+    let tagsQuery: any = { tags: {} };
     if (payload.includeTags) {
       tagsQuery.tags = { $in: payload.includeTags };
+    } else {
+      tagsQuery = undefined;
     }
-    const groupQuery: any = { group: {} };
+    let groupQuery: any = { group: {} };
     if (payload.includeGroups) {
       groupQuery.group = { $in: payload.includeGroups };
+    } else {
+      groupQuery = undefined;
     }
     const searchStringQuery: any = {};
     if (payload.searchString) {
@@ -420,6 +424,7 @@ export class AttributeTemplateService {
       };
     }
     const finalQuery = { ...tagsQuery, ...groupQuery, ...searchStringQuery };
+    console.log(finalQuery);
     const sort = {};
     sort[payload.sortBy] = payload.sortOrder;
     return this.attributeModel
