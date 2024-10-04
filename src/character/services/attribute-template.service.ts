@@ -404,6 +404,10 @@ export class AttributeTemplateService {
   }
 
   async search(payload: SearchAttributeTemplateDto): Promise<Attribute[]> {
+    const rulebook = await this.rulebookModel.findById(payload.rulebook).exec();
+    if (!rulebook) {
+      throw new Error('Rulebook not found');
+    }
     let tagsQuery: any = { tags: {} };
     if (payload.includeTags) {
       tagsQuery.tags = { $in: payload.includeTags };
@@ -427,7 +431,14 @@ export class AttributeTemplateService {
     const sort = {};
     sort[payload.sortBy] = payload.sortOrder;
     return this.attributeModel
-      .find(finalQuery, { __v: 0 })
+      .find(
+        {
+          ...finalQuery,
+          template: true,
+          rulebook: rulebook._id,
+        },
+        { __v: 0 },
+      )
       .populate({
         path: 'attributeValue',
         populate: [

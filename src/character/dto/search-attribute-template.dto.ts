@@ -34,4 +34,8 @@ export class SearchAttributeTemplateDto {
   @IsArray()
   @IsOptional()
   includeGroups?: string[];
+
+  @ApiProperty()
+  @IsString()
+  rulebook: string;
 }
