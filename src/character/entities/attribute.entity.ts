@@ -8,7 +8,7 @@ import { TextValue } from './text-value.entity';
 import { Tag } from './tag.entity';
 import { Group } from './group.entity';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Attribute {
   @ApiProperty()
   _id: string;
