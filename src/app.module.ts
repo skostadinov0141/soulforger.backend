@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CharacterModule } from './character/character.module';
 import { RulebookModule } from './rulebook/rulebook.module';
+import { TagModule } from './tag/tag.module';
 import * as process from 'node:process';
 
 @Module({
@@ -16,6 +17,7 @@ import * as process from 'node:process';
     ),
     CharacterModule,
     RulebookModule,
+    TagModule,
   ],
   controllers: [],
   providers: [],
