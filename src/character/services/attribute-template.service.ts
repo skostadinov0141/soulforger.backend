@@ -439,13 +439,6 @@ export class AttributeTemplateService {
         },
         { __v: 0 },
       )
-      .populate({
-        path: 'attributeValue',
-        populate: [
-          { path: 'variables', select: { __v: 0 } },
-          { path: 'diceRolls', select: { __v: 0 } },
-        ],
-      })
       .populate('tags', { __v: 0 })
       .populate('group', { __v: 0 })
       .sort(sort)
