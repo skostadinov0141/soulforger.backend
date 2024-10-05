@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { FixedNumericValue } from './fixed-numeric-value.entity';
 import { CalculatedNumericValue } from './calculated-numeric-value.entity';
 import { TextValue } from './text-value.entity';
-import { Tag } from './tag.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 import { Group } from './group.entity';
 
 @Schema({ timestamps: true })

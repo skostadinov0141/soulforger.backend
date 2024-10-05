@@ -21,7 +21,7 @@ import {
   UpdateCalculatedNumericValueTemplateDto,
 } from '../dto/update-attribute-template.dto';
 import { PathDto } from '../dto/path.dto';
-import { Tag } from '../entities/tag.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 import { Group } from '../entities/group.entity';
 import { SearchAttributeTemplateDto } from '../dto/search-attribute-template.dto';
 

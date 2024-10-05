@@ -17,7 +17,7 @@ import { Attribute } from './entities/attribute.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 import { PathDto } from './dto/path.dto';
 import { SearchAttributeTemplateDto } from './dto/search-attribute-template.dto';
-import { Tag } from './entities/tag.entity';
+import { Tag } from '../tag/entities/tag.entity';
 import { Group } from './entities/group.entity';
 
 @Controller('character')

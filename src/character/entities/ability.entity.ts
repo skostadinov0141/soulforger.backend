@@ -4,7 +4,7 @@ import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
 import { DiceRoll } from './dice-roll.entity';
 import { CharacterFieldPath } from './character-field-path.entity';
-import { Tag } from './tag.entity';
+import { Tag } from '../../tag/entities/tag.entity';
 
 @Schema()
 export class Ability {

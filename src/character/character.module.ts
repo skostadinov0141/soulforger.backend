@@ -18,7 +18,7 @@ import {
   FixedNumericValue,
   FixedNumericValueSchema,
 } from './entities/fixed-numeric-value.entity';
-import { Tag, TagSchema } from './entities/tag.entity';
+import { Tag, TagSchema } from '../tag/entities/tag.entity';
 import { TextValue, TextValueSchema } from './entities/text-value.entity';
 import { AttributeTemplateService } from './services/attribute-template.service';
 import { RulebookModule } from '../rulebook/rulebook.module';
