@@ -10,6 +10,8 @@ import { GroupModule } from './group/group.module';
 import { AttributeTemplateModule } from './attribute-template/attribute-template.module';
 import { CharacterFieldPathService } from './character-field-path/character-field-path.service';
 import { DiceRollService } from './dice-roll/dice-roll.service';
+import { DiceRollModule } from './dice-roll/dice-roll.module';
+import { CharacterFieldPathModule } from './character-field-path/character-field-path.module';
 import * as path from 'node:path';
 
 @Module({
@@ -34,6 +36,8 @@ import * as path from 'node:path';
     TagModule,
     GroupModule,
     AttributeTemplateModule,
+    DiceRollModule,
+    CharacterFieldPathModule,
   ],
   controllers: [],
   providers: [CharacterFieldPathService, DiceRollService],
