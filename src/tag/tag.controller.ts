@@ -25,6 +25,16 @@ export class TagController {
     return this.tagService.create(createTagDto);
   }
 
+  @Get('rulebook/:rulebook')
+  @ApiResponse({
+    status: 200,
+    description: 'Return all tags by rulebook',
+    type: [Tag],
+  })
+  findAllByRulebook(@Param('rulebook') rulebook: string) {
+    return this.tagService.findAllByRulebook(rulebook);
+  }
+
   @Get()
   @ApiResponse({ status: 200, description: 'Return all tags', type: [Tag] })
   findAll() {

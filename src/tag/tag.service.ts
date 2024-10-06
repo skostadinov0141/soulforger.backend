@@ -31,11 +31,11 @@ export class TagService {
   }
 
   findAll(): Promise<Tag[]> {
-    return this.tagModel.find().exec();
+    return this.tagModel.find({}, { __v: 0 }).exec();
   }
 
   findOne(id: string): Promise<Tag> {
-    const result = this.tagModel.findById(id).exec();
+    const result = this.tagModel.findById(id, { __v: 0 }).exec();
     if (!result) {
       throw new HttpException(
         this.i18n.t('tag.errors.tagNotFound', {
@@ -45,6 +45,10 @@ export class TagService {
       );
     }
     return result;
+  }
+
+  findAllByRulebook(rulebook: string): Promise<Tag[]> {
+    return this.tagModel.find({ rulebook }, { __v: 0 }).exec();
   }
 
   update(id: string, updateTagDto: UpdateTagDto) {
