@@ -2,8 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import { CharacterFieldPath } from './character-field-path.entity';
-import { DiceRoll } from './dice-roll.entity';
+import { CharacterFieldPath } from '../../character-field-path/entities/character-field-path.entity';
+import { DiceRoll } from '../../dice-roll/entities/dice-roll.entity';
 
 @Schema()
 export class CalculatedNumericValue {

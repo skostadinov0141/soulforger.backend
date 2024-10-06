@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { FixedNumericValue } from '../../attribute-template/entities/fixed-numeric-value.entity';
 import { HydratedDocument, Model } from 'mongoose';
 import { TextValue } from '../../attribute-template/entities/text-value.entity';
-import { CharacterFieldPath } from '../../attribute-template/entities/character-field-path.entity';
-import { DiceRoll } from '../../attribute-template/entities/dice-roll.entity';
+import { CharacterFieldPath } from '../../character-field-path/entities/character-field-path.entity';
+import { DiceRoll } from '../../dice-roll/entities/dice-roll.entity';
 import { CalculatedNumericValue } from '../../attribute-template/entities/calculated-numeric-value.entity';
 import {
   CreateAttributeCalculatedNumericValueTemplateDto,

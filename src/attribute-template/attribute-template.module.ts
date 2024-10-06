@@ -15,11 +15,14 @@ import {
   FixedNumericValue,
   FixedNumericValueSchema,
 } from './entities/fixed-numeric-value.entity';
-import { DiceRoll, DiceRollSchema } from './entities/dice-roll.entity';
+import {
+  DiceRoll,
+  DiceRollSchema,
+} from '../dice-roll/entities/dice-roll.entity';
 import {
   CharacterFieldPath,
   CharacterFieldPathSchema,
-} from './entities/character-field-path.entity';
+} from '../character-field-path/entities/character-field-path.entity';
 
 @Module({
   imports: [
