@@ -13,13 +13,13 @@ import {
   CreateAttributeTextValueTemplateDto,
   CreateAttributeTag,
   CreateAttributeGroup,
-} from '../dto/create-attribute-template.dto';
+} from '../../attribute-template/dto/create-attribute-template.dto';
 import { AttributeTemplate } from '../../attribute-template/entities/attribute-template.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import {
   UpdateAttributeTemplateDto,
   UpdateCalculatedNumericValueTemplateDto,
-} from '../dto/update-attribute-template.dto';
+} from '../../attribute-template/dto/update-attribute-template.dto';
 import { PathDto } from '../dto/path.dto';
 import { Tag } from '../../tag/entities/tag.entity';
 import { Group } from '../../group/entities/group.entity';
