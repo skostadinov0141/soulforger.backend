@@ -12,6 +12,9 @@ import { CharacterFieldPathService } from './character-field-path/character-fiel
 import { DiceRollService } from './dice-roll/dice-roll.service';
 import { DiceRollModule } from './dice-roll/dice-roll.module';
 import { CharacterFieldPathModule } from './character-field-path/character-field-path.module';
+import { CalculatedNumericValueModule } from './calculated-numeric-value/calculated-numeric-value.module';
+import { FixedNumericValueModule } from './fixed-numeric-value/fixed-numeric-value.module';
+import { TextValueModule } from './text-value/text-value.module';
 import * as path from 'node:path';
 
 @Module({
@@ -38,6 +41,9 @@ import * as path from 'node:path';
     AttributeTemplateModule,
     DiceRollModule,
     CharacterFieldPathModule,
+    CalculatedNumericValueModule,
+    FixedNumericValueModule,
+    TextValueModule,
   ],
   controllers: [],
   providers: [CharacterFieldPathService, DiceRollService],
