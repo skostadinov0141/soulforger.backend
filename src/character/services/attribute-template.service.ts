@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FixedNumericValue } from '../entities/fixed-numeric-value.entity';
+import { FixedNumericValue } from '../../attribute-template/entities/fixed-numeric-value.entity';
 import { HydratedDocument, Model } from 'mongoose';
-import { TextValue } from '../entities/text-value.entity';
-import { CharacterFieldPath } from '../entities/character-field-path.entity';
-import { DiceRoll } from '../entities/dice-roll.entity';
-import { CalculatedNumericValue } from '../entities/calculated-numeric-value.entity';
+import { TextValue } from '../../attribute-template/entities/text-value.entity';
+import { CharacterFieldPath } from '../../attribute-template/entities/character-field-path.entity';
+import { DiceRoll } from '../../attribute-template/entities/dice-roll.entity';
+import { CalculatedNumericValue } from '../../attribute-template/entities/calculated-numeric-value.entity';
 import {
   CreateAttributeCalculatedNumericValueTemplateDto,
   CreateAttributeTemplateDto,
@@ -14,7 +14,7 @@ import {
   CreateAttributeTag,
   CreateAttributeGroup,
 } from '../dto/create-attribute-template.dto';
-import { Attribute } from '../entities/attribute.entity';
+import { AttributeTemplate } from '../../attribute-template/entities/attribute-template.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import {
   UpdateAttributeTemplateDto,
@@ -28,7 +28,8 @@ import { SearchAttributeTemplateDto } from '../dto/search-attribute-template.dto
 @Injectable()
 export class AttributeTemplateService {
   constructor(
-    @InjectModel(Attribute.name) private attributeModel: Model<Attribute>,
+    @InjectModel(AttributeTemplate.name)
+    private attributeModel: Model<AttributeTemplate>,
     @InjectModel(FixedNumericValue.name)
     private fixedNumericValueModel: Model<FixedNumericValue>,
     @InjectModel(TextValue.name) private textValueModel: Model<TextValue>,
@@ -227,7 +228,7 @@ export class AttributeTemplateService {
   async update(
     id: string,
     payload: UpdateAttributeTemplateDto,
-  ): Promise<Attribute> {
+  ): Promise<AttributeTemplate> {
     const attribute = await this.attributeModel
       .findOne({ _id: id, template: true })
       .exec();
@@ -260,14 +261,14 @@ export class AttributeTemplateService {
   }
 
   private async updateSimpleValue(
-    attribute: HydratedDocument<Attribute>,
+    attribute: HydratedDocument<AttributeTemplate>,
     valueData: any,
   ) {
     await attribute.set(valueData).save();
   }
 
   private async updateCalculatedValue(
-    attribute: HydratedDocument<Attribute>,
+    attribute: HydratedDocument<AttributeTemplate>,
     valueData: UpdateCalculatedNumericValueTemplateDto,
     rulebook: HydratedDocument<Rulebook>,
   ) {
@@ -403,7 +404,9 @@ export class AttributeTemplateService {
     }));
   }
 
-  async search(payload: SearchAttributeTemplateDto): Promise<Attribute[]> {
+  async search(
+    payload: SearchAttributeTemplateDto,
+  ): Promise<AttributeTemplate[]> {
     const rulebook = await this.rulebookModel.findById(payload.rulebook).exec();
     if (!rulebook) {
       throw new Error('Rulebook not found');

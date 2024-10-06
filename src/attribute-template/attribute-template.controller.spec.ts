@@ -11,7 +11,9 @@ describe('AttributeTemplateController', () => {
       providers: [AttributeTemplateService],
     }).compile();
 
-    controller = module.get<AttributeTemplateController>(AttributeTemplateController);
+    controller = module.get<AttributeTemplateController>(
+      AttributeTemplateController,
+    );
   });
 
   it('should be defined', () => {

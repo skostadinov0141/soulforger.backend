@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import { Attribute } from './attribute.entity';
+import { AttributeTemplate } from '../../attribute-template/entities/attribute-template.entity';
 import { Ability } from './ability.entity';
 
 @Schema()
@@ -20,9 +20,11 @@ export class Character {
 
   @ApiProperty()
   @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Attribute.name }],
+    type: [
+      { type: mongoose.Schema.Types.ObjectId, ref: AttributeTemplate.name },
+    ],
   })
-  attributes: Attribute[];
+  attributes: AttributeTemplate[];
 
   @ApiProperty()
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Ability.name }] })

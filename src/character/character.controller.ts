@@ -13,7 +13,7 @@ import { UpdateCharacterDto } from './dto/update-character.dto';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AttributeTemplateService } from './services/attribute-template.service';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
-import { Attribute } from './entities/attribute.entity';
+import { AttributeTemplate } from '../attribute-template/entities/attribute-template.entity';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 import { PathDto } from './dto/path.dto';
 import { SearchAttributeTemplateDto } from './dto/search-attribute-template.dto';
@@ -29,24 +29,24 @@ export class CharacterController {
   ) {}
 
   @Post('attribute/template')
-  @ApiOkResponse({ type: Attribute })
+  @ApiOkResponse({ type: AttributeTemplate })
   createAttribute(
     @Body() payload: CreateAttributeTemplateDto,
-  ): Promise<Attribute> {
+  ): Promise<AttributeTemplate> {
     return this.attributeService.create(payload);
   }
 
   @Post('attribute/template/search')
-  @ApiOkResponse({ type: [Attribute] })
+  @ApiOkResponse({ type: [AttributeTemplate] })
   searchAttribute(
     @Body() payload: SearchAttributeTemplateDto,
-  ): Promise<Attribute[]> {
+  ): Promise<AttributeTemplate[]> {
     return this.attributeService.search(payload);
   }
 
   @Get('attribute/template')
-  @ApiResponse({ type: [Attribute] })
-  findAllAttributes(): Promise<Attribute[]> {
+  @ApiResponse({ type: [AttributeTemplate] })
+  findAllAttributes(): Promise<AttributeTemplate[]> {
     return this.attributeService.findAll();
   }
 
@@ -57,10 +57,10 @@ export class CharacterController {
   }
 
   @Get('attribute/template/getByRulebook/:rulebookId')
-  @ApiResponse({ type: [Attribute] })
+  @ApiResponse({ type: [AttributeTemplate] })
   getAttributesByRulebook(
     @Param('rulebookId') rulebookId: string,
-  ): Promise<Attribute[]> {
+  ): Promise<AttributeTemplate[]> {
     return this.attributeService.findByRulebook(rulebookId);
   }
 
@@ -77,28 +77,28 @@ export class CharacterController {
   }
 
   @Get('attribute/template/:id')
-  @ApiResponse({ type: Attribute })
-  findOneAttribute(@Param('id') id: string): Promise<Attribute> {
+  @ApiResponse({ type: AttributeTemplate })
+  findOneAttribute(@Param('id') id: string): Promise<AttributeTemplate> {
     return this.attributeService.findOne(id);
   }
 
   @Patch('attribute/template/:id')
-  @ApiResponse({ type: Attribute })
+  @ApiResponse({ type: AttributeTemplate })
   updateAttribute(
     @Param('id') id: string,
     @Body() payload: UpdateAttributeTemplateDto,
-  ): Promise<Attribute> {
+  ): Promise<AttributeTemplate> {
     return this.attributeService.update(id, payload);
   }
 
   @Delete('attribute/template/:id')
-  @ApiResponse({ type: Attribute })
+  @ApiResponse({ type: AttributeTemplate })
   removeAttribute(@Param('id') id: string) {
     return this.attributeService.remove(id);
   }
 
   @Delete('attribute/template/deleteByRulebook/:rulebookId')
-  @ApiResponse({ type: Attribute })
+  @ApiResponse({ type: AttributeTemplate })
   removeAttributesByRulebook(@Param('rulebookId') rulebookId: string) {
     return this.attributeService.removeByRulebook(rulebookId);
   }

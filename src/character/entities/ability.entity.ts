@@ -2,8 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import { DiceRoll } from './dice-roll.entity';
-import { CharacterFieldPath } from './character-field-path.entity';
+import { DiceRoll } from '../../attribute-template/entities/dice-roll.entity';
+import { CharacterFieldPath } from '../../attribute-template/entities/character-field-path.entity';
 import { Tag } from '../../tag/entities/tag.entity';
 
 @Schema()
