@@ -15,6 +15,6 @@ import { DiceRollService } from './dice-roll.service';
     RulebookModule,
   ],
   providers: [DiceRollService],
-  exports: [DiceRollService],
+  exports: [DiceRollService, MongooseModule],
 })
 export class DiceRollModule {}

@@ -18,6 +18,6 @@ import { RulebookModule } from '../rulebook/rulebook.module';
     ]),
     RulebookModule,
   ],
-  exports: [CharacterFieldPathService],
+  exports: [CharacterFieldPathService, MongooseModule],
 })
 export class CharacterFieldPathModule {}

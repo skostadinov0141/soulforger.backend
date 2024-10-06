@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CharacterModule } from './character/character.module';
+// import { CharacterModule } from './character/character.module';
 import { RulebookModule } from './rulebook/rulebook.module';
 import { TagModule } from './tag/tag.module';
 import * as process from 'node:process';
@@ -31,7 +31,7 @@ import * as path from 'node:path';
     MongooseModule.forRoot(
       `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
     ),
-    CharacterModule,
+    // CharacterModule,
     RulebookModule,
     TagModule,
     GroupModule,
