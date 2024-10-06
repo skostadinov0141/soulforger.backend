@@ -4,10 +4,14 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from './entities/tag.entity';
 import { Model } from 'mongoose';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class TagService {
-  constructor(@InjectModel(Tag.name) readonly tagModel: Model<Tag>) {}
+  constructor(
+    @InjectModel(Tag.name) readonly tagModel: Model<Tag>,
+    private readonly i18n: I18nService,
+  ) {}
 
   create(createTagDto: CreateTagDto) {
     const existingTag = this.tagModel.findOne({
@@ -15,7 +19,12 @@ export class TagService {
       rulebook: createTagDto.rulebook,
     });
     if (existingTag) {
-      throw new HttpException('Tag already exists', 400);
+      throw new HttpException(
+        this.i18n.t('tag.errors.tagAlreadyExists', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
     }
     const tag = new this.tagModel(createTagDto);
     return tag.save();
