@@ -1,50 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Equals,
-  IsArray,
-  IsEnum,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsObject, IsString } from 'class-validator';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
-
-export class CreateAttributeTag {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  _id?: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  @Equals('attribute')
-  for: string;
-}
-
-export class CreateAttributeGroup {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  _id?: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  @Equals('attribute')
-  for: string;
-}
+import { UpdateTagDto } from '../../tag/dto/update-tag.dto';
+import { UpdateGroupDto } from '../../group/dto/update-group.dto';
 
 export class CreateAttributeTextValueTemplateDto {
   rulebook: Rulebook;
@@ -136,9 +94,9 @@ export class CreateAttributeTemplateDto {
   @ApiProperty()
   @IsArray()
   @IsObject({ each: true })
-  tags: CreateAttributeTag[];
+  tags: UpdateTagDto[];
 
   @ApiProperty()
   @IsObject()
-  group: CreateAttributeGroup;
+  group: UpdateGroupDto;
 }

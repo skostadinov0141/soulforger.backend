@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  Equals,
   IsArray,
   IsEnum,
   IsNumber,
@@ -8,43 +7,8 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Rulebook } from '../../rulebook/entities/rulebook.entity';
-
-export class UpdateGroup {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  _id?: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  @Equals('attribute')
-  for: string;
-}
-
-export class UpdateAttributeTag {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  _id?: string;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  @Equals('attribute')
-  for: string;
-}
+import { UpdateTagDto } from '../../tag/dto/update-tag.dto';
+import { UpdateGroupDto } from '../../group/dto/update-group.dto';
 
 export class UpdateTextValueTemplateDto {
   @ApiProperty()
@@ -162,9 +126,9 @@ export class UpdateAttributeTemplateDto {
   @ApiProperty()
   @IsArray()
   @IsObject({ each: true })
-  tags: UpdateAttributeTag[];
+  tags: UpdateTagDto[];
 
   @ApiProperty()
   @IsObject()
-  group: UpdateGroup;
+  group: UpdateGroupDto;
 }
