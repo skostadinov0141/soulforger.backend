@@ -31,11 +31,15 @@ export class GroupService {
   }
 
   findAll(): Promise<Group[]> {
-    return this.groupModel.find().exec();
+    return this.groupModel.find({}, { __v: 0 }).exec();
+  }
+
+  findAllByRulebook(rulebook: string): Promise<Group[]> {
+    return this.groupModel.find({ rulebook }, { __v: 0 }).exec();
   }
 
   findOne(id: string): Promise<Group> {
-    const group = this.groupModel.findById(id).exec();
+    const group = this.groupModel.findById(id, { __v: 0 }).exec();
     if (!group) {
       throw new HttpException(
         this.i18n.t('group.errors.groupNotFound', {

@@ -31,6 +31,12 @@ export class GroupController {
     return this.groupService.findAll();
   }
 
+  @Get('rulebook/:rulebook')
+  @ApiResponse({ description: 'Groups found', type: [Group], status: 200 })
+  findAllByRulebook(@Param('rulebook') rulebook: string): Promise<Group[]> {
+    return this.groupService.findAllByRulebook(rulebook);
+  }
+
   @Get(':id')
   @ApiResponse({ description: 'Group found', type: Group, status: 200 })
   findOne(@Param('id') id: string): Promise<Group> {
