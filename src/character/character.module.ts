@@ -22,7 +22,7 @@ import { Tag, TagSchema } from '../tag/entities/tag.entity';
 import { TextValue, TextValueSchema } from './entities/text-value.entity';
 import { AttributeTemplateService } from './services/attribute-template.service';
 import { RulebookModule } from '../rulebook/rulebook.module';
-import { Group, GroupSchema } from './entities/group.entity';
+import { Group, GroupSchema } from '../group/entities/group.entity';
 
 @Module({
   controllers: [CharacterController],

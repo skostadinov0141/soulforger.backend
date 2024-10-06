@@ -22,7 +22,7 @@ import {
 } from '../dto/update-attribute-template.dto';
 import { PathDto } from '../dto/path.dto';
 import { Tag } from '../../tag/entities/tag.entity';
-import { Group } from '../entities/group.entity';
+import { Group } from '../../group/entities/group.entity';
 import { SearchAttributeTemplateDto } from '../dto/search-attribute-template.dto';
 
 @Injectable()
