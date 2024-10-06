@@ -23,6 +23,10 @@ import {
   CharacterFieldPath,
   CharacterFieldPathSchema,
 } from '../character-field-path/entities/character-field-path.entity';
+import { TagModule } from '../tag/tag.module';
+import { GroupModule } from '../group/group.module';
+import { CharacterFieldPathModule } from '../character-field-path/character-field-path.module';
+import { DiceRollModule } from '../dice-roll/dice-roll.module';
 
 @Module({
   imports: [
@@ -52,6 +56,10 @@ import {
         schema: CharacterFieldPathSchema,
       },
     ]),
+    TagModule,
+    GroupModule,
+    CharacterFieldPathModule,
+    DiceRollModule,
   ],
   controllers: [AttributeTemplateController],
   providers: [AttributeTemplateService],
