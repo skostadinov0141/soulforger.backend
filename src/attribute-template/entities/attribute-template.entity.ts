@@ -2,9 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import mongoose from 'mongoose';
-import { FixedNumericValue } from './fixed-numeric-value.entity';
-import { CalculatedNumericValue } from './calculated-numeric-value.entity';
-import { TextValue } from './text-value.entity';
+import { FixedNumericValue } from '../../fixed-numeric-value/entities/fixed-numeric-value.entity';
+import { CalculatedNumericValue } from '../../calculated-numeric-value/entities/calculated-numeric-value.entity';
+import { TextValue } from '../../text-value/entities/text-value.entity';
 import { Tag } from '../../tag/entities/tag.entity';
 import { Group } from '../../group/entities/group.entity';
 

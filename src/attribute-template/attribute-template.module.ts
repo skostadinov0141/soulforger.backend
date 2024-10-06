@@ -9,12 +9,15 @@ import {
 import {
   CalculatedNumericValue,
   CalculatedNumericValueSchema,
-} from './entities/calculated-numeric-value.entity';
-import { TextValue, TextValueSchema } from './entities/text-value.entity';
+} from '../calculated-numeric-value/entities/calculated-numeric-value.entity';
+import {
+  TextValue,
+  TextValueSchema,
+} from '../text-value/entities/text-value.entity';
 import {
   FixedNumericValue,
   FixedNumericValueSchema,
-} from './entities/fixed-numeric-value.entity';
+} from '../fixed-numeric-value/entities/fixed-numeric-value.entity';
 import {
   DiceRoll,
   DiceRollSchema,

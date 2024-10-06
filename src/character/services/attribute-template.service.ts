@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FixedNumericValue } from '../../attribute-template/entities/fixed-numeric-value.entity';
+import { FixedNumericValue } from '../../fixed-numeric-value/entities/fixed-numeric-value.entity';
 import { HydratedDocument, Model } from 'mongoose';
-import { TextValue } from '../../attribute-template/entities/text-value.entity';
+import { TextValue } from '../../text-value/entities/text-value.entity';
 import { CharacterFieldPath } from '../../character-field-path/entities/character-field-path.entity';
 import { DiceRoll } from '../../dice-roll/entities/dice-roll.entity';
-import { CalculatedNumericValue } from '../../attribute-template/entities/calculated-numeric-value.entity';
+import { CalculatedNumericValue } from '../../calculated-numeric-value/entities/calculated-numeric-value.entity';
 import {
   CreateAttributeCalculatedNumericValueTemplateDto,
   CreateAttributeTemplateDto,
