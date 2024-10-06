@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Group } from './entities/group.entity';
 import { Model } from 'mongoose';
-import { I18nService } from 'nestjs-i18n';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class GroupService {
@@ -13,23 +13,65 @@ export class GroupService {
     private readonly i18n: I18nService,
   ) {}
 
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  create(createGroupDto: CreateGroupDto): Promise<Group> {
+    const group = this.groupModel.findOne({
+      name: createGroupDto.name,
+      rulebook: createGroupDto.rulebook,
+    });
+    if (group) {
+      throw new HttpException(
+        this.i18n.t('group.errors.groupAlreadyExists', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    const newGroup = new this.groupModel(createGroupDto);
+    return newGroup.save();
   }
 
-  findAll() {
-    return `This action returns all group`;
+  findAll(): Promise<Group[]> {
+    return this.groupModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
+  findOne(id: string): Promise<Group> {
+    const group = this.groupModel.findById(id).exec();
+    if (!group) {
+      throw new HttpException(
+        this.i18n.t('group.errors.groupNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return group;
   }
 
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
+  update(id: string, updateGroupDto: UpdateGroupDto): Promise<Group> {
+    const group = this.groupModel.findById(id).exec();
+    if (!group) {
+      throw new HttpException(
+        this.i18n.t('group.errors.groupNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return this.groupModel
+      .findByIdAndUpdate(id, updateGroupDto, { new: true })
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} group`;
+  async remove(id: number) {
+    const result = await this.groupModel.deleteOne({ _id: id }).exec();
+    if (result.deletedCount === 0) {
+      throw new HttpException(
+        this.i18n.t('group.errors.groupNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return result;
   }
 }
