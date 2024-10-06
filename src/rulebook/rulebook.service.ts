@@ -20,15 +20,15 @@ export class RulebookService {
     return this.rulebookModel.find().exec();
   }
 
-  findOne(id: number): Promise<Rulebook> {
+  findOne(id: string): Promise<Rulebook> {
     return this.rulebookModel.findById(id).exec();
   }
 
-  update(id: number, updateRulebookDto: UpdateRulebookDto): Promise<Rulebook> {
+  update(id: string, updateRulebookDto: UpdateRulebookDto): Promise<Rulebook> {
     return this.rulebookModel.findByIdAndUpdate(id, updateRulebookDto).exec();
   }
 
-  remove(id: number): Promise<Rulebook> {
+  remove(id: string): Promise<Rulebook> {
     return this.rulebookModel.findByIdAndDelete(id).exec();
   }
 }

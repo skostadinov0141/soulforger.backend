@@ -4,6 +4,8 @@ import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema()
 export class CharacterFieldPath {
+  _id: string;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: Rulebook.name,

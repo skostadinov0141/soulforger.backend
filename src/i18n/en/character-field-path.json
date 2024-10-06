@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "characterFieldPathNotFound": "Character field path not found",
+    "rulebookNotFound": "Rulebook not found"
+  }
+}
