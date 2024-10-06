@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "groupAlreadyExists": "Group already exists",
+    "groupNotFound": "Group not found"
+  }
+}

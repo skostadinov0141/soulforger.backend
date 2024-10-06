@@ -6,6 +6,7 @@ import { RulebookModule } from './rulebook/rulebook.module';
 import { TagModule } from './tag/tag.module';
 import * as process from 'node:process';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
+import { GroupModule } from './group/group.module';
 import * as path from 'node:path';
 
 @Module({
@@ -28,6 +29,7 @@ import * as path from 'node:path';
     CharacterModule,
     RulebookModule,
     TagModule,
+    GroupModule,
   ],
   controllers: [],
   providers: [],
