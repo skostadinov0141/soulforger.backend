@@ -29,6 +29,7 @@ export class CharacterFieldPathService {
       );
     }
     const createdCharacterFieldPath = new this.characterFieldPathModel(payload);
+    createdCharacterFieldPath.rulebook = rulebook;
     return createdCharacterFieldPath.save();
   }
 
