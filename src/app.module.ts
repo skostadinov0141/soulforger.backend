@@ -8,6 +8,8 @@ import * as process from 'node:process';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
 import { GroupModule } from './group/group.module';
 import { AttributeTemplateModule } from './attribute-template/attribute-template.module';
+import { CharacterFieldPathService } from './character-field-path/character-field-path.service';
+import { DiceRollService } from './dice-roll/dice-roll.service';
 import * as path from 'node:path';
 
 @Module({
@@ -34,6 +36,6 @@ import * as path from 'node:path';
     AttributeTemplateModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [CharacterFieldPathService, DiceRollService],
 })
 export class AppModule {}
