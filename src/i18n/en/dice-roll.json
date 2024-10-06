@@ -1,0 +1,6 @@
+{
+  "errors": {
+    "diceRollNotFound": "Dice roll not found",
+    "rulebookNotFound": "Rulebook not found"
+  }
+}
