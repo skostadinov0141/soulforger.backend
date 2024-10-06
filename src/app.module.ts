@@ -7,7 +7,7 @@ import { TagModule } from './tag/tag.module';
 import * as process from 'node:process';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
 import { GroupModule } from './group/group.module';
-import { AttributeTemplateModule } from './attribute-template/attribute-template.module';
+// import { AttributeTemplateModule } from './attribute-template/attribute-template.module';
 import { CharacterFieldPathService } from './character-field-path/character-field-path.service';
 import { DiceRollService } from './dice-roll/dice-roll.service';
 import { DiceRollModule } from './dice-roll/dice-roll.module';
@@ -38,7 +38,7 @@ import * as path from 'node:path';
     RulebookModule,
     TagModule,
     GroupModule,
-    AttributeTemplateModule,
+    // AttributeTemplateModule,
     DiceRollModule,
     CharacterFieldPathModule,
     CalculatedNumericValueModule,
