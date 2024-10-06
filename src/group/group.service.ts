@@ -62,7 +62,7 @@ export class GroupService {
       .exec();
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const result = await this.groupModel.deleteOne({ _id: id }).exec();
     if (result.deletedCount === 0) {
       throw new HttpException(
