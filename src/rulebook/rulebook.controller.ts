@@ -45,7 +45,7 @@ export class RulebookController {
     type: Rulebook,
   })
   findOne(@Param('id') id: string) {
-    return this.rulebookService.findOne(+id);
+    return this.rulebookService.findOne(id);
   }
 
   @Patch(':id')
@@ -58,7 +58,7 @@ export class RulebookController {
     @Param('id') id: string,
     @Body() updateRulebookDto: UpdateRulebookDto,
   ) {
-    return this.rulebookService.update(+id, updateRulebookDto);
+    return this.rulebookService.update(id, updateRulebookDto);
   }
 
   @Delete(':id')
@@ -68,6 +68,6 @@ export class RulebookController {
     type: Rulebook,
   })
   remove(@Param('id') id: string) {
-    return this.rulebookService.remove(+id);
+    return this.rulebookService.remove(id);
   }
 }

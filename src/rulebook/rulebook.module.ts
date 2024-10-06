@@ -12,6 +12,6 @@ import { Rulebook, RulebookSchema } from './entities/rulebook.entity';
       { name: Rulebook.name, schema: RulebookSchema },
     ]),
   ],
-  exports: [MongooseModule],
+  exports: [MongooseModule, RulebookService],
 })
 export class RulebookModule {}

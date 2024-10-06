@@ -10,5 +10,6 @@ import { Group, GroupSchema } from './entities/group.entity';
   ],
   controllers: [GroupController],
   providers: [GroupService],
+  exports: [GroupService],
 })
 export class GroupModule {}
