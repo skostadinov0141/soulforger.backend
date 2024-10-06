@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Group } from './entities/group.entity';
+import { Model } from 'mongoose';
+import { I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class GroupService {
+  constructor(
+    @InjectModel(Group.name) private readonly groupModel: Model<Group>,
+    private readonly i18n: I18nService,
+  ) {}
+
   create(createGroupDto: CreateGroupDto) {
     return 'This action adds a new group';
   }
