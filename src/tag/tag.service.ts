@@ -13,7 +13,7 @@ export class TagService {
     private readonly i18n: I18nService,
   ) {}
 
-  create(createTagDto: CreateTagDto) {
+  create(createTagDto: CreateTagDto): Promise<Tag> {
     const existingTag = this.tagModel.findOne({
       name: createTagDto.name,
       rulebook: createTagDto.rulebook,
@@ -30,19 +30,32 @@ export class TagService {
     return tag.save();
   }
 
-  findAll() {
-    return `This action returns all tag`;
+  findAll(): Promise<Tag[]> {
+    return this.tagModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  findOne(id: string) {
+    return this.tagModel.findById(id).exec();
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  update(id: string, updateTagDto: UpdateTagDto) {
+    const tag = this.tagModel.findById(id).exec();
+    if (!tag) {
+      throw new HttpException(
+        this.i18n.t('tag.errors.tagNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return this.tagModel
+      .findOneAndUpdate({ _id: id }, updateTagDto, {
+        new: true,
+      })
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  remove(id: string) {
+    return this.tagModel.deleteOne({ _id: id }).exec();
   }
 }

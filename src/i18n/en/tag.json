@@ -1,5 +1,6 @@
 {
   "errors":{
     "tagAlreadyExists": "Tag already exists",
+    "tagNotFound": "Tag not found"
   }
 }
