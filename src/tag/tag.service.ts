@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,7 +10,15 @@ export class TagService {
   constructor(@InjectModel(Tag.name) readonly tagModel: Model<Tag>) {}
 
   create(createTagDto: CreateTagDto) {
-    return 'This action adds a new tag';
+    const existingTag = this.tagModel.findOne({
+      name: createTagDto.name,
+      rulebook: createTagDto.rulebook,
+    });
+    if (existingTag) {
+      throw new HttpException('Tag already exists', 400);
+    }
+    const tag = new this.tagModel(createTagDto);
+    return tag.save();
   }
 
   findAll() {
