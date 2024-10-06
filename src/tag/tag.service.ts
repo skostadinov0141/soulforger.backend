@@ -34,8 +34,17 @@ export class TagService {
     return this.tagModel.find().exec();
   }
 
-  findOne(id: string) {
-    return this.tagModel.findById(id).exec();
+  findOne(id: string): Promise<Tag> {
+    const result = this.tagModel.findById(id).exec();
+    if (!result) {
+      throw new HttpException(
+        this.i18n.t('tag.errors.tagNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return result;
   }
 
   update(id: string, updateTagDto: UpdateTagDto) {
@@ -55,7 +64,16 @@ export class TagService {
       .exec();
   }
 
-  remove(id: string) {
-    return this.tagModel.deleteOne({ _id: id }).exec();
+  async remove(id: string) {
+    const result = await this.tagModel.deleteOne({ _id: id }).exec();
+    if (result.deletedCount === 0) {
+      throw new HttpException(
+        this.i18n.t('tag.errors.tagNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        400,
+      );
+    }
+    return result;
   }
 }
