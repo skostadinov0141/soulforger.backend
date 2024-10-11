@@ -11,6 +11,7 @@ import { UpdateCalculatedNumericValueDto } from './dtos/update-calculated-numeri
 import { CreateCharacterFieldPathDto } from '../character-field-path/dtos/create-character-field-path.dto';
 import { CreateDiceRollDto } from '../dice-roll/dtos/create-dice-roll.dto';
 import { UpdateDiceRollDto } from '../dice-roll/dtos/update-dice-roll.dto';
+import { UpdateCharacterFieldPathDto } from '../character-field-path/dtos/update-character-field-path.dto';
 
 @Injectable()
 export class CalculatedNumericValueService {
@@ -42,9 +43,49 @@ export class CalculatedNumericValueService {
       payload,
     );
     calculatedNumericValue.rulebook = rulebook;
-    // Loop through all varaibles and either create or find them
-    calculatedNumericValue.variables = await Promise.all(
-      payload.variables.map(async (variable) => {
+    calculatedNumericValue.variables =
+      await this.createOrUpdateCharacterFieldPath(payload.variables);
+    calculatedNumericValue.diceRolls = await this.createOrUpdateDiceRoll(
+      payload.diceRolls,
+    );
+    return calculatedNumericValue.save();
+  }
+
+  async update(
+    payload: UpdateCalculatedNumericValueDto,
+  ): Promise<CalculatedNumericValue> {
+    const calculatedNumericValue =
+      await this.calculatedNumericValueModel.findById(payload._id);
+    if (!calculatedNumericValue) {
+      throw new HttpException(
+        this.translate(
+          'calculatedNumericValue.errors.calculatedNumericValueNotFound',
+        ),
+        404,
+      );
+    }
+    const rulebook = await this.rulebookService.findOne(payload.rulebook);
+    if (!rulebook) {
+      throw new HttpException(
+        this.translate('rulebook.errors.rulebookNotFound'),
+        404,
+      );
+    }
+    calculatedNumericValue.rulebook = rulebook;
+    calculatedNumericValue.variables =
+      await this.createOrUpdateCharacterFieldPath(payload.variables);
+    calculatedNumericValue.diceRolls = await this.createOrUpdateDiceRoll(
+      payload.diceRolls,
+    );
+    calculatedNumericValue.formula = payload.formula;
+    return calculatedNumericValue.save();
+  }
+
+  private async createOrUpdateCharacterFieldPath(
+    variables: (CreateCharacterFieldPathDto | UpdateCharacterFieldPathDto)[],
+  ) {
+    return await Promise.all(
+      variables.map(async (variable) => {
         if ((variable as UpdateCalculatedNumericValueDto)._id) {
           return await this.characterFieldPathService.findOne(
             (variable as UpdateCalculatedNumericValueDto)._id,
@@ -56,9 +97,13 @@ export class CalculatedNumericValueService {
         }
       }),
     );
-    // Loop through all dice rolls and either create or find them
-    calculatedNumericValue.diceRolls = await Promise.all(
-      payload.diceRolls.map(async (diceRoll) => {
+  }
+
+  private async createOrUpdateDiceRoll(
+    diceRolls: (CreateDiceRollDto | UpdateDiceRollDto)[],
+  ) {
+    return await Promise.all(
+      diceRolls.map(async (diceRoll) => {
         if ((diceRoll as UpdateDiceRollDto)._id) {
           return await this.diceRollService.findOne(
             (diceRoll as UpdateDiceRollDto)._id,
@@ -70,10 +115,5 @@ export class CalculatedNumericValueService {
         }
       }),
     );
-    return calculatedNumericValue.save();
   }
-
-  async update(
-    payload: UpdateCalculatedNumericValueDto,
-  ): Promise<CalculatedNumericValue> {}
 }
