@@ -149,7 +149,7 @@ export class AttributeTemplateService {
     return result;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} attributeTemplate`;
   }
 
