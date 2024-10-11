@@ -18,6 +18,8 @@ import { RulebookService } from '../rulebook/rulebook.service';
 import { CreateFixedNumericValueDto } from '../fixed-numeric-value/dtos/create-fixed-numeric-value.dto';
 import { CreateCalculatedNumericValueDto } from '../calculated-numeric-value/dtos/create-calculated-numeric-value.dto';
 import { CreateTextValueDto } from '../text-value/dtos/create-text-value.dto';
+import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
+import { AttributeTemplateSearchService } from '../attribute-template-search/attribute-template-search.service';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -32,6 +34,8 @@ export class AttributeTemplateService {
     @Inject() private readonly tagService: TagService,
     @Inject() private readonly groupService: GroupService,
     @Inject() private readonly rulebookService: RulebookService,
+    @Inject()
+    private readonly attributeTemplateSearchService: AttributeTemplateSearchService,
     @Inject() private readonly i18n: I18nService,
   ) {}
 
@@ -147,5 +151,11 @@ export class AttributeTemplateService {
 
   remove(id: number) {
     return `This action removes a #${id} attributeTemplate`;
+  }
+
+  search(payload: SearchAttributeTemplateDto): Promise<AttributeTemplate[]> {
+    return this.attributeTemplateSearchService.searchAttributeTemplates(
+      payload,
+    );
   }
 }

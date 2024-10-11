@@ -30,6 +30,7 @@ import { TagModule } from '../tag/tag.module';
 import { GroupModule } from '../group/group.module';
 import { CharacterFieldPathModule } from '../character-field-path/character-field-path.module';
 import { DiceRollModule } from '../dice-roll/dice-roll.module';
+import { AttributeTemplateSearchModule } from '../attribute-template-search/attribute-template-search.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { DiceRollModule } from '../dice-roll/dice-roll.module';
     GroupModule,
     CharacterFieldPathModule,
     DiceRollModule,
+    AttributeTemplateSearchModule,
   ],
   controllers: [AttributeTemplateController],
   providers: [AttributeTemplateService],
