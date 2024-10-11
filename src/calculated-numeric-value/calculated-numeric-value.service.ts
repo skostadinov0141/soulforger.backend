@@ -10,6 +10,7 @@ import { CreateCalculatedNumericValueDto } from './dtos/create-calculated-numeri
 import { UpdateCalculatedNumericValueDto } from './dtos/update-calculated-numeric-value.dto';
 import { CreateCharacterFieldPathDto } from '../character-field-path/dtos/create-character-field-path.dto';
 import { CreateDiceRollDto } from '../dice-roll/dtos/create-dice-roll.dto';
+import { UpdateDiceRollDto } from '../dice-roll/dtos/update-dice-roll.dto';
 
 @Injectable()
 export class CalculatedNumericValueService {
@@ -44,8 +45,10 @@ export class CalculatedNumericValueService {
     // Loop through all varaibles and either create or find them
     calculatedNumericValue.variables = await Promise.all(
       payload.variables.map(async (variable) => {
-        if (variable._id) {
-          return await this.characterFieldPathService.findOne(variable._id);
+        if ((variable as UpdateCalculatedNumericValueDto)._id) {
+          return await this.characterFieldPathService.findOne(
+            (variable as UpdateCalculatedNumericValueDto)._id,
+          );
         } else {
           return await this.characterFieldPathService.create(
             variable as CreateCharacterFieldPathDto,
@@ -56,8 +59,10 @@ export class CalculatedNumericValueService {
     // Loop through all dice rolls and either create or find them
     calculatedNumericValue.diceRolls = await Promise.all(
       payload.diceRolls.map(async (diceRoll) => {
-        if (diceRoll._id) {
-          return await this.diceRollService.findOne(diceRoll._id);
+        if ((diceRoll as UpdateDiceRollDto)._id) {
+          return await this.diceRollService.findOne(
+            (diceRoll as UpdateDiceRollDto)._id,
+          );
         } else {
           return await this.diceRollService.create(
             diceRoll as CreateDiceRollDto,
