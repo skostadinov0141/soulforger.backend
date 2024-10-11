@@ -31,6 +31,10 @@ import { GroupModule } from '../group/group.module';
 import { CharacterFieldPathModule } from '../character-field-path/character-field-path.module';
 import { DiceRollModule } from '../dice-roll/dice-roll.module';
 import { AttributeTemplateSearchModule } from '../attribute-template-search/attribute-template-search.module';
+import { TextValueModule } from '../text-value/text-value.module';
+import { FixedNumericValueModule } from '../fixed-numeric-value/fixed-numeric-value.module';
+import { CalculatedNumericValueModule } from '../calculated-numeric-value/calculated-numeric-value.module';
+import { RulebookModule } from '../rulebook/rulebook.module';
 
 @Module({
   imports: [
@@ -65,6 +69,10 @@ import { AttributeTemplateSearchModule } from '../attribute-template-search/attr
     CharacterFieldPathModule,
     DiceRollModule,
     AttributeTemplateSearchModule,
+    TextValueModule,
+    FixedNumericValueModule,
+    CalculatedNumericValueModule,
+    RulebookModule,
   ],
   controllers: [AttributeTemplateController],
   providers: [AttributeTemplateService],
