@@ -83,6 +83,7 @@ export class AttributeTemplateService {
       }),
     );
     attributeTemplate.group = await this.createOrUpdateGroup(payload.group);
+    payload.attributeValue.rulebook = rulebook._id;
     switch (payload.attributeType) {
       case 'TextValue':
         attributeTemplate.attributeValue = await this.textValueService.create(
