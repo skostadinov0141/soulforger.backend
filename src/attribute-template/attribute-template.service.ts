@@ -101,16 +101,48 @@ export class AttributeTemplateService {
     return await attributeTemplate.save();
   }
 
-  findAll() {
-    return `This action returns all attributeTemplate`;
+  async update(
+    id: string,
+    payload: UpdateAttributeTemplateDto,
+  ): Promise<AttributeTemplate> {
+    const rulebook = await this.rulebookService.findOne(payload.rulebook);
+    if (!rulebook) {
+      throw new HttpException(
+        this.translate('rulebook.errors.rulebookNotFound'),
+        404,
+      );
+    }
+    const attributeTemplate = await this.attributeTemplateModel.findById(id);
+    if (!attributeTemplate) {
+      throw new HttpException(
+        this.translate('attributeTemplate.errors.attributeTemplateNotFound'),
+        404,
+      );
+    }
+    payload.rulebook = rulebook._id;
+    attributeTemplate.set(payload);
+    attributeTemplate.tags = await Promise.all(
+      payload.tags.map((tag) => {
+        return this.createOrUpdateTag(tag);
+      }),
+    );
+    attributeTemplate.group = await this.createOrUpdateGroup(payload.group);
+    return await attributeTemplate.save();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} attributeTemplate`;
+  findAll(): Promise<AttributeTemplate[]> {
+    return this.attributeTemplateModel.find().exec();
   }
 
-  update(id: number, updateAttributeTemplateDto: UpdateAttributeTemplateDto) {
-    return `This action updates a #${id} attributeTemplate`;
+  async findOne(id: string): Promise<AttributeTemplate> {
+    const result = await this.attributeTemplateModel.findById(id).exec();
+    if (!result) {
+      throw new HttpException(
+        this.translate('attributeTemplate.errors.attributeTemplateNotFound'),
+        404,
+      );
+    }
+    return result;
   }
 
   remove(id: number) {

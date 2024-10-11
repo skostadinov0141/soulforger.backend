@@ -15,6 +15,7 @@ import { CharacterFieldPathModule } from './character-field-path/character-field
 import { CalculatedNumericValueModule } from './calculated-numeric-value/calculated-numeric-value.module';
 import { FixedNumericValueModule } from './fixed-numeric-value/fixed-numeric-value.module';
 import { TextValueModule } from './text-value/text-value.module';
+import { AttributeTemplateSearchModule } from './attribute-template-search/attribute-template-search.module';
 import * as path from 'node:path';
 
 @Module({
@@ -44,6 +45,7 @@ import * as path from 'node:path';
     CalculatedNumericValueModule,
     FixedNumericValueModule,
     TextValueModule,
+    AttributeTemplateSearchModule,
   ],
   controllers: [],
   providers: [CharacterFieldPathService, DiceRollService],
