@@ -20,6 +20,7 @@ import { CreateCalculatedNumericValueDto } from '../calculated-numeric-value/dto
 import { CreateTextValueDto } from '../text-value/dtos/create-text-value.dto';
 import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
 import { AttributeTemplateSearchService } from '../attribute-template-search/attribute-template-search.service';
+import { DiceRoll } from '../dice-roll/entities/dice-roll.entity';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -135,8 +136,31 @@ export class AttributeTemplateService {
     return await attributeTemplate.save();
   }
 
-  findAll(): Promise<AttributeTemplate[]> {
-    return this.attributeTemplateModel.find().exec();
+  async findAll(): Promise<AttributeTemplate[]> {
+    return this.attributeTemplateModel
+      .find({}, { __v: 0 })
+      .populate('tags', { __v: 0 })
+      .populate('group', { __v: 0 })
+      .populate('rulebook', { __v: 0 })
+      .populate({
+        path: 'attributeValue',
+        select: { __v: 0 },
+        populate: [
+          {
+            path: 'variables',
+            strictPopulate: false,
+            model: AttributeTemplate.name,
+            select: { __v: 0 },
+          },
+          {
+            path: 'diceRolls',
+            strictPopulate: false,
+            model: DiceRoll.name,
+            select: { __v: 0 },
+          },
+        ],
+      })
+      .exec();
   }
 
   async findOne(id: string): Promise<AttributeTemplate> {
@@ -147,7 +171,30 @@ export class AttributeTemplateService {
         404,
       );
     }
-    return result;
+    return this.attributeTemplateModel
+      .findById(id, { __v: 0 })
+      .populate('tags', { __v: 0 })
+      .populate('group', { __v: 0 })
+      .populate('rulebook', { __v: 0 })
+      .populate({
+        path: 'attributeValue',
+        select: { __v: 0 },
+        populate: [
+          {
+            path: 'variables',
+            strictPopulate: false,
+            model: AttributeTemplate.name,
+            select: { __v: 0 },
+          },
+          {
+            path: 'diceRolls',
+            strictPopulate: false,
+            model: DiceRoll.name,
+            select: { __v: 0 },
+          },
+        ],
+      })
+      .exec();
   }
 
   remove(id: string) {
