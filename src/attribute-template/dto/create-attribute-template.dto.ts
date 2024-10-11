@@ -1,70 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsNumber, IsObject, IsString } from 'class-validator';
-import { Rulebook } from '../../rulebook/entities/rulebook.entity';
+import { IsArray, IsEnum, IsObject, IsString } from 'class-validator';
 import { UpdateTagDto } from '../../tag/dto/update-tag.dto';
 import { UpdateGroupDto } from '../../group/dto/update-group.dto';
-
-export class CreateAttributeTextValueTemplateDto {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  value: string;
-
-  @ApiProperty()
-  @IsString()
-  options: string[];
-}
-
-export class CreateAttributeFixedNumericValueTemplateDto {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  value: string;
-}
-
-export class CreateAttributeCalculatedNumericValueTemplateDto {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  formula: string;
-
-  @ApiProperty()
-  variables: CreateAttributeCharacterFieldPathTemplateDto[];
-
-  @ApiProperty()
-  diceRolls: CreateAttributeDiceRollTemplateDto[];
-}
-
-export class CreateAttributeCharacterFieldPathTemplateDto {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsString()
-  path: string;
-}
-
-export class CreateAttributeDiceRollTemplateDto {
-  rulebook: Rulebook;
-
-  @ApiProperty()
-  @IsString()
-  name: string;
-
-  @ApiProperty()
-  @IsNumber()
-  diceSides: number;
-
-  @ApiProperty()
-  @IsNumber()
-  diceAmount: string;
-}
+import { CreateTextValueDto } from '../../text-value/dtos/create-text-value.dto';
+import { CreateFixedNumericValueDto } from '../../fixed-numeric-value/dtos/create-fixed-numeric-value.dto';
+import { CreateCalculatedNumericValueDto } from '../../calculated-numeric-value/dtos/create-calculated-numeric-value.dto';
+import { UpdateTextValueDto } from '../../text-value/dtos/update-text-value.dto';
+import { UpdateFixedNumericValueDto } from '../../fixed-numeric-value/dtos/update-fixed-numeric-value.dto';
+import { UpdateCalculatedNumericValueDto } from '../../calculated-numeric-value/dtos/update-calculated-numeric-value.dto';
 
 export class CreateAttributeTemplateDto {
   @ApiProperty()
@@ -87,9 +30,12 @@ export class CreateAttributeTemplateDto {
   @ApiProperty()
   @IsObject()
   attributeValue:
-    | CreateAttributeTextValueTemplateDto
-    | CreateAttributeFixedNumericValueTemplateDto
-    | CreateAttributeCalculatedNumericValueTemplateDto;
+    | CreateTextValueDto
+    | CreateFixedNumericValueDto
+    | CreateCalculatedNumericValueDto
+    | UpdateTextValueDto
+    | UpdateFixedNumericValueDto
+    | UpdateCalculatedNumericValueDto;
 
   @ApiProperty()
   @IsArray()
