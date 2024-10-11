@@ -15,6 +15,19 @@ export class DiceRollService {
     private readonly i18n: I18nService,
   ) {}
 
+  async findOne(id: string): Promise<DiceRoll> {
+    const result = this.diceRollModel.findById(id).exec();
+    if (!result) {
+      throw new HttpException(
+        this.i18n.t('dice-roll.errors.diceRollNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        404,
+      );
+    }
+    return result;
+  }
+
   async create(payload: CreateDiceRollDto): Promise<DiceRoll> {
     const rulebook = await this.rulebookService.findOne(payload.rulebook);
     if (!rulebook) {

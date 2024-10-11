@@ -16,6 +16,19 @@ export class CharacterFieldPathService {
     private readonly i18n: I18nService,
   ) {}
 
+  async findOne(id: string): Promise<CharacterFieldPath> {
+    const result = this.characterFieldPathModel.findById(id).exec();
+    if (!result) {
+      throw new HttpException(
+        this.i18n.t('characterFieldPath.errors.characterFieldPathNotFound', {
+          lang: I18nContext.current().lang,
+        }),
+        404,
+      );
+    }
+    return result;
+  }
+
   async create(
     payload: CreateCharacterFieldPathDto,
   ): Promise<CharacterFieldPath> {
