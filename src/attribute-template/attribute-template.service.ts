@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { CreateAttributeTemplateDto } from './dto/create-attribute-template.dto';
 import { UpdateAttributeTemplateDto } from './dto/update-attribute-template.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,6 +14,10 @@ import { UpdateTagDto } from '../tag/dto/update-tag.dto';
 import { CreateTagDto } from '../tag/dto/create-tag.dto';
 import { CreateGroupDto } from '../group/dto/create-group.dto';
 import { UpdateGroupDto } from '../group/dto/update-group.dto';
+import { RulebookService } from '../rulebook/rulebook.service';
+import { CreateFixedNumericValueDto } from '../fixed-numeric-value/dtos/create-fixed-numeric-value.dto';
+import { CreateCalculatedNumericValueDto } from '../calculated-numeric-value/dtos/create-calculated-numeric-value.dto';
+import { CreateTextValueDto } from '../text-value/dtos/create-text-value.dto';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -27,6 +31,7 @@ export class AttributeTemplateService {
     private readonly calculatedNumericValueService: CalculatedNumericValueService,
     @Inject() private readonly tagService: TagService,
     @Inject() private readonly groupService: GroupService,
+    @Inject() private readonly rulebookService: RulebookService,
     @Inject() private readonly i18n: I18nService,
   ) {}
 
@@ -56,8 +61,44 @@ export class AttributeTemplateService {
     }
   }
 
-  create(createAttributeTemplateDto: CreateAttributeTemplateDto) {
-    return 'This action adds a new attributeTemplate';
+  async create(
+    payload: CreateAttributeTemplateDto,
+  ): Promise<AttributeTemplate> {
+    const rulebook = await this.rulebookService.findOne(payload.rulebook);
+    if (!rulebook) {
+      throw new HttpException(
+        this.translate('rulebook.errors.rulebookNotFound'),
+        404,
+      );
+    }
+    payload.rulebook = rulebook._id;
+    const attributeTemplate = new this.attributeTemplateModel(payload);
+    attributeTemplate.tags = await Promise.all(
+      payload.tags.map((tag) => {
+        return this.createOrUpdateTag(tag);
+      }),
+    );
+    attributeTemplate.group = await this.createOrUpdateGroup(payload.group);
+    switch (payload.attributeType) {
+      case 'TextValue':
+        attributeTemplate.attributeValue = await this.textValueService.create(
+          payload.attributeValue as CreateTextValueDto,
+        );
+        break;
+      case 'FixedNumericValue':
+        attributeTemplate.attributeValue =
+          await this.fixedNumericValueService.create(
+            payload.attributeValue as CreateFixedNumericValueDto,
+          );
+        break;
+      case 'CalculatedNumericValue':
+        attributeTemplate.attributeValue =
+          await this.calculatedNumericValueService.create(
+            payload.attributeValue as CreateCalculatedNumericValueDto,
+          );
+        break;
+    }
+    return await attributeTemplate.save();
   }
 
   findAll() {
