@@ -16,7 +16,7 @@ import { CreateAttributeTemplateDto } from '../attribute-template/dto/create-att
 import { AttributeTemplate } from '../attribute-template/entities/attribute-template.entity';
 import { UpdateAttributeTemplateDto } from '../attribute-template/dto/update-attribute-template.dto';
 import { PathDto } from './dto/path.dto';
-import { SearchAttributeTemplateDto } from './dto/search-attribute-template.dto';
+import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
 import { Tag } from '../tag/entities/tag.entity';
 import { Group } from '../group/entities/group.entity';
 

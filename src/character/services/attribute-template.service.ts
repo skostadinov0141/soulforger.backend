@@ -23,7 +23,7 @@ import {
 import { PathDto } from '../dto/path.dto';
 import { Tag } from '../../tag/entities/tag.entity';
 import { Group } from '../../group/entities/group.entity';
-import { SearchAttributeTemplateDto } from '../dto/search-attribute-template.dto';
+import { SearchAttributeTemplateDto } from '../../attribute-template-search/dto/search-attribute-template.dto';
 
 @Injectable()
 export class AttributeTemplateService {
