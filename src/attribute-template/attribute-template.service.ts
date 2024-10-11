@@ -44,25 +44,36 @@ export class AttributeTemplateService {
     return this.i18n.t(path, { lang: I18nContext.current().lang });
   }
 
-  private async createOrUpdateTag(tag: UpdateTagDto | CreateTagDto) {
+  private async createOrUpdateTag(
+    tag: UpdateTagDto | CreateTagDto,
+    rulebookId: string,
+  ) {
     if ((tag as UpdateTagDto)._id) {
       return await this.tagService.update(
         (tag as UpdateTagDto)._id,
         tag as UpdateTagDto,
       );
     } else {
-      return await this.tagService.create(tag as CreateTagDto);
+      const createPayload = tag as CreateTagDto;
+      tag.rulebook = rulebookId;
+      return await this.tagService.create(createPayload);
     }
   }
 
-  private async createOrUpdateGroup(group: UpdateGroupDto | CreateGroupDto) {
+  private async createOrUpdateGroup(
+    group: UpdateGroupDto | CreateGroupDto,
+    rulebookId: string,
+  ) {
     if ((group as UpdateGroupDto)._id) {
       return await this.groupService.update(
         (group as UpdateGroupDto)._id,
         group as UpdateGroupDto,
       );
     } else {
-      return await this.groupService.create(group as CreateGroupDto);
+      const createPayload = group as CreateGroupDto;
+      createPayload.rulebook = rulebookId;
+      console.log(createPayload);
+      return await this.groupService.create(createPayload);
     }
   }
 
@@ -80,10 +91,13 @@ export class AttributeTemplateService {
     const attributeTemplate = new this.attributeTemplateModel(payload);
     attributeTemplate.tags = await Promise.all(
       payload.tags.map((tag) => {
-        return this.createOrUpdateTag(tag);
+        return this.createOrUpdateTag(tag, rulebook._id);
       }),
     );
-    attributeTemplate.group = await this.createOrUpdateGroup(payload.group);
+    attributeTemplate.group = await this.createOrUpdateGroup(
+      payload.group,
+      rulebook._id,
+    );
     payload.attributeValue.rulebook = rulebook._id;
     switch (payload.attributeType) {
       case 'TextValue':
@@ -129,10 +143,13 @@ export class AttributeTemplateService {
     attributeTemplate.set(payload);
     attributeTemplate.tags = await Promise.all(
       payload.tags.map((tag) => {
-        return this.createOrUpdateTag(tag);
+        return this.createOrUpdateTag(tag, rulebook._id);
       }),
     );
-    attributeTemplate.group = await this.createOrUpdateGroup(payload.group);
+    attributeTemplate.group = await this.createOrUpdateGroup(
+      payload.group,
+      rulebook._id,
+    );
     return await attributeTemplate.save();
   }
 

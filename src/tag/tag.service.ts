@@ -13,11 +13,13 @@ export class TagService {
     private readonly i18n: I18nService,
   ) {}
 
-  create(createTagDto: CreateTagDto): Promise<Tag> {
-    const existingTag = this.tagModel.findOne({
-      name: createTagDto.name,
-      rulebook: createTagDto.rulebook,
-    });
+  async create(createTagDto: CreateTagDto): Promise<Tag> {
+    const existingTag = await this.tagModel
+      .findOne({
+        name: createTagDto.name,
+        rulebook: createTagDto.rulebook,
+      })
+      .exec();
     if (existingTag) {
       throw new HttpException(
         this.i18n.t('tag.errors.tagAlreadyExists', {

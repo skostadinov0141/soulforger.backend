@@ -13,11 +13,15 @@ export class GroupService {
     private readonly i18n: I18nService,
   ) {}
 
-  create(createGroupDto: CreateGroupDto): Promise<Group> {
-    const group = this.groupModel.findOne({
-      name: createGroupDto.name,
-      rulebook: createGroupDto.rulebook,
-    });
+  async create(createGroupDto: CreateGroupDto): Promise<Group> {
+    console.log(createGroupDto);
+    const group = await this.groupModel
+      .findOne({
+        name: createGroupDto.name,
+        rulebook: createGroupDto.rulebook,
+      })
+      .exec();
+    console.log(group);
     if (group) {
       throw new HttpException(
         this.i18n.t('group.errors.groupAlreadyExists', {
