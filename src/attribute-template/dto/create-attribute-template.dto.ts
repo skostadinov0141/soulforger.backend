@@ -8,6 +8,8 @@ import { CreateCalculatedNumericValueDto } from '../../calculated-numeric-value/
 import { UpdateTextValueDto } from '../../text-value/dtos/update-text-value.dto';
 import { UpdateFixedNumericValueDto } from '../../fixed-numeric-value/dtos/update-fixed-numeric-value.dto';
 import { UpdateCalculatedNumericValueDto } from '../../calculated-numeric-value/dtos/update-calculated-numeric-value.dto';
+import { CreateTagDto } from '../../tag/dto/create-tag.dto';
+import { CreateGroupDto } from '../../group/dto/create-group.dto';
 
 export class CreateAttributeTemplateDto {
   @ApiProperty()
@@ -40,9 +42,9 @@ export class CreateAttributeTemplateDto {
   @ApiProperty()
   @IsArray()
   @IsObject({ each: true })
-  tags: UpdateTagDto[];
+  tags: (UpdateTagDto | CreateTagDto)[];
 
   @ApiProperty()
   @IsObject()
-  group: UpdateGroupDto;
+  group: UpdateGroupDto | CreateGroupDto;
 }
