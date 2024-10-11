@@ -50,7 +50,6 @@ export class AttributeTemplateSearchService {
       .find(
         {
           ...finalQuery,
-          template: true,
           rulebook: rulebook._id,
         },
         { __v: 0 },
