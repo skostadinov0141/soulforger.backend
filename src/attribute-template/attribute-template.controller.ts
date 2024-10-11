@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AttributeTemplate } from './entities/attribute-template.entity';
+import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
 
 @ApiTags('attribute-template')
 @Controller('attribute-template')
@@ -46,6 +47,15 @@ export class AttributeTemplateController {
   @ApiResponse({ type: AttributeTemplate, status: 200 })
   findOne(@Param('id') id: string): Promise<AttributeTemplate> {
     return this.attributeTemplateService.findOne(id);
+  }
+
+  @Post('search')
+  @ApiBody({ type: SearchAttributeTemplateDto })
+  @ApiResponse({ type: [AttributeTemplate], status: 200 })
+  search(
+    @Body() searchAttributeTemplateDto: SearchAttributeTemplateDto,
+  ): Promise<AttributeTemplate[]> {
+    return this.attributeTemplateService.search(searchAttributeTemplateDto);
   }
 
   @Patch(':id')
