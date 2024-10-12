@@ -21,6 +21,7 @@ import { CreateTextValueDto } from '../text-value/dtos/create-text-value.dto';
 import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
 import { AttributeTemplateSearchService } from '../attribute-template-search/attribute-template-search.service';
 import { DiceRoll } from '../dice-roll/entities/dice-roll.entity';
+import { GetPathRegistryDto } from './dto/get-path-registry.dto';
 
 @Injectable()
 export class AttributeTemplateService {
@@ -216,6 +217,19 @@ export class AttributeTemplateService {
 
   remove(id: string) {
     return `This action removes a #${id} attributeTemplate`;
+  }
+
+  async getPathRegistry(rulebookId: string): Promise<GetPathRegistryDto[]> {
+    const attributeTemplates = await this.attributeTemplateModel
+      .find({ rulebook: rulebookId })
+      .exec();
+    return attributeTemplates.map((attributeTemplate) => {
+      const registry: GetPathRegistryDto = {
+        name: attributeTemplate.name,
+        path: `character%attributes%[name="${attributeTemplate.name}"]%value`,
+      };
+      return registry;
+    });
   }
 
   search(payload: SearchAttributeTemplateDto): Promise<AttributeTemplate[]> {

@@ -19,6 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { AttributeTemplate } from './entities/attribute-template.entity';
 import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
+import { GetPathRegistryDto } from './dto/get-path-registry.dto';
 
 @ApiTags('attribute-template')
 @Controller('attribute-template')
@@ -47,6 +48,15 @@ export class AttributeTemplateController {
   @ApiResponse({ type: AttributeTemplate, status: 200 })
   findOne(@Param('id') id: string): Promise<AttributeTemplate> {
     return this.attributeTemplateService.findOne(id);
+  }
+
+  @Get('path-registry/:rulebookId')
+  @ApiParam({ name: 'rulebookId', type: String })
+  @ApiResponse({ type: [GetPathRegistryDto], status: 200 })
+  getPathRegistry(
+    @Param('rulebookId') rulebookId: string,
+  ): Promise<GetPathRegistryDto[]> {
+    return this.attributeTemplateService.getPathRegistry(rulebookId);
   }
 
   @Post('search')
