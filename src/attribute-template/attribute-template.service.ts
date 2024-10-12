@@ -73,7 +73,6 @@ export class AttributeTemplateService {
     } else {
       const createPayload = group as CreateGroupDto;
       createPayload.rulebook = rulebookId;
-      console.log(createPayload);
       return await this.groupService.create(createPayload);
     }
   }
@@ -125,7 +124,8 @@ export class AttributeTemplateService {
           );
         break;
     }
-    return await attributeTemplate.save();
+    console.log('attributeTemplate', attributeTemplate);
+    return attributeTemplate.save();
   }
 
   async update(
