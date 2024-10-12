@@ -173,13 +173,11 @@ export class AttributeTemplateService {
           {
             path: 'variables',
             strictPopulate: false,
-            model: AttributeTemplate.name,
             select: { __v: 0 },
           },
           {
             path: 'diceRolls',
             strictPopulate: false,
-            model: DiceRoll.name,
             select: { __v: 0 },
           },
         ],
@@ -207,13 +205,11 @@ export class AttributeTemplateService {
           {
             path: 'variables',
             strictPopulate: false,
-            model: AttributeTemplate.name,
             select: { __v: 0 },
           },
           {
             path: 'diceRolls',
             strictPopulate: false,
-            model: DiceRoll.name,
             select: { __v: 0 },
           },
         ],
