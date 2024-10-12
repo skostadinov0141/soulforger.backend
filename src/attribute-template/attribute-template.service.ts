@@ -228,7 +228,7 @@ export class AttributeTemplateService {
     return attributeTemplates.map((attributeTemplate) => {
       const registry: GetPathRegistryDto = {
         name: attributeTemplate.name,
-        path: `character%attributes%[name="${attributeTemplate.name}"]%value`,
+        path: `character%attributes%[name=${attributeTemplate.name}]%value`,
       };
       return registry;
     });
