@@ -113,6 +113,12 @@ export class AttributeTemplateService {
           );
         break;
       case 'CalculatedNumericValue':
+        (
+          payload.attributeValue as CreateCalculatedNumericValueDto
+        ).variables.forEach((variable) => (variable.rulebook = rulebook._id));
+        (
+          payload.attributeValue as CreateCalculatedNumericValueDto
+        ).diceRolls.forEach((diceRoll) => (diceRoll.rulebook = rulebook._id));
         attributeTemplate.attributeValue =
           await this.calculatedNumericValueService.create(
             payload.attributeValue as CreateCalculatedNumericValueDto,
