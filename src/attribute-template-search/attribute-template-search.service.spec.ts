@@ -9,7 +9,9 @@ describe('AttributeTemplateSearchService', () => {
       providers: [AttributeTemplateSearchService],
     }).compile();
 
-    service = module.get<AttributeTemplateSearchService>(AttributeTemplateSearchService);
+    service = module.get<AttributeTemplateSearchService>(
+      AttributeTemplateSearchService,
+    );
   });
 
   it('should be defined', () => {

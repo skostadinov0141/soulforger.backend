@@ -9,7 +9,9 @@ describe('CalculatedNumericValueService', () => {
       providers: [CalculatedNumericValueService],
     }).compile();
 
-    service = module.get<CalculatedNumericValueService>(CalculatedNumericValueService);
+    service = module.get<CalculatedNumericValueService>(
+      CalculatedNumericValueService,
+    );
   });
 
   it('should be defined', () => {

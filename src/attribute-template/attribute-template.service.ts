@@ -20,7 +20,6 @@ import { CreateCalculatedNumericValueDto } from '../calculated-numeric-value/dto
 import { CreateTextValueDto } from '../text-value/dtos/create-text-value.dto';
 import { SearchAttributeTemplateDto } from '../attribute-template-search/dto/search-attribute-template.dto';
 import { AttributeTemplateSearchService } from '../attribute-template-search/attribute-template-search.service';
-import { DiceRoll } from '../dice-roll/entities/dice-roll.entity';
 import { GetPathRegistryDto } from './dto/get-path-registry.dto';
 
 @Injectable()
