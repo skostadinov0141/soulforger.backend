@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, Max, Min } from 'class-validator';
 
@@ -21,3 +21,5 @@ export class Rulebook {
   @IsOptional()
   description?: string;
 }
+
+export const RulebookSchema = SchemaFactory.createForClass(Rulebook);
