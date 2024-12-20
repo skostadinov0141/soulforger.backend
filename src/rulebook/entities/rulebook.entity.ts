@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, Max, Min } from 'class-validator';
+import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class Rulebook {
@@ -23,3 +24,4 @@ export class Rulebook {
 }
 
 export const RulebookSchema = SchemaFactory.createForClass(Rulebook);
+export type RulebookDocument = HydratedDocument<Rulebook>;

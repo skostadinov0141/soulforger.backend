@@ -26,7 +26,11 @@ export class RulebookController {
   constructor(private readonly rulebookService: RulebookService) {}
 
   @Post()
-  @ApiOkResponse({ type: Rulebook, description: 'Created rulebook' })
+  @ApiOkResponse({
+    status: 201,
+    type: Rulebook,
+    description: 'Created rulebook',
+  })
   @ApiBody({ type: CreateRulebookDto })
   create(@Body() createRulebookDto: CreateRulebookDto) {
     return this.rulebookService.create(createRulebookDto);
