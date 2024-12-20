@@ -2,7 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, Length } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema({ timestamps: true })
 export class Tag {
@@ -21,6 +22,13 @@ export class Tag {
     message: i18nValidationMessage('tag.validation.nameLength'),
   })
   name: string;
+
+  @ApiProperty()
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: Rulebook.name,
+  })
+  rulebook: Rulebook;
 
   @ApiProperty()
   @Prop()

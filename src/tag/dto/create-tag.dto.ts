@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, Length } from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class CreateTagDto {
@@ -8,6 +8,10 @@ export class CreateTagDto {
     message: i18nValidationMessage('tag.validation.nameLength'),
   })
   name: string;
+
+  @ApiProperty()
+  @IsString()
+  rulebook: string;
 
   @ApiProperty()
   @IsOptional()
