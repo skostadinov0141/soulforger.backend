@@ -16,7 +16,6 @@ import {
   ApiOkResponse,
   ApiParam,
   ApiQuery,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { Rulebook } from './entities/rulebook.entity';
