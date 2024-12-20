@@ -1,19 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Prop } from '@nestjs/mongoose';
-import { IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsOptional, Length } from 'class-validator';
 
 export class CreateRulebookDto {
   @Prop()
   @ApiProperty()
-  @Max(128)
-  @Min(4)
-  @IsString()
+  @Length(4, 128)
   name: string;
 
   @Prop()
   @ApiProperty()
-  @Max(2048)
-  @IsString()
+  @Length(0, 2048)
   @IsOptional()
   description?: string;
 }
