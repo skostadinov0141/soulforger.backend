@@ -14,12 +14,13 @@ export class RulebookService {
   ) {}
 
   translate(path: string) {
-    return this.i18n.t(path, { lang: I18nContext.current().lang });
+    return this.i18n.t(path, { lang: I18nContext.current()?.lang || 'en' });
   }
 
-  create(createPayload: CreateRulebookDto): Promise<Rulebook> {
-    if (this.rulebookModel.exists({ name: createPayload.name }) === null)
+  async create(createPayload: CreateRulebookDto): Promise<Rulebook> {
+    if (await this.rulebookModel.exists({ name: createPayload.name })) {
       throw new HttpException(this.translate('rulebook.errors.exists'), 409);
+    }
     const model = new this.rulebookModel(createPayload);
     return model.save();
   }
