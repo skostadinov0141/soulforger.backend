@@ -18,18 +18,14 @@ export class RulebookService {
   }
 
   async create(createPayload: CreateRulebookDto): Promise<Rulebook> {
-    if (await this.rulebookModel.exists({ name: createPayload.name })) {
+    if (await this.rulebookModel.exists({ name: createPayload.name }))
       throw new HttpException(this.translate('rulebook.errors.exists'), 409);
-    }
-    const model = new this.rulebookModel(createPayload);
-    return model.save();
+    return this.rulebookModel.create(createPayload);
   }
 
   findAll(page: number, limit: number): Promise<Rulebook[]> {
     return this.rulebookModel
-      .find()
-      .skip(page * limit)
-      .limit(limit)
+      .find({}, null, { skip: page * limit, limit: limit })
       .exec();
   }
 
