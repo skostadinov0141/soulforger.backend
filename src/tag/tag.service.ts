@@ -38,8 +38,10 @@ export class TagService {
     page: number,
     limit: number,
     rulebook: string,
+    order: string,
+    populateRulebook: boolean,
     search?: string,
-    sort?: string,
+    sortBy?: string,
   ): Promise<Tag[]> {
     return this.tagModel
       .find(
@@ -51,7 +53,8 @@ export class TagService {
         {
           skip: page * limit,
           limit,
-          sort: sort ? { [sort]: 1 } : undefined,
+          sort: sortBy ? { [sortBy]: order } : undefined,
+          populate: populateRulebook ? 'rulebook' : undefined,
         },
       )
       .exec();
