@@ -3,7 +3,7 @@ import { TagService } from './tag.service';
 import { TagController } from './tag.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Tag, TagSchema } from './entities/tag.entity';
-import { RulebookService } from '../rulebook/rulebook.service';
+import { RulebookModule } from '../rulebook/rulebook.module';
 
 @Module({
   controllers: [TagController],
@@ -15,7 +15,7 @@ import { RulebookService } from '../rulebook/rulebook.service';
         schema: TagSchema,
       },
     ]),
-    RulebookService,
+    RulebookModule,
   ],
   exports: [TagService],
 })

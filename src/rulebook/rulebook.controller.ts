@@ -22,6 +22,12 @@ import { Rulebook } from './entities/rulebook.entity';
 
 @Controller('rulebook')
 @ApiTags('rulebook')
+@ApiQuery({
+  name: 'lang',
+  required: false,
+  type: String,
+  enum: ['en', 'de'],
+})
 export class RulebookController {
   constructor(private readonly rulebookService: RulebookService) {}
 

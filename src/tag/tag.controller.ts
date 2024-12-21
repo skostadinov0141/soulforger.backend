@@ -1,9 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('tag')
+@ApiTags('tag')
+@ApiQuery({
+  name: 'lang',
+  required: false,
+  type: String,
+  enum: ['en', 'de'],
+})
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
@@ -14,21 +30,21 @@ export class TagController {
 
   @Get()
   findAll() {
-    return this.tagService.findAll();
+    // return this.tagService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.tagService.findOne(+id);
+    return this.tagService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagService.update(+id, updateTagDto);
+    return this.tagService.update(id, updateTagDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.tagService.remove(+id);
+    return this.tagService.remove(id);
   }
 }
