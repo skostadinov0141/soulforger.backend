@@ -22,6 +22,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new I18nValidationPipe());
 
+  //TODO: Switch to swagger-cli-plugin instead of decorators
+
   await app.listen(3001);
 }
 bootstrap();
