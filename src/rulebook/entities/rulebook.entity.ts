@@ -1,25 +1,30 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsOptional, Length } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class Rulebook {
-  @ApiProperty()
+  /**
+   * The unique identifier of the rulebook.
+   * @example '676861133aa08216967be40b'
+   */
   _id: string;
 
+  /**
+   * The name of the rulebook.
+   * @example 'Chess'
+   */
   @Prop()
-  @ApiProperty()
-  @Max(128)
-  @Min(4)
-  @IsString()
+  @Length(4, 128)
   name: string;
 
+  /**
+   * The description of the rulebook.
+   * @example 'A two-player strategy board game.'
+   */
   @Prop()
-  @ApiProperty()
-  @Max(2048)
-  @IsString()
   @IsOptional()
+  @Length(4, 256)
   description?: string;
 }
 
