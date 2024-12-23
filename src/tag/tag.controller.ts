@@ -20,6 +20,9 @@ import {
 } from '@nestjs/swagger';
 import { Tag } from './entities/tag.entity';
 
+/**
+ * CRUD routes for tags.
+ */
 @Controller('tag')
 @ApiTags('tag')
 @ApiQuery({
@@ -31,13 +34,15 @@ import { Tag } from './entities/tag.entity';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  /**
+   * Create a new tag.
+   *
+   * @throws {Error} 400 - Bad Request
+   * @throws {Error} 500 - Internal Server Error
+   * @throws
+   */
   @Post()
   @ApiBody({ type: CreateTagDto })
-  @ApiOkResponse({
-    status: 201,
-    description: 'Tag created',
-    type: Tag,
-  })
   create(@Body() createTagDto: CreateTagDto): Promise<Tag> {
     return this.tagService.create(createTagDto);
   }
@@ -86,11 +91,6 @@ export class TagController {
     type: Boolean,
     description: 'Populate rulebook',
   })
-  @ApiOkResponse({
-    status: 200,
-    description: 'List of tags',
-    type: [Tag],
-  })
   findAll(
     @Query('page') page: number = 0,
     @Query('limit') limit: number = 10,
@@ -112,15 +112,11 @@ export class TagController {
   }
 
   @Get(':id')
-  @ApiOkResponse({
-    status: 200,
-    description: 'Tag found',
-    type: Tag,
-  })
   @ApiParam({
     name: 'id',
     type: String,
     description: 'Tag ID',
+    example: '6768691c0767ae795feb2c60',
   })
   findOne(@Param('id') id: string) {
     return this.tagService.findOne(id);
@@ -131,8 +127,8 @@ export class TagController {
     name: 'id',
     type: String,
     description: 'Tag ID',
+    example: '6768691c0767ae795feb2c60',
   })
-  @ApiBody({ type: UpdateTagDto })
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagService.update(id, updateTagDto);
   }
@@ -142,11 +138,7 @@ export class TagController {
     name: 'id',
     type: String,
     description: 'Tag ID',
-  })
-  @ApiOkResponse({
-    status: 200,
-    description: 'Tag deleted',
-    type: Tag,
+    example: '6768691c0767ae795feb2c60',
   })
   remove(@Param('id') id: string) {
     return this.tagService.remove(id);

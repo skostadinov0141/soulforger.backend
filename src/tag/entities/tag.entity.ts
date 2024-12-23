@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, Length } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import mongoose, { HydratedDocument } from 'mongoose';
@@ -7,30 +6,48 @@ import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema({ timestamps: true })
 export class Tag {
-  @ApiProperty()
+  /**
+   * The unique identifier of the tag.
+   * @example '676861133aa08216967be40b'
+   */
   _id: string;
 
-  @ApiProperty()
+  /**
+   * The date and time the tag was created.
+   * @example '2021-10-01T00:00:00.000Z'
+   */
   createdAt: Date;
 
-  @ApiProperty()
+  /**
+   * The date and time the tag was last updated.
+   * @example '2021-10-01T00:00:00.000Z'
+   */
   updatedAt: Date;
 
-  @ApiProperty()
+  /**
+   * The name of the tag.
+   * @example 'Board Games'
+   */
   @Prop()
   @Length(4, 32, {
     message: i18nValidationMessage('tag.validation.nameLength'),
   })
   name: string;
 
-  @ApiProperty()
+  /**
+   * The rulebook associated with the tag.
+   * @example '676861133aa08216967be40b'
+   */
   @Prop({
     type: mongoose.Types.ObjectId,
     ref: Rulebook.name,
   })
   rulebook: Rulebook;
 
-  @ApiProperty()
+  /**
+   * The color of the tag.
+   * @example '#FF0000'
+   */
   @Prop()
   @IsOptional()
   @Length(4, 32, {
@@ -38,7 +55,10 @@ export class Tag {
   })
   color: string;
 
-  @ApiProperty()
+  /**
+   * The icon of the tag.
+   * @example 'mdi-chess'
+   */
   @Prop()
   @IsOptional()
   @Length(2, 64, {
@@ -46,7 +66,10 @@ export class Tag {
   })
   icon?: string;
 
-  @ApiProperty()
+  /**
+   * The description of the tag.
+   * @example 'A collection of board games.'
+   */
   @Prop()
   @IsOptional()
   @Length(4, 128, {
