@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
-import { IsOptional, Length } from 'class-validator';
 
 @Schema({ timestamps: true })
 export class AttributeGroup {
