@@ -32,7 +32,6 @@ export class AttributeGroup {
    * @example 'Magic Attributes'
    */
   @Prop({ required: true })
-  @Length(3, 128)
   name: string;
 
   /**
@@ -40,9 +39,7 @@ export class AttributeGroup {
    *
    * @example 'Attributes that are magical.'
    */
-  @Prop()
-  @IsOptional()
-  @Length(3, 2048)
+  @Prop({ required: false })
   description?: string;
 
   /**
@@ -56,4 +53,4 @@ export class AttributeGroup {
 
 export const AttributeGroupSchema =
   SchemaFactory.createForClass(AttributeGroup);
-export type AttrivuteGroupDocument = HydratedDocument<AttributeGroup>;
+export type AttributeGroupDocument = HydratedDocument<AttributeGroup>;
