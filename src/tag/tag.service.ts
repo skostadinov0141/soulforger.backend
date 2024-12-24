@@ -28,7 +28,7 @@ export class TagService {
         name: createTagDto.name,
       })
     )
-      throw new HttpException(this.translate('tag.validation.exists'), 400);
+      throw new HttpException(this.translate('tag.errors.exists'), 400);
     // ensure rulebook exists
     await this.rulebookService.findOne(createTagDto.rulebook);
     return this.tagModel.create(createTagDto);
@@ -63,14 +63,14 @@ export class TagService {
   async findOne(id: string): Promise<Tag> {
     const tag = await this.tagModel.findById(id).exec();
     if (!tag)
-      throw new HttpException(this.translate('tag.validation.notFound'), 404);
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
     return tag;
   }
 
   async update(id: string, updateTagDto: UpdateTagDto): Promise<Tag> {
     const tag = await this.tagModel.findById(id).exec();
     if (!tag)
-      throw new HttpException(this.translate('tag.validation.notFound'), 404);
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
     // ensure rulebook exists
     await this.rulebookService.findOne(updateTagDto.rulebook);
     return tag.set(updateTagDto).save();
@@ -78,7 +78,7 @@ export class TagService {
 
   remove(id: string): Promise<Tag> {
     if (!this.tagModel.exists({ _id: id }))
-      throw new HttpException(this.translate('tag.validation.notFound'), 404);
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
     return this.tagModel.findByIdAndDelete(id).exec();
   }
 }
