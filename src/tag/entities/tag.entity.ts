@@ -26,7 +26,7 @@ export class Tag {
    * The name of the tag.
    * @example 'Board Games'
    */
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   /**
@@ -34,6 +34,7 @@ export class Tag {
    * @example '676861133aa08216967be40b'
    */
   @Prop({
+    required: true,
     type: mongoose.Types.ObjectId,
     ref: Rulebook.name,
   })
@@ -43,21 +44,21 @@ export class Tag {
    * The color of the tag.
    * @example '#FF0000'
    */
-  @Prop()
-  color: string;
+  @Prop({ required: false })
+  color?: string;
 
   /**
    * The icon of the tag.
    * @example 'mdi-chess'
    */
-  @Prop()
+  @Prop({ required: false })
   icon?: string;
 
   /**
    * The description of the tag.
    * @example 'A collection of board games.'
    */
-  @Prop()
+  @Prop({ required: false })
   description?: string;
 }
 

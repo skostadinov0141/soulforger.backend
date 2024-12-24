@@ -13,14 +13,14 @@ export class Rulebook {
    * The name of the rulebook.
    * @example 'Chess'
    */
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   /**
    * The description of the rulebook.
    * @example 'A two-player strategy board game.'
    */
-  @Prop()
+  @Prop({ required: false })
   description?: string;
 }
 
