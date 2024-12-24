@@ -11,7 +11,7 @@ import {
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Tag } from './entities/tag.entity';
 import { LocaleQuery } from '../locale-query/locale-query.decorator';
 
@@ -27,8 +27,8 @@ export class TagController {
   /**
    * Create a new tag.
    *
-   * @throws {Error} 400 - Bad Request
-   * @throws {Error} 500 - Internal Server Error
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
    * @throws
    */
   @Post()
@@ -36,6 +36,13 @@ export class TagController {
     return this.tagService.create(createTagDto);
   }
 
+  /**
+   * Get all tags.
+   *
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
+   * @throws {404} Not Found
+   */
   @Get()
   findAll(
     @Query('page') page: number = 0,
@@ -57,18 +64,42 @@ export class TagController {
     );
   }
 
+  /**
+   * Get a single tag by ID.
+   *
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
+   * @throws {404} Not Found
+   */
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Tag> {
     return this.tagService.findOne(id);
   }
 
+  /**
+   * Update a tag by ID.
+   *
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
+   * @throws {404} Not Found
+   */
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTagDto: UpdateTagDto,
+  ): Promise<Tag> {
     return this.tagService.update(id, updateTagDto);
   }
 
+  /**
+   * Delete a tag by ID.
+   *
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
+   * @throws {404} Not Found
+   */
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<Tag> {
     return this.tagService.remove(id);
   }
 }
