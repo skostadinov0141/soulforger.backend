@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsOptional, Length } from 'class-validator';
-import { i18nValidationMessage } from 'nestjs-i18n';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
@@ -29,9 +27,6 @@ export class Tag {
    * @example 'Board Games'
    */
   @Prop()
-  @Length(4, 32, {
-    message: i18nValidationMessage('tag.validation.nameLength'),
-  })
   name: string;
 
   /**
@@ -49,10 +44,6 @@ export class Tag {
    * @example '#FF0000'
    */
   @Prop()
-  @IsOptional()
-  @Length(4, 32, {
-    message: i18nValidationMessage('tag.validation.colorLength'),
-  })
   color: string;
 
   /**
@@ -60,10 +51,6 @@ export class Tag {
    * @example 'mdi-chess'
    */
   @Prop()
-  @IsOptional()
-  @Length(2, 64, {
-    message: i18nValidationMessage('tag.validation.iconLength'),
-  })
   icon?: string;
 
   /**
@@ -71,10 +58,6 @@ export class Tag {
    * @example 'A collection of board games.'
    */
   @Prop()
-  @IsOptional()
-  @Length(4, 128, {
-    message: i18nValidationMessage('tag.validation.descriptionLength'),
-  })
   description?: string;
 }
 

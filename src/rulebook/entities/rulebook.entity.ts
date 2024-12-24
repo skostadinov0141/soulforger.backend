@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsOptional, Length } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 
 @Schema()
@@ -15,7 +14,6 @@ export class Rulebook {
    * @example 'Chess'
    */
   @Prop()
-  @Length(4, 128)
   name: string;
 
   /**
@@ -23,8 +21,6 @@ export class Rulebook {
    * @example 'A two-player strategy board game.'
    */
   @Prop()
-  @IsOptional()
-  @Length(4, 256)
   description?: string;
 }
 
