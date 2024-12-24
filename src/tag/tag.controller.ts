@@ -11,26 +11,16 @@ import {
 import { TagService } from './tag.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import {
-  ApiBody,
-  ApiOkResponse,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Tag } from './entities/tag.entity';
+import { LocaleQuery } from '../locale-query/locale-query.decorator';
 
 /**
  * CRUD routes for tags.
  */
 @Controller('tag')
 @ApiTags('tag')
-@ApiQuery({
-  name: 'lang',
-  required: false,
-  type: String,
-  enum: ['en', 'de'],
-})
+@LocaleQuery()
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 

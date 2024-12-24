@@ -13,20 +13,14 @@ import { CreateRulebookDto } from './dto/create-rulebook.dto';
 import { UpdateRulebookDto } from './dto/update-rulebook.dto';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Rulebook } from './entities/rulebook.entity';
+import { LocaleQuery } from '../locale-query/locale-query.decorator';
 
 /**
  * CRUD routes for rulebooks.
  */
 @Controller('rulebook')
 @ApiTags('rulebook')
-@ApiQuery({
-  name: 'lang',
-  required: true,
-  type: String,
-  enum: ['en', 'de'],
-  example: 'en',
-  allowEmptyValue: false,
-})
+@LocaleQuery()
 export class RulebookController {
   constructor(private readonly rulebookService: RulebookService) {}
 
