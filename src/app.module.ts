@@ -7,6 +7,7 @@ import { I18nModule, QueryResolver } from 'nestjs-i18n';
 import { RulebookModule } from './rulebook/rulebook.module';
 import { TagModule } from './tag/tag.module';
 import { AttributeGroupModule } from './attribute-group/attribute-group.module';
+import { ModifierModule } from './modifier/modifier.module';
 import * as path from 'node:path';
 
 @Module({
@@ -29,6 +30,7 @@ import * as path from 'node:path';
     RulebookModule,
     TagModule,
     AttributeGroupModule,
+    ModifierModule,
   ],
   controllers: [],
   providers: [],
