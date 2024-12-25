@@ -8,6 +8,7 @@ import { RulebookModule } from './rulebook/rulebook.module';
 import { TagModule } from './tag/tag.module';
 import { AttributeGroupModule } from './attribute-group/attribute-group.module';
 import { ModifierModule } from './modifier/modifier.module';
+import { CharacterTemplateModule } from './character-template/character-template.module';
 import * as path from 'node:path';
 
 @Module({
@@ -31,6 +32,7 @@ import * as path from 'node:path';
     TagModule,
     AttributeGroupModule,
     ModifierModule,
+    CharacterTemplateModule,
   ],
   controllers: [],
   providers: [],
