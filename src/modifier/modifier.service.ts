@@ -33,12 +33,17 @@ export class ModifierService {
 
   async findAll(
     rulebook: string,
+    populateRulebook: boolean,
     page: number,
     limit: number,
   ): Promise<Modifier[]> {
     await this.rulebookService.findOne(rulebook);
     return this.modifierModel
-      .find({ rulebook }, null, { limit, skip: page * limit })
+      .find({ rulebook }, null, {
+        limit,
+        skip: page * limit,
+        populate: populateRulebook ? 'rulebook' : '',
+      })
       .exec();
   }
 

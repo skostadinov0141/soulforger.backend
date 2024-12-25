@@ -44,10 +44,16 @@ export class ModifierController {
   @Get()
   findAll(
     @Query('rulebook') rulebook: string,
+    populateRulebook: boolean = false,
     @Query('page') page: number = 0,
     @Query('limit') limit: number = 10,
   ): Promise<Modifier[]> {
-    return this.modifierService.findAll(rulebook, page, limit);
+    return this.modifierService.findAll(
+      rulebook,
+      populateRulebook,
+      page,
+      limit,
+    );
   }
 
   /**
