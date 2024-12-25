@@ -33,14 +33,6 @@ export class Modifier {
   rulebook: Rulebook;
 
   /**
-   * Is the modifier enabled.
-   *
-   * @example true
-   */
-  @Prop({ required: true })
-  enabled: boolean;
-
-  /**
    * Should the modifier be applied before the target's base modifier.
    * @example true
    */
