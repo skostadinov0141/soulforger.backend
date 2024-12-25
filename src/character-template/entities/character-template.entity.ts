@@ -1,5 +1,8 @@
 import { Schema } from '@nestjs/mongoose';
 import { Tag } from '../../tag/entities/tag.entity';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
+import { Attribute } from './attribute.entity';
+import { Property } from './property.entity';
 
 @Schema({ timestamps: true })
 export class CharacterTemplate {
@@ -9,7 +12,9 @@ export class CharacterTemplate {
   name: string;
   description: string;
   tags: Tag[];
-  attributes: any;
+  rulebook: Rulebook;
+  attributes: Attribute[];
+  properties: Property[];
   derivedAttributes: any;
   skills: any;
   items: any;
