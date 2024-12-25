@@ -68,7 +68,7 @@ export class ModifierService {
     return modifier.save();
   }
 
-  async remove(id: number): Promise<Modifier> {
+  async remove(id: string): Promise<Modifier> {
     const modifier = await this.modifierModel.findById(id).exec();
     if (!modifier) {
       throw new HttpException(this.translate('modifier.errors.notFound'), 404);
