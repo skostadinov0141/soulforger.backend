@@ -21,7 +21,7 @@ export class ModifierService {
     });
   }
 
-  async create(createModifierDto: CreateModifierDto) {
+  async create(createModifierDto: CreateModifierDto): Promise<Modifier> {
     const rulebook = await this.rulebookService.findOne(
       createModifierDto.rulebook,
     );
@@ -31,14 +31,18 @@ export class ModifierService {
     });
   }
 
-  async findAll(rulebook: string, page: number, limit: number) {
+  async findAll(
+    rulebook: string,
+    page: number,
+    limit: number,
+  ): Promise<Modifier[]> {
     await this.rulebookService.findOne(rulebook);
     return this.modifierModel
       .find({ rulebook }, null, { limit, skip: page * limit })
       .exec();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Modifier> {
     const modifier = await this.modifierModel.findById(id).exec();
     if (!modifier) {
       throw new HttpException(this.translate('modifier.errors.notFound'), 404);
@@ -46,7 +50,10 @@ export class ModifierService {
     return modifier;
   }
 
-  async update(id: string, updateModifierDto: UpdateModifierDto) {
+  async update(
+    id: string,
+    updateModifierDto: UpdateModifierDto,
+  ): Promise<Modifier> {
     const rulebook = await this.rulebookService.findOne(
       updateModifierDto.rulebook,
     );
@@ -61,7 +68,7 @@ export class ModifierService {
     return modifier.save();
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Modifier> {
     const modifier = await this.modifierModel.findById(id).exec();
     if (!modifier) {
       throw new HttpException(this.translate('modifier.errors.notFound'), 404);
