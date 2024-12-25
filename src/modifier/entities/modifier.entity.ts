@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 @Schema({ timestamps: true })
 export class Modifier {
@@ -20,6 +21,16 @@ export class Modifier {
    * @example '2021-01-01T00:00:00.000Z'
    */
   updatedAt: Date;
+
+  /**
+   * The rulebook associated with the modifier.
+   */
+  @Prop({
+    required: true,
+    type: mongoose.Types.ObjectId,
+    ref: Rulebook.name,
+  })
+  rulebook: Rulebook;
 
   /**
    * Is the modifier enabled.

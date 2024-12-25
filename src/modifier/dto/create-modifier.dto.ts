@@ -1,5 +1,11 @@
 export class CreateModifierDto {
   /**
+   * The rulebook associated with the modifier.
+   * @example '676861133aa08216967be40b'
+   */
+  rulebook: string;
+
+  /**
    * Should the modifier be applied before the target's base modifier.
    * @example true
    */
