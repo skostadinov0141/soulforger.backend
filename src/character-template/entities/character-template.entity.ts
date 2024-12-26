@@ -3,6 +3,7 @@ import { Tag } from '../../tag/entities/tag.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import { Attribute } from './attribute.entity';
 import { Property } from './property.entity';
+import { DerivedAttribute } from './derived-attribute.entity';
 
 @Schema({ timestamps: true })
 export class CharacterTemplate {
@@ -15,7 +16,7 @@ export class CharacterTemplate {
   rulebook: Rulebook;
   attributes: Attribute[];
   properties: Property[];
-  derivedAttributes: any;
+  derivedAttributes: DerivedAttribute[];
   skills: any;
   items: any;
 }
