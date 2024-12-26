@@ -1,9 +1,10 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Tag } from '../../tag/entities/tag.entity';
 import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import { Attribute } from './attribute.entity';
 import { Property } from './property.entity';
 import { DerivedAttribute } from './derived-attribute.entity';
+import { HydratedDocument } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class CharacterTemplate {
@@ -38,3 +39,7 @@ export class CharacterTemplate {
   @Prop({ required: true })
   items: any;
 }
+
+export const CharacterTemplateSchema =
+  SchemaFactory.createForClass(CharacterTemplate);
+export type CharacterTemplateDocument = HydratedDocument<CharacterTemplate>;
