@@ -27,25 +27,38 @@ export class CharacterTemplateService {
   async create(
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    return 'This action adds a new characterTemplate';
+    await this.rulebookService.findOne(createCharacterTemplateDto.rulebook);
+    return this.characterTemplateModel.create(createCharacterTemplateDto);
   }
 
-  async findAll(): Promise<CharacterTemplate> {
-    return `This action returns all characterTemplate`;
+  async findAll(
+    rulebookId: string,
+    page = 1,
+    limit = 10,
+  ): Promise<CharacterTemplate[]> {
+    return this.characterTemplateModel
+      .find({ rulebook: rulebookId }, null, {
+        skip: (page - 1) * limit,
+        limit,
+      })
+      .exec();
   }
 
   async findOne(id: string): Promise<CharacterTemplate> {
-    return `This action returns a #${id} characterTemplate`;
+    return this.characterTemplateModel.findById(id).exec();
   }
 
   async update(
     id: string,
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    return `This action updates a #${id} characterTemplate`;
+    await this.rulebookService.findOne(updateCharacterTemplateDto.rulebook);
+    return this.characterTemplateModel
+      .findByIdAndUpdate(id, updateCharacterTemplateDto)
+      .exec();
   }
 
   async remove(id: string): Promise<CharacterTemplate> {
-    return `This action removes a #${id} characterTemplate`;
+    return this.characterTemplateModel.findByIdAndDelete(id).exec();
   }
 }
