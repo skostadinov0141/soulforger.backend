@@ -24,28 +24,28 @@ export class CharacterTemplateService {
     });
   }
 
-  create(
+  async create(
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
     return 'This action adds a new characterTemplate';
   }
 
-  findAll(): Promise<CharacterTemplate> {
+  async findAll(): Promise<CharacterTemplate> {
     return `This action returns all characterTemplate`;
   }
 
-  findOne(id: string): Promise<CharacterTemplate> {
+  async findOne(id: string): Promise<CharacterTemplate> {
     return `This action returns a #${id} characterTemplate`;
   }
 
-  update(
+  async update(
     id: string,
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
     return `This action updates a #${id} characterTemplate`;
   }
 
-  remove(id: string): Promise<CharacterTemplate> {
+  async remove(id: string): Promise<CharacterTemplate> {
     return `This action removes a #${id} characterTemplate`;
   }
 }
