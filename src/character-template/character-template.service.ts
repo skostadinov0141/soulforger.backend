@@ -29,7 +29,6 @@ export class CharacterTemplateService {
   async create(
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    await this.rulebookService.findOne(createCharacterTemplateDto.rulebook);
     const characterTemplate = new this.characterTemplateModel(
       createCharacterTemplateDto,
     );
@@ -43,7 +42,7 @@ export class CharacterTemplateService {
   ): Promise<CharacterTemplate[]> {
     return this.characterTemplateModel
       .find({ rulebook: { __id: rulebookId } }, null, {
-        skip: (page - 1) * limit,
+        skip: page * limit,
         limit,
       })
       .exec();
@@ -57,7 +56,6 @@ export class CharacterTemplateService {
     id: string,
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    await this.rulebookService.findOne(updateCharacterTemplateDto.rulebook);
     const characterTemplate = await this.characterTemplateModel
       .findById(id)
       .exec();

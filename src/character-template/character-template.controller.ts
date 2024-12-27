@@ -26,8 +26,8 @@ export class CharacterTemplateController {
   @Get()
   findAll(
     @Query('rulebookId') rulebookId: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
+    @Query('page') page: number = 0,
+    @Query('limit') limit: number = 10,
   ) {
     return this.characterTemplateService.findAll(rulebookId, page, limit);
   }

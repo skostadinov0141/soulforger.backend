@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 import { Tag } from '../../tag/entities/tag.entity';
 import { CharacterLocations } from '../entities/derived-attribute.entity';
+import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 
 export class CreateCharacterTemplateDto {
   /**
@@ -34,10 +35,9 @@ export class CreateCharacterTemplateDto {
 
   /**
    * The rulebook of the character template.
-   * @example "676de8901cfb42f2961f512a"
    */
-  @IsString()
-  rulebook: string;
+  @IsObject()
+  rulebook: Rulebook;
 
   /**
    * The attributes of the character template.
