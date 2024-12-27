@@ -26,66 +26,12 @@ export class CharacterTemplateService {
     });
   }
 
-  async setCharacterTemplateTags(model: CharacterTemplate) {
-    model.tags = await this.tagModel
-      .find({
-        _id: { $in: model.tags },
-      })
-      .exec();
-  }
-
-  async setCharacterTemplateAttributeTags(model: CharacterTemplate) {
-    model.attributes = await Promise.all(
-      model.attributes.map(async (attribute) => {
-        attribute.tags = await this.tagModel
-          .find({
-            _id: { $in: attribute.tags },
-          })
-          .exec();
-        return attribute;
-      }),
-    );
-  }
-
-  async setCharacterTemplatePropertyTags(model: CharacterTemplate) {
-    model.properties = await Promise.all(
-      model.properties.map(async (property) => {
-        property.tags = await this.tagModel
-          .find({
-            _id: { $in: property.tags },
-          })
-          .exec();
-        return property;
-      }),
-    );
-  }
-
-  async setCharacterTemplateDerivedAttributeTags(model: CharacterTemplate) {
-    model.derivedAttributes = await Promise.all(
-      model.derivedAttributes.map(async (derivedAttribute) => {
-        derivedAttribute.tags = await this.tagModel
-          .find({
-            _id: { $in: derivedAttribute.tags },
-          })
-          .exec();
-        return derivedAttribute;
-      }),
-    );
-  }
-
   async create(
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    const rulebook = await this.rulebookService.findOne(
-      createCharacterTemplateDto.rulebook,
-    );
+    await this.rulebookService.findOne(createCharacterTemplateDto.rulebook);
     const characterTemplate = new this.characterTemplateModel();
     characterTemplate.set(createCharacterTemplateDto);
-    await this.setCharacterTemplateTags(characterTemplate);
-    await this.setCharacterTemplateAttributeTags(characterTemplate);
-    await this.setCharacterTemplatePropertyTags(characterTemplate);
-    await this.setCharacterTemplateDerivedAttributeTags(characterTemplate);
-    characterTemplate.rulebook = rulebook;
     return characterTemplate.save();
   }
 
@@ -110,9 +56,7 @@ export class CharacterTemplateService {
     id: string,
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    const rulebook = await this.rulebookService.findOne(
-      updateCharacterTemplateDto.rulebook,
-    );
+    await this.rulebookService.findOne(updateCharacterTemplateDto.rulebook);
     const characterTemplate = await this.characterTemplateModel
       .findById(id)
       .exec();
@@ -121,18 +65,8 @@ export class CharacterTemplateService {
         this.translate('characterTemplate.errors.notFound'),
         404,
       );
-    await this.setCharacterTemplateTags(updateCharacterTemplateDto as any);
-    await this.setCharacterTemplateAttributeTags(
-      updateCharacterTemplateDto as any,
-    );
-    await this.setCharacterTemplatePropertyTags(
-      updateCharacterTemplateDto as any,
-    );
-    await this.setCharacterTemplateDerivedAttributeTags(
-      updateCharacterTemplateDto as any,
-    );
     characterTemplate.set(updateCharacterTemplateDto);
-    characterTemplate.rulebook = rulebook;
+    // todo: turn all strings to objectids
     return characterTemplate.save();
   }
 

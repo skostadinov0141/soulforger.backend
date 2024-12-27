@@ -27,10 +27,10 @@ export class CreateCharacterTemplateDto {
 
   /**
    * The tags of the character template.
-   * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
+   * @example []
    */
   @IsString({ each: true })
-  tags: string[] | Tag[];
+  tags: string[];
 
   /**
    * The rulebook of the character template.
@@ -76,10 +76,10 @@ export class CreateAttributeDto {
 
   /**
    * The tags of the attribute.
-   * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
+   * @example []
    */
   @IsString({ each: true })
-  tags: string[] | Tag[];
+  tags: string[];
 
   /**
    * The value of the attribute.
@@ -107,10 +107,10 @@ export class CreatePropertyDto {
 
   /**
    * The tags of the property.
-   * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
+   * @example []
    */
   @IsString({ each: true })
-  tags: string[] | Tag[];
+  tags: string[];
 
   /**
    * The value of the property.
@@ -146,10 +146,10 @@ export class CreateDerivedAttributeDto {
 
   /**
    * The tags of the derived attribute.
-   * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
+   * @example []
    */
   @IsString({ each: true })
-  tags: string[] | Tag[];
+  tags: string[];
 
   /**
    * The variables of the derived attribute.
