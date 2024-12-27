@@ -3,11 +3,20 @@ import { TagService } from './tag.service';
 import { TagController } from './tag.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Tag, TagSchema } from './entities/tag.entity';
+import { RulebookModule } from '../rulebook/rulebook.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Tag.name, schema: TagSchema }])],
   controllers: [TagController],
   providers: [TagService],
-  exports: [TagService],
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Tag.name,
+        schema: TagSchema,
+      },
+    ]),
+    RulebookModule,
+  ],
+  exports: [TagService, MongooseModule],
 })
 export class TagModule {}

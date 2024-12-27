@@ -4,82 +4,81 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tag } from './entities/tag.entity';
 import { Model } from 'mongoose';
+import { RulebookService } from '../rulebook/rulebook.service';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class TagService {
   constructor(
-    @InjectModel(Tag.name) readonly tagModel: Model<Tag>,
-    private readonly i18n: I18nService,
+    @InjectModel(Tag.name) private readonly tagModel: Model<Tag>,
+    private readonly rulebookService: RulebookService,
+    private readonly i18nService: I18nService,
   ) {}
 
+  translate(path: string) {
+    return this.i18nService.translate(path, {
+      lang: I18nContext.current().lang || 'en',
+    });
+  }
+
   async create(createTagDto: CreateTagDto): Promise<Tag> {
-    const existingTag = await this.tagModel
-      .findOne({
-        name: createTagDto.name,
+    if (
+      await this.tagModel.exists({
         rulebook: createTagDto.rulebook,
+        name: createTagDto.name,
       })
-      .exec();
-    if (existingTag) {
-      throw new HttpException(
-        this.i18n.t('tag.errors.tagAlreadyExists', {
-          lang: I18nContext.current().lang,
-        }),
-        400,
-      );
-    }
-    const tag = new this.tagModel(createTagDto);
-    return tag.save();
+    )
+      throw new HttpException(this.translate('tag.errors.exists'), 400);
+    // ensure rulebook exists
+    await this.rulebookService.findOne(createTagDto.rulebook);
+    return this.tagModel.create(createTagDto);
   }
 
-  findAll(): Promise<Tag[]> {
-    return this.tagModel.find({}, { __v: 0 }).exec();
-  }
-
-  findOne(id: string): Promise<Tag> {
-    const result = this.tagModel.findById(id, { __v: 0 }).exec();
-    if (!result) {
-      throw new HttpException(
-        this.i18n.t('tag.errors.tagNotFound', {
-          lang: I18nContext.current().lang,
-        }),
-        400,
-      );
-    }
-    return result;
-  }
-
-  findAllByRulebook(rulebook: string): Promise<Tag[]> {
-    return this.tagModel.find({ rulebook }, { __v: 0 }).exec();
-  }
-
-  update(id: string, updateTagDto: UpdateTagDto) {
-    const tag = this.tagModel.findById(id).exec();
-    if (!tag) {
-      throw new HttpException(
-        this.i18n.t('tag.errors.tagNotFound', {
-          lang: I18nContext.current().lang,
-        }),
-        400,
-      );
-    }
+  findAll(
+    page: number,
+    limit: number,
+    rulebook: string,
+    order: string,
+    populateRulebook: boolean,
+    search?: string,
+    sortBy?: string,
+  ): Promise<Tag[]> {
     return this.tagModel
-      .findOneAndUpdate({ _id: id }, updateTagDto, {
-        new: true,
-      })
+      .find(
+        {
+          rulebook,
+          name: search ? { $regex: search, $options: 'i' } : undefined,
+        },
+        null,
+        {
+          skip: page * limit,
+          limit,
+          sort: sortBy ? { [sortBy]: order } : undefined,
+          populate: populateRulebook ? 'rulebook' : undefined,
+        },
+      )
       .exec();
   }
 
-  async remove(id: string) {
-    const result = await this.tagModel.deleteOne({ _id: id }).exec();
-    if (result.deletedCount === 0) {
-      throw new HttpException(
-        this.i18n.t('tag.errors.tagNotFound', {
-          lang: I18nContext.current().lang,
-        }),
-        400,
-      );
-    }
-    return result;
+  async findOne(id: string): Promise<Tag> {
+    const tag = await this.tagModel.findById(id).exec();
+    if (!tag)
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
+    return tag;
+  }
+
+  async update(id: string, updateTagDto: UpdateTagDto): Promise<Tag> {
+    const tag = await this.tagModel.findById(id).exec();
+    if (!tag)
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
+    // ensure rulebook exists
+    await this.rulebookService.findOne(updateTagDto.rulebook);
+    return tag.set(updateTagDto).save();
+  }
+
+  remove(id: string): Promise<Tag> {
+    if (!this.tagModel.exists({ _id: id }))
+      throw new HttpException(this.translate('tag.errors.notFound'), 404);
+    return this.tagModel.findByIdAndDelete(id).exec();
   }
 }

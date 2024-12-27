@@ -6,68 +6,86 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { RulebookService } from './rulebook.service';
 import { CreateRulebookDto } from './dto/create-rulebook.dto';
 import { UpdateRulebookDto } from './dto/update-rulebook.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { Rulebook } from './entities/rulebook.entity';
+import { LocaleQuery } from '../locale-query/locale-query.decorator';
 
-@ApiTags('rulebook')
+/**
+ * CRUD routes for rulebooks.
+ */
 @Controller('rulebook')
+@ApiTags('rulebook')
+@LocaleQuery()
 export class RulebookController {
   constructor(private readonly rulebookService: RulebookService) {}
 
+  /**
+   * Create a new rulebook.
+   *
+   * @throws {400} Bad Request
+   * @throws {409} Conflict
+   * @throws {500} Internal Server Error
+   */
   @Post()
-  @ApiResponse({
-    status: 201,
-    description: 'The record was successfully created.',
-    type: Rulebook,
-  })
-  create(@Body() createRulebookDto: CreateRulebookDto) {
+  create(@Body() createRulebookDto: CreateRulebookDto): Promise<Rulebook> {
     return this.rulebookService.create(createRulebookDto);
   }
 
+  /**
+   * Retrieve all rulebooks.
+   *
+   * @throws {400} Bad Request
+   * @throws {500} Internal Server Error
+   */
   @Get()
-  @ApiResponse({
-    status: 200,
-    description: 'The records were successfully retrieved.',
-    type: [Rulebook],
-  })
-  findAll() {
-    return this.rulebookService.findAll();
+  findAll(
+    @Query('page') page: number = 0,
+    @Query('limit') limit: number = 10,
+  ): Promise<Rulebook[]> {
+    return this.rulebookService.findAll(page, limit);
   }
 
+  /**
+   * Retrieve a single rulebook by its unique identifier.
+   *
+   * @throws {400} Bad Request
+   * @throws {404} Not Found
+   * @throws {500} Internal Server Error
+   */
   @Get(':id')
-  @ApiResponse({
-    status: 200,
-    description: 'The record was successfully retrieved.',
-    type: Rulebook,
-  })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Rulebook> {
     return this.rulebookService.findOne(id);
   }
 
+  /**
+   * Update a rulebook by its unique identifier.
+   *
+   * @throws {400} Bad Request
+   * @throws {404} Not Found
+   * @throws {500} Internal Server Error
+   */
   @Patch(':id')
-  @ApiResponse({
-    status: 200,
-    description: 'The record was successfully updated.',
-    type: Rulebook,
-  })
   update(
     @Param('id') id: string,
     @Body() updateRulebookDto: UpdateRulebookDto,
-  ) {
+  ): Promise<Rulebook> {
     return this.rulebookService.update(id, updateRulebookDto);
   }
 
+  /**
+   * Delete a rulebook by its unique identifier.
+   *
+   * @throws {400} Bad Request
+   * @throws {404} Not Found
+   * @throws {500} Internal Server Error
+   */
   @Delete(':id')
-  @ApiResponse({
-    status: 200,
-    description: 'The record was successfully deleted.',
-    type: Rulebook,
-  })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<Rulebook> {
     return this.rulebookService.remove(id);
   }
 }

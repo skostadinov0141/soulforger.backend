@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { I18nValidationPipe } from 'nestjs-i18n';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,8 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
   });
+
+  app.useGlobalPipes(new I18nValidationPipe());
 
   await app.listen(3001);
 }

@@ -9,9 +9,12 @@ import { Rulebook, RulebookSchema } from './entities/rulebook.entity';
   providers: [RulebookService],
   imports: [
     MongooseModule.forFeature([
-      { name: Rulebook.name, schema: RulebookSchema },
+      {
+        name: Rulebook.name,
+        schema: RulebookSchema,
+      },
     ]),
   ],
-  exports: [MongooseModule, RulebookService],
+  exports: [RulebookService],
 })
 export class RulebookModule {}

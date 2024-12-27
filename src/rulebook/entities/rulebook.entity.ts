@@ -1,22 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
+import { HydratedDocument } from 'mongoose';
 
 @Schema()
 export class Rulebook {
-  @ApiProperty()
+  /**
+   * The unique identifier of the rulebook.
+   * @example '676861133aa08216967be40b'
+   */
   _id: string;
 
-  @ApiProperty()
-  @Prop()
-  owner: string;
-
-  @ApiProperty()
-  @Prop()
+  /**
+   * The name of the rulebook.
+   * @example 'Chess'
+   */
+  @Prop({ required: true })
   name: string;
 
-  @ApiProperty()
-  @Prop()
-  description: string;
+  /**
+   * The description of the rulebook.
+   * @example 'A two-player strategy board game.'
+   */
+  @Prop({ required: false })
+  description?: string;
 }
 
 export const RulebookSchema = SchemaFactory.createForClass(Rulebook);
+export type RulebookDocument = HydratedDocument<Rulebook>;
