@@ -29,8 +29,8 @@ export class CreateCharacterTemplateDto {
    * The tags of the character template.
    * @example []
    */
-  @IsString({ each: true })
-  tags: string[];
+  @IsObject({ each: true })
+  tags: Tag[];
 
   /**
    * The rulebook of the character template.
@@ -78,8 +78,8 @@ export class CreateAttributeDto {
    * The tags of the attribute.
    * @example []
    */
-  @IsString({ each: true })
-  tags: string[];
+  @IsObject({ each: true })
+  tags: Tag[];
 
   /**
    * The value of the attribute.
@@ -109,8 +109,8 @@ export class CreatePropertyDto {
    * The tags of the property.
    * @example []
    */
-  @IsString({ each: true })
-  tags: string[];
+  @IsObject({ each: true })
+  tags: Tag[];
 
   /**
    * The value of the property.
@@ -148,8 +148,8 @@ export class CreateDerivedAttributeDto {
    * The tags of the derived attribute.
    * @example []
    */
-  @IsString({ each: true })
-  tags: string[];
+  @IsObject({ each: true })
+  tags: Tag[];
 
   /**
    * The variables of the derived attribute.

@@ -30,8 +30,9 @@ export class CharacterTemplateService {
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
     await this.rulebookService.findOne(createCharacterTemplateDto.rulebook);
-    const characterTemplate = new this.characterTemplateModel();
-    characterTemplate.set(createCharacterTemplateDto);
+    const characterTemplate = new this.characterTemplateModel(
+      createCharacterTemplateDto,
+    );
     return characterTemplate.save();
   }
 
@@ -66,7 +67,6 @@ export class CharacterTemplateService {
         404,
       );
     characterTemplate.set(updateCharacterTemplateDto);
-    // todo: turn all strings to objectids
     return characterTemplate.save();
   }
 
