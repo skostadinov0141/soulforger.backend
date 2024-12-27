@@ -4,7 +4,7 @@ import { Rulebook } from '../../rulebook/entities/rulebook.entity';
 import { Attribute } from './attribute.entity';
 import { Property } from './property.entity';
 import { DerivedAttribute } from './derived-attribute.entity';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class CharacterTemplate {
@@ -18,10 +18,10 @@ export class CharacterTemplate {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ type: [Tag], required: true, ref: Tag.name })
+  @Prop({ type: mongoose.Types.ObjectId, required: true, ref: Tag.name })
   tags: Tag[];
 
-  @Prop({ required: true, ref: Rulebook.name })
+  @Prop({ type: mongoose.Types.ObjectId, required: true, ref: Rulebook.name })
   rulebook: Rulebook;
 
   @Prop({ type: [Attribute], required: true })

@@ -95,7 +95,7 @@ export class CharacterTemplateService {
     limit = 10,
   ): Promise<CharacterTemplate[]> {
     return this.characterTemplateModel
-      .find({ rulebook: rulebookId }, null, {
+      .find({ rulebook: { __id: rulebookId } }, null, {
         skip: (page - 1) * limit,
         limit,
       })

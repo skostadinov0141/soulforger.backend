@@ -1,5 +1,6 @@
 import { Tag } from '../../tag/entities/tag.entity';
 import { Prop } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export enum CharacterLocations {
   ATTRIBUTE = 'attributes',
@@ -27,7 +28,7 @@ export class DerivedAttribute {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ type: [Tag], required: true, ref: Tag.name })
+  @Prop({ type: mongoose.Types.ObjectId, required: true, ref: Tag.name })
   tags: Tag[];
 
   @Prop({ required: true })
