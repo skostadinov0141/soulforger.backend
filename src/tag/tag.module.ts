@@ -17,6 +17,6 @@ import { RulebookModule } from '../rulebook/rulebook.module';
     ]),
     RulebookModule,
   ],
-  exports: [TagService],
+  exports: [TagService, MongooseModule],
 })
 export class TagModule {}

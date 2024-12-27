@@ -7,12 +7,14 @@ import { Model } from 'mongoose';
 import { RulebookService } from '../rulebook/rulebook.service';
 import { TagService } from '../tag/tag.service';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { Tag } from '../tag/entities/tag.entity';
 
 @Injectable()
 export class CharacterTemplateService {
   constructor(
     @InjectModel(CharacterTemplate.name)
     private characterTemplateModel: Model<CharacterTemplate>,
+    @InjectModel(Tag.name) private tagModel: Model<Tag>,
     private readonly rulebookService: RulebookService,
     private readonly tagService: TagService,
     private readonly i18nService: I18nService,
@@ -24,11 +26,67 @@ export class CharacterTemplateService {
     });
   }
 
+  async setCharacterTemplateTags(model: CharacterTemplate) {
+    model.tags = await this.tagModel
+      .find({
+        _id: { $in: model.tags },
+      })
+      .exec();
+  }
+
+  async setCharacterTemplateAttributeTags(model: CharacterTemplate) {
+    model.attributes = await Promise.all(
+      model.attributes.map(async (attribute) => {
+        attribute.tags = await this.tagModel
+          .find({
+            _id: { $in: attribute.tags },
+          })
+          .exec();
+        return attribute;
+      }),
+    );
+  }
+
+  async setCharacterTemplatePropertyTags(model: CharacterTemplate) {
+    model.properties = await Promise.all(
+      model.properties.map(async (property) => {
+        property.tags = await this.tagModel
+          .find({
+            _id: { $in: property.tags },
+          })
+          .exec();
+        return property;
+      }),
+    );
+  }
+
+  async setCharacterTemplateDerivedAttributeTags(model: CharacterTemplate) {
+    model.derivedAttributes = await Promise.all(
+      model.derivedAttributes.map(async (derivedAttribute) => {
+        derivedAttribute.tags = await this.tagModel
+          .find({
+            _id: { $in: derivedAttribute.tags },
+          })
+          .exec();
+        return derivedAttribute;
+      }),
+    );
+  }
+
   async create(
     createCharacterTemplateDto: CreateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    await this.rulebookService.findOne(createCharacterTemplateDto.rulebook);
-    return this.characterTemplateModel.create(createCharacterTemplateDto);
+    const rulebook = await this.rulebookService.findOne(
+      createCharacterTemplateDto.rulebook,
+    );
+    const characterTemplate = new this.characterTemplateModel();
+    characterTemplate.set(createCharacterTemplateDto);
+    await this.setCharacterTemplateTags(characterTemplate);
+    await this.setCharacterTemplateAttributeTags(characterTemplate);
+    await this.setCharacterTemplatePropertyTags(characterTemplate);
+    await this.setCharacterTemplateDerivedAttributeTags(characterTemplate);
+    characterTemplate.rulebook = rulebook;
+    return characterTemplate.save();
   }
 
   async findAll(
@@ -53,9 +111,15 @@ export class CharacterTemplateService {
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
     await this.rulebookService.findOne(updateCharacterTemplateDto.rulebook);
-    return this.characterTemplateModel
-      .findByIdAndUpdate(id, updateCharacterTemplateDto)
+    const characterTemplate = await this.characterTemplateModel
+      .findById(id)
       .exec();
+    characterTemplate.set(updateCharacterTemplateDto);
+    await this.setCharacterTemplateTags(characterTemplate);
+    await this.setCharacterTemplateAttributeTags(characterTemplate);
+    await this.setCharacterTemplatePropertyTags(characterTemplate);
+    await this.setCharacterTemplateDerivedAttributeTags(characterTemplate);
+    return characterTemplate.save();
   }
 
   async remove(id: string): Promise<CharacterTemplate> {
