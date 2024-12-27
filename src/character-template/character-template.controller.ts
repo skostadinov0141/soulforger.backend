@@ -1,11 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { CharacterTemplateService } from './character-template.service';
 import { CreateCharacterTemplateDto } from './dto/create-character-template.dto';
 import { UpdateCharacterTemplateDto } from './dto/update-character-template.dto';
 
 @Controller('character-template')
 export class CharacterTemplateController {
-  constructor(private readonly characterTemplateService: CharacterTemplateService) {}
+  constructor(
+    private readonly characterTemplateService: CharacterTemplateService,
+  ) {}
 
   @Post()
   create(@Body() createCharacterTemplateDto: CreateCharacterTemplateDto) {
@@ -13,22 +24,29 @@ export class CharacterTemplateController {
   }
 
   @Get()
-  findAll() {
-    return this.characterTemplateService.findAll();
+  findAll(
+    @Query('rulebookId') rulebookId: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    return this.characterTemplateService.findAll(rulebookId, page, limit);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.characterTemplateService.findOne(+id);
+    return this.characterTemplateService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCharacterTemplateDto: UpdateCharacterTemplateDto) {
-    return this.characterTemplateService.update(+id, updateCharacterTemplateDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCharacterTemplateDto: UpdateCharacterTemplateDto,
+  ) {
+    return this.characterTemplateService.update(id, updateCharacterTemplateDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.characterTemplateService.remove(+id);
+    return this.characterTemplateService.remove(id);
   }
 }

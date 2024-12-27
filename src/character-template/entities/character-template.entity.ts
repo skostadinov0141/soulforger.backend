@@ -32,12 +32,6 @@ export class CharacterTemplate {
 
   @Prop({ type: [DerivedAttribute], required: true })
   derivedAttributes: DerivedAttribute[];
-
-  @Prop({ required: true })
-  skills: any;
-
-  @Prop({ required: true })
-  items: any;
 }
 
 export const CharacterTemplateSchema =

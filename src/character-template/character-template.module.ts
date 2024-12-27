@@ -6,8 +6,8 @@ import {
   CharacterTemplate,
   CharacterTemplateSchema,
 } from './entities/character-template.entity';
-import { RulebookService } from '../rulebook/rulebook.service';
-import { TagService } from '../tag/tag.service';
+import { TagModule } from '../tag/tag.module';
+import { RulebookModule } from '../rulebook/rulebook.module';
 
 @Module({
   controllers: [CharacterTemplateController],
@@ -19,8 +19,8 @@ import { TagService } from '../tag/tag.service';
         schema: CharacterTemplateSchema,
       },
     ]),
-    RulebookService,
-    TagService,
+    RulebookModule,
+    TagModule,
   ],
   exports: [CharacterTemplateService],
 })
