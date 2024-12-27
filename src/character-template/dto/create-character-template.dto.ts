@@ -5,6 +5,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
+import { Tag } from '../../tag/entities/tag.entity';
 
 export class CreateCharacterTemplateDto {
   /**
@@ -27,7 +28,7 @@ export class CreateCharacterTemplateDto {
    * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
    */
   @IsString({ each: true })
-  tags: string[];
+  tags: string[] | Tag[];
 
   /**
    * The rulebook of the character template.
@@ -76,7 +77,7 @@ export class CreateAttributeDto {
    * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
    */
   @IsString({ each: true })
-  tags: string[];
+  tags: string[] | Tag[];
 
   /**
    * The value of the attribute.
@@ -107,7 +108,7 @@ export class CreatePropertyDto {
    * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
    */
   @IsString({ each: true })
-  tags: string[];
+  tags: string[] | Tag[];
 
   /**
    * The value of the property.
@@ -146,7 +147,7 @@ export class CreateDerivedAttributeDto {
    * @example ['676de8901cfb42f2961f512a', '676de8901cfb42f2961f512b']
    */
   @IsString({ each: true })
-  tags: string[];
+  tags: string[] | Tag[];
 
   /**
    * The variables of the derived attribute.

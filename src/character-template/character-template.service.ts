@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateCharacterTemplateDto } from './dto/create-character-template.dto';
 import { UpdateCharacterTemplateDto } from './dto/update-character-template.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -110,15 +110,29 @@ export class CharacterTemplateService {
     id: string,
     updateCharacterTemplateDto: UpdateCharacterTemplateDto,
   ): Promise<CharacterTemplate> {
-    await this.rulebookService.findOne(updateCharacterTemplateDto.rulebook);
+    const rulebook = await this.rulebookService.findOne(
+      updateCharacterTemplateDto.rulebook,
+    );
     const characterTemplate = await this.characterTemplateModel
       .findById(id)
       .exec();
+    if (!characterTemplate)
+      throw new HttpException(
+        this.translate('characterTemplate.errors.notFound'),
+        404,
+      );
+    await this.setCharacterTemplateTags(updateCharacterTemplateDto as any);
+    await this.setCharacterTemplateAttributeTags(
+      updateCharacterTemplateDto as any,
+    );
+    await this.setCharacterTemplatePropertyTags(
+      updateCharacterTemplateDto as any,
+    );
+    await this.setCharacterTemplateDerivedAttributeTags(
+      updateCharacterTemplateDto as any,
+    );
     characterTemplate.set(updateCharacterTemplateDto);
-    await this.setCharacterTemplateTags(characterTemplate);
-    await this.setCharacterTemplateAttributeTags(characterTemplate);
-    await this.setCharacterTemplatePropertyTags(characterTemplate);
-    await this.setCharacterTemplateDerivedAttributeTags(characterTemplate);
+    characterTemplate.rulebook = rulebook;
     return characterTemplate.save();
   }
 
