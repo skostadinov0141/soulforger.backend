@@ -11,8 +11,12 @@ import {
 import { CharacterTemplateService } from './character-template.service';
 import { CreateCharacterTemplateDto } from './dto/create-character-template.dto';
 import { UpdateCharacterTemplateDto } from './dto/update-character-template.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { LocaleQuery } from '../locale-query/locale-query.decorator';
 
 @Controller('character-template')
+@ApiTags('character-template')
+@LocaleQuery()
 export class CharacterTemplateController {
   constructor(
     private readonly characterTemplateService: CharacterTemplateService,
