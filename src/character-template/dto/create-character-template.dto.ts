@@ -1,4 +1,5 @@
 import {
+  IsEnum,
   IsNumber,
   IsObject,
   IsOptional,
@@ -6,6 +7,7 @@ import {
   Length,
 } from 'class-validator';
 import { Tag } from '../../tag/entities/tag.entity';
+import { CharacterLocations } from '../entities/derived-attribute.entity';
 
 export class CreateCharacterTemplateDto {
   /**
@@ -173,17 +175,18 @@ export class CreateVariableDto {
 
   /**
    * The location of the variable.
-   * @example "attributes"
+   * @example "ATTRIBUTE"
    */
   @IsString()
-  location: string;
+  @IsEnum(CharacterLocations)
+  location: CharacterLocations;
 
   /**
    * The targetId of the variable.
    * @example "676de9fa5750d50f4fe4e634"
    */
   @IsString()
-  targetId: string;
+  targetName: string;
 
   /**
    * The variableId of the variable.

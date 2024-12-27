@@ -1,15 +1,20 @@
 import { Tag } from '../../tag/entities/tag.entity';
 import { Prop } from '@nestjs/mongoose';
 
+export enum CharacterLocations {
+  ATTRIBUTE = 'attributes',
+  DERIVED_ATTRIBUTE = 'derivedAttributes',
+}
+
 export class Variable {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
-  location: string;
+  @Prop({ required: true, enum: CharacterLocations })
+  location: CharacterLocations;
 
   @Prop({ required: true })
-  targetId: string;
+  targetName: string;
 
   @Prop({ required: true })
   variableId: string;
