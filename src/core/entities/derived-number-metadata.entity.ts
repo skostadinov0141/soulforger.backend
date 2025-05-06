@@ -1,4 +1,4 @@
-export class DerivedNumberMetadata {
+export interface DerivedNumberMetadata {
   default: number;
   min: number;
   max: number;

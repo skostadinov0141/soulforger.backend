@@ -1,4 +1,4 @@
-export class NumberMetadata {
+export interface NumberMetadata {
   default: number;
   min: number;
   max: number;

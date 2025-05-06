@@ -1,4 +1,4 @@
-export class TextMetadata {
+export interface TextMetadata {
   default: string;
   onChange?: string;
 }
