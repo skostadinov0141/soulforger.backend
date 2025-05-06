@@ -3,9 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as process from 'node:process';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
-import { RulebookModule } from './rulebook/rulebook.module';
-import { TagModule } from './tag/tag.module';
-import { CharacterTemplateModule } from './character-template/character-template.module';
+import { TestModule } from './test/test.module';
 import * as path from 'node:path';
 
 @Module({
@@ -25,9 +23,7 @@ import * as path from 'node:path';
     MongooseModule.forRoot(
       `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
     ),
-    RulebookModule,
-    TagModule,
-    CharacterTemplateModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],
