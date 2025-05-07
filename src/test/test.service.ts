@@ -62,6 +62,42 @@ export class TestService {
         },
         value: 0,
       },
+      {
+        type: PropertyTypes.DERIVED_NUMBER,
+        correlationId: 'doubled-dexterity',
+        name: [
+          {
+            locale: Locales.EN,
+            text: 'Doubled Dexterity',
+          },
+        ],
+        description: [],
+        metadata: <DerivedNumberMetadata>{
+          default: 0,
+          expression: '${dexterity}*2',
+          min: 0,
+          max: 100,
+        },
+        value: 0,
+      },
+      {
+        type: PropertyTypes.DERIVED_NUMBER,
+        correlationId: 'deine-mudda',
+        name: [
+          {
+            locale: Locales.EN,
+            text: 'Deine Mudda',
+          },
+        ],
+        description: [],
+        metadata: <DerivedNumberMetadata>{
+          default: 0,
+          expression: '${doubled-dexterity}*${strength-cross-dexterity}',
+          min: 0,
+          max: 100,
+        },
+        value: 0,
+      },
     ];
     const graph = new PropertyGraph(properties);
     return graph;

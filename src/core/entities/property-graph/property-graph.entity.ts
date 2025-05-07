@@ -23,7 +23,7 @@ export class PropertyGraph {
           node.dependsOn = [];
           break;
         case PropertyTypes.DERIVED_NUMBER:
-          const regex = /\$\{([a-zA-Z_][a-zA-Z0-9_]*)}/g;
+          const regex = /\$\{([a-zA-Z_][a-zA-Z0-9_-]*)}/g;
           const matches = (
             content.metadata as DerivedNumberMetadata
           ).expression.match(regex);
