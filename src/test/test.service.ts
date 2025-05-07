@@ -92,25 +92,7 @@ export class TestService {
         description: [],
         metadata: <DerivedNumberMetadata>{
           default: 0,
-          expression: `$\{doubled-dexterity}*$\{strength-cross-dexterity}+\${circular-dependency}`,
-          min: 0,
-          max: 100,
-        },
-        value: 0,
-      },
-      {
-        type: PropertyTypes.DERIVED_NUMBER,
-        correlationId: 'circular-dependency',
-        name: [
-          {
-            locale: Locales.EN,
-            text: 'Circular Dependency',
-          },
-        ],
-        description: [],
-        metadata: <DerivedNumberMetadata>{
-          default: 0,
-          expression: '${deine-mudda} + 5',
+          expression: `$\{doubled-dexterity}*$\{strength-cross-dexterity}`,
           min: 0,
           max: 100,
         },

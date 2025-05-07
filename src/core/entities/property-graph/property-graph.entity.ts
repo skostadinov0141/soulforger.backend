@@ -13,6 +13,10 @@ export class PropertyGraph {
     this.constructDependencies(this.nodes);
   }
 
+  /**
+   * Constructs dependencies between nodes based on their content
+   * @param nodes Array of PropertyGraphNode
+   */
   private constructDependencies(nodes: PropertyGraphNode[]) {
     nodes.forEach((node) => {
       const content = node.content;
@@ -79,7 +83,11 @@ export class PropertyGraph {
     return id.replace(/[^a-zA-Z0-9]/g, '_');
   }
 
-  tarjan() {
+  /**
+   * Tarjan's algorithm to find strongly connected components (SCCs)
+   * @returns Array of strongly connected components, each represented as an array of PropertyGraphNode
+   */
+  private tarjan(): PropertyGraphNode[][] {
     const index = new Map<PropertyGraphNode, number>();
     const lowlink = new Map<PropertyGraphNode, number>();
     const onStack = new Map<PropertyGraphNode, boolean>();
@@ -134,5 +142,54 @@ export class PropertyGraph {
     });
 
     return sccs;
+  }
+
+  /**
+   * Returns all cycles in the graph
+   * @returns Array of cycles, each represented as an array of PropertyGraphNode
+   */
+  getCycles() {
+    return this.tarjan().filter((item) => item.length > 1);
+  }
+
+  /**
+   * Checks if the graph has cycles
+   * @returns boolean indicating if the graph has cycles
+   */
+  hasCycles() {
+    return this.getCycles().length != 0;
+  }
+
+  /**
+   * Performs a topological sort on the graph
+   * @returns Array of correlation IDs in topologically sorted order
+   */
+  topologicalSort(): string[] {
+    if (this.hasCycles()) throw new Error('Graph has cycles');
+    const visited = new Set<PropertyGraphNode>();
+    const stack: PropertyGraphNode[] = [];
+    const result: PropertyGraphNode[] = [];
+
+    const visit = (node: PropertyGraphNode) => {
+      if (!visited.has(node)) {
+        visited.add(node);
+        node.dependsOn.forEach((dep) => {
+          if (dep) {
+            visit(dep);
+          }
+        });
+        stack.push(node);
+      }
+    };
+
+    this.nodes.forEach((node) => {
+      visit(node);
+    });
+
+    while (stack.length > 0) {
+      result.push(stack.pop());
+    }
+
+    return result.reverse().map((i) => i.content.correlationId);
   }
 }

@@ -7,11 +7,7 @@ export class TestController {
 
   @Get()
   test() {
-    return this.service
-      .test()
-      .tarjan()
-      .map((item) => item.length)
-      .join(',');
+    return this.service.test().topologicalSort();
     // return this.service.test().toMermaid();
   }
 }
