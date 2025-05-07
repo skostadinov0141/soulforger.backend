@@ -78,4 +78,45 @@ export class PropertyGraph {
     // Replace characters that might cause issues in Mermaid
     return id.replace(/[^a-zA-Z0-9]/g, '_');
   }
+
+  tarjan() {
+    const index = new Map<PropertyGraphNode, number>();
+    const lowlink = new Map<PropertyGraphNode, number>();
+    const stack = new Set<PropertyGraphNode>();
+    // const unvisited = new Set<PropertyGraphNode>(this.nodes);
+    let indexCounter = 0;
+    const sccs: PropertyGraphNode[][] = [];
+
+    function findScc(node: PropertyGraphNode) {
+      // Housekeeping
+      index.set(node, indexCounter);
+      lowlink.set(node, indexCounter);
+      stack.add(node);
+      indexCounter++;
+
+      // Visit all dependencies
+      node.dependsOn.forEach((dep) => {
+        if (!index.has(dep)) {
+          findScc(dep);
+        }
+        if (stack.has(dep)) {
+          lowlink.set(node, Math.min(lowlink.get(node), lowlink.get(dep)));
+        }
+      });
+
+      if (index.get(node) == lowlink.get(node)) {
+        const loop: PropertyGraphNode[] = [];
+        for (const item of stack) {
+          stack.delete(item);
+          lowlink.set(item, index.get(node));
+          loop.push(item);
+          if (item == node) break;
+        }
+        sccs.push(loop);
+      }
+    }
+
+    this.nodes.forEach((node) => findScc(node));
+    return sccs;
+  }
 }

@@ -7,6 +7,10 @@ export class TestController {
 
   @Get()
   test() {
-    return this.service.test().toMermaid();
+    return this.service
+      .test()
+      .tarjan()
+      .map((item) => item.length)
+      .join(',');
   }
 }
