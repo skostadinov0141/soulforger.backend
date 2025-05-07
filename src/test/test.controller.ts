@@ -12,5 +12,6 @@ export class TestController {
       .tarjan()
       .map((item) => item.length)
       .join(',');
+    // return this.service.test().toMermaid();
   }
 }

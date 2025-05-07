@@ -82,41 +82,57 @@ export class PropertyGraph {
   tarjan() {
     const index = new Map<PropertyGraphNode, number>();
     const lowlink = new Map<PropertyGraphNode, number>();
-    const stack = new Set<PropertyGraphNode>();
-    // const unvisited = new Set<PropertyGraphNode>(this.nodes);
+    const onStack = new Map<PropertyGraphNode, boolean>();
+    const stack: PropertyGraphNode[] = [];
     let indexCounter = 0;
     const sccs: PropertyGraphNode[][] = [];
 
-    function findScc(node: PropertyGraphNode) {
-      // Housekeeping
+    const strongConnect = (node: PropertyGraphNode) => {
+      // Set the depth index for node
       index.set(node, indexCounter);
       lowlink.set(node, indexCounter);
-      stack.add(node);
       indexCounter++;
+      stack.push(node);
+      onStack.set(node, true);
 
-      // Visit all dependencies
+      // Consider successors of node
       node.dependsOn.forEach((dep) => {
-        if (!index.has(dep)) {
-          findScc(dep);
-        }
-        if (stack.has(dep)) {
-          lowlink.set(node, Math.min(lowlink.get(node), lowlink.get(dep)));
+        if (dep) {
+          // Ensure dependency exists
+          if (!index.has(dep)) {
+            // Successor has not yet been visited; recurse on it
+            strongConnect(dep);
+            lowlink.set(node, Math.min(lowlink.get(node), lowlink.get(dep)));
+          } else if (onStack.get(dep)) {
+            // Successor is in stack and hence in the current SCC
+            // If successor is not on stack, then (node, successor) is a cross-edge
+            // in the DFS tree and must be ignored
+            lowlink.set(node, Math.min(lowlink.get(node), index.get(dep)));
+          }
         }
       });
 
-      if (index.get(node) == lowlink.get(node)) {
-        const loop: PropertyGraphNode[] = [];
-        for (const item of stack) {
-          stack.delete(item);
-          lowlink.set(item, index.get(node));
-          loop.push(item);
-          if (item == node) break;
-        }
-        sccs.push(loop);
-      }
-    }
+      // If node is a root node, pop the stack and generate an SCC
+      if (lowlink.get(node) === index.get(node)) {
+        const scc: PropertyGraphNode[] = [];
+        let w: PropertyGraphNode;
+        do {
+          w = stack.pop();
+          onStack.set(w, false);
+          scc.push(w);
+        } while (w !== node);
 
-    this.nodes.forEach((node) => findScc(node));
+        sccs.push(scc);
+      }
+    };
+
+    // Call strongConnect for each unvisited node
+    this.nodes.forEach((node) => {
+      if (!index.has(node)) {
+        strongConnect(node);
+      }
+    });
+
     return sccs;
   }
 }
