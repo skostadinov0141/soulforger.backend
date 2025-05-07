@@ -5,7 +5,7 @@ import { DerivedNumberMetadata } from './derived-number-metadata.entity';
 import { NumberMetadata } from './number-metadata.entity';
 import { TextMetadata } from './text-metadata.entity';
 import { BooleanMetadata } from './boolean-metadata.entity';
-import mongoose, { SchemaTypes } from 'mongoose';
+import { SchemaTypes } from 'mongoose';
 
 export class CharacterProperty {
   @Prop({ enum: PropertyTypes })
