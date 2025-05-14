@@ -13,6 +13,8 @@ export class CharacterProperty {
   @Prop()
   correlationId: string;
   @Prop()
+  autoUpdateDependants: boolean = true;
+  @Prop()
   name: TextTranslation[];
   @Prop()
   description: TextTranslation[];

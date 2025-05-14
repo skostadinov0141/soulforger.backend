@@ -12,6 +12,7 @@ export class TestService {
     const properties: CharacterProperty[] = [
       {
         type: PropertyTypes.NUMBER,
+        autoUpdateDependants: false,
         correlationId: 'strength',
         name: [
           {
@@ -29,6 +30,7 @@ export class TestService {
       },
       {
         type: PropertyTypes.NUMBER,
+        autoUpdateDependants: false,
         correlationId: 'dexterity',
         name: [
           {
@@ -46,6 +48,7 @@ export class TestService {
       },
       {
         type: PropertyTypes.DERIVED_NUMBER,
+        autoUpdateDependants: false,
         correlationId: 'strength-cross-dexterity',
         name: [
           {
@@ -64,6 +67,7 @@ export class TestService {
       },
       {
         type: PropertyTypes.DERIVED_NUMBER,
+        autoUpdateDependants: false,
         correlationId: 'doubled-dexterity',
         name: [
           {
@@ -82,6 +86,7 @@ export class TestService {
       },
       {
         type: PropertyTypes.DERIVED_NUMBER,
+        autoUpdateDependants: false,
         correlationId: 'deine-mudda',
         name: [
           {
