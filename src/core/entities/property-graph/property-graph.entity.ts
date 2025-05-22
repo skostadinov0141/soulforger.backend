@@ -7,9 +7,11 @@ export class PropertyGraph {
   nodes: PropertyGraphNode[];
 
   constructor(properties: CharacterProperty[]) {
+    // Initialize nodes from properties
     this.nodes = properties.map((property) => {
       return new PropertyGraphNode(property);
     });
+    // Construct dependencies between nodes
     this.constructDependencies(this.nodes);
   }
 
@@ -18,27 +20,35 @@ export class PropertyGraph {
    * @param nodes Array of PropertyGraphNode
    */
   private constructDependencies(nodes: PropertyGraphNode[]) {
+    // Iterate through each node and set its dependencies
     nodes.forEach((node) => {
+      // Extract the content of the node
       const content = node.content;
       switch (content.type) {
-        case PropertyTypes.TEXT:
-        case PropertyTypes.NUMBER:
-        case PropertyTypes.BOOLEAN:
-          node.dependsOn = [];
-          break;
+        // If the property is a derived number, find its dependencies
         case PropertyTypes.DERIVED_NUMBER:
+          // Extract all correlation IDs from the expression
           const regex = /\$\{([a-zA-Z_][a-zA-Z0-9_-]*)}/g;
           const matches = (
             content.metadata as DerivedNumberMetadata
           ).expression.match(regex);
+          // If matches are found, set the dependencies
           if (matches) {
             node.dependsOn = matches.map((match) => {
+              // Remove the ${} from the match to get the correlation ID
               match = match.replace('${', '').replace('}', '');
+              // Find the corresponding node in the node array and return it
               return nodes.find((n) => n.content.correlationId === match);
             });
           } else {
+            // If no matches are found, set an empty array
             node.dependsOn = [];
           }
+          break;
+
+        // If the property is not a derived number, set an empty array for dependencies
+        default:
+          node.dependsOn = [];
           break;
       }
     });
@@ -89,7 +99,7 @@ export class PropertyGraph {
    */
   private tarjan(): PropertyGraphNode[][] {
     const index = new Map<PropertyGraphNode, number>();
-    const lowlink = new Map<PropertyGraphNode, number>();
+    const lowLink = new Map<PropertyGraphNode, number>();
     const onStack = new Map<PropertyGraphNode, boolean>();
     const stack: PropertyGraphNode[] = [];
     let indexCounter = 0;
@@ -98,7 +108,7 @@ export class PropertyGraph {
     const strongConnect = (node: PropertyGraphNode) => {
       // Set the depth index for node
       index.set(node, indexCounter);
-      lowlink.set(node, indexCounter);
+      lowLink.set(node, indexCounter);
       indexCounter++;
       stack.push(node);
       onStack.set(node, true);
@@ -110,18 +120,18 @@ export class PropertyGraph {
           if (!index.has(dep)) {
             // Successor has not yet been visited; recurse on it
             strongConnect(dep);
-            lowlink.set(node, Math.min(lowlink.get(node), lowlink.get(dep)));
+            lowLink.set(node, Math.min(lowLink.get(node), lowLink.get(dep)));
           } else if (onStack.get(dep)) {
             // Successor is in stack and hence in the current SCC
             // If successor is not on stack, then (node, successor) is a cross-edge
             // in the DFS tree and must be ignored
-            lowlink.set(node, Math.min(lowlink.get(node), index.get(dep)));
+            lowLink.set(node, Math.min(lowLink.get(node), index.get(dep)));
           }
         }
       });
 
       // If node is a root node, pop the stack and generate an SCC
-      if (lowlink.get(node) === index.get(node)) {
+      if (lowLink.get(node) === index.get(node)) {
         const scc: PropertyGraphNode[] = [];
         let w: PropertyGraphNode;
         do {
@@ -148,7 +158,7 @@ export class PropertyGraph {
    * Returns all cycles in the graph
    * @returns Array of cycles, each represented as an array of PropertyGraphNode
    */
-  getCycles() {
+  getCycles(): PropertyGraphNode[][] {
     return this.tarjan().filter((item) => item.length > 1);
   }
 
@@ -156,7 +166,7 @@ export class PropertyGraph {
    * Checks if the graph has cycles
    * @returns boolean indicating if the graph has cycles
    */
-  hasCycles() {
+  hasCycles(): boolean {
     return this.getCycles().length != 0;
   }
 
@@ -165,31 +175,41 @@ export class PropertyGraph {
    * @returns Array of correlation IDs in topologically sorted order
    */
   topologicalSort(): string[] {
+    // Top sort is not possible if the graph has cycles
     if (this.hasCycles()) throw new Error('Graph has cycles');
+
+    // Initialize visited set, stack, and result array
     const visited = new Set<PropertyGraphNode>();
     const stack: PropertyGraphNode[] = [];
     const result: PropertyGraphNode[] = [];
 
     const visit = (node: PropertyGraphNode) => {
+      // If the node has not been visited, mark it as visited and visit its dependencies
       if (!visited.has(node)) {
         visited.add(node);
+        // Recursively visit all dependencies
         node.dependsOn.forEach((dep) => {
           if (dep) {
             visit(dep);
           }
         });
+        // Push the node onto the stack after visiting all dependencies
         stack.push(node);
       }
     };
 
+    // Visit all nodes
     this.nodes.forEach((node) => {
       visit(node);
     });
 
+    // Pop all nodes from the stack to get the topological order
     while (stack.length > 0) {
       result.push(stack.pop());
     }
 
+    // Return the correlation IDs of the nodes in topologically sorted order
+    // Reverse the result to get the correct order
     return result.reverse().map((i) => i.content.correlationId);
   }
 }
