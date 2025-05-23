@@ -3,6 +3,7 @@ import { CharacterProperty } from './character-property.entity';
 import { PropertyTypes } from '../../enums/property-types.enum';
 import { DerivedNumberMetadata } from './derived-number-metadata.entity';
 import { Parser } from 'expr-eval';
+import { Character } from '../character/character.entity';
 
 export class PropertyManager {
   /**
@@ -116,5 +117,30 @@ export class PropertyManager {
       }
     }
     return properties;
+  }
+
+  /**
+   * Adds a property to a character
+   * @param character The character to add the property to
+   * @param property The property to add
+   */
+  addPropertyToCharacter(
+    character: Character,
+    property: CharacterProperty,
+  ): Character {
+    // Check if the property already exists in the character
+    const existingProperty = character.properties.find(
+      (p) => p.correlationId === property.correlationId,
+    );
+    // If it exists throw an error
+    if (existingProperty) {
+      throw new Error(
+        `Property with correlation ID ${property.correlationId} already exists in character`,
+      );
+    }
+    // Add the property to the character
+    character.properties.push(property);
+    // Return the updated character
+    return character;
   }
 }
