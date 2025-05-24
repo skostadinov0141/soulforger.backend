@@ -3,6 +3,7 @@ export enum ModifierTypes {
   SUBTRACT = 'subtract',
   MULTIPLY = 'multiply',
   DIVIDE = 'divide',
+  SET = 'set',
 }
 
 export const modifierTypeInversionMap: Record<ModifierTypes, ModifierTypes> = {
@@ -10,4 +11,5 @@ export const modifierTypeInversionMap: Record<ModifierTypes, ModifierTypes> = {
   [ModifierTypes.SUBTRACT]: ModifierTypes.ADD,
   [ModifierTypes.MULTIPLY]: ModifierTypes.DIVIDE,
   [ModifierTypes.DIVIDE]: ModifierTypes.MULTIPLY,
+  [ModifierTypes.SET]: ModifierTypes.SET,
 };

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CharacterProperty } from '../character-property/character-property.entity';
+import { CharacterModifier } from '../character-modifier/character-modifier.entity';
 
 @Schema({ timestamps: true })
 export class Character {
@@ -7,8 +8,11 @@ export class Character {
   createdAt: Date;
   updatedAt: Date;
 
-  @Prop({ type: CharacterProperty })
+  @Prop({ type: [CharacterProperty] })
   properties: CharacterProperty[];
+
+  @Prop({ type: [CharacterModifier] })
+  modifiers: CharacterModifier[];
 }
 
 export const CharacterSchema = SchemaFactory.createForClass(Character);
