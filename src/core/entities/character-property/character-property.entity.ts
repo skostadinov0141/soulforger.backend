@@ -25,5 +25,5 @@ export class CharacterProperty {
     | TextMetadata
     | BooleanMetadata;
   @Prop({ type: SchemaTypes.Mixed })
-  value: any;
+  value?: any;
 }

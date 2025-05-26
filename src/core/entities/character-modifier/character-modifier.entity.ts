@@ -1,5 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
 import { ModifierTypes } from '../../enums/modifier-types.enum';
+import { CharacterLocations } from '../../enums/character-locations.enum';
 
 export class CharacterModifier {
   @Prop()
@@ -7,9 +8,11 @@ export class CharacterModifier {
   @Prop({ type: String, enum: ModifierTypes })
   modifierType: ModifierTypes;
   @Prop()
-  next: string;
+  targetLocation: CharacterLocations;
   @Prop()
-  previous: string;
+  next?: string;
+  @Prop()
+  previous?: string;
   @Prop()
   expression: string;
 }
