@@ -11,8 +11,8 @@ export class Character {
   @Prop({ type: [CharacterProperty] })
   properties: CharacterProperty[];
 
-  @Prop({ type: [CharacterModifier] })
-  modifiers: CharacterModifier[];
+  @Prop({ type: Object })
+  modifiers: Record<string, CharacterModifier[]>;
 }
 
 export const CharacterSchema = SchemaFactory.createForClass(Character);

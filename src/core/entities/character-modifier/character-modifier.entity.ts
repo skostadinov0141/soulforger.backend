@@ -8,11 +8,7 @@ export class CharacterModifier {
   @Prop({ type: String, enum: ModifierTypes })
   modifierType: ModifierTypes;
   @Prop()
-  targetLocation: CharacterLocations;
-  @Prop()
-  next?: string;
-  @Prop()
-  previous?: string;
+  target: CharacterLocations;
   @Prop()
   expression: string;
 }
