@@ -1,3 +1,5 @@
+import { Parser } from 'expr-eval';
+
 export class ExpressionManager {
   constructor(private readonly expression: string = '') {}
 
@@ -57,5 +59,21 @@ export class ExpressionManager {
     });
     // Return the parsed expression
     return parsedExpression;
+  }
+
+  /**
+   * Safely evaluates a mathematical expression
+   * @param expression The expression to evaluate
+   * @returns The result of the expression
+   */
+  evaluateExpression(expression: string): number {
+    const expr = new Parser().parse(expression);
+    const result = expr.evaluate();
+    // Check if the result is a number
+    if (typeof result === 'number') {
+      return result;
+    } else {
+      throw new Error('Expression did not evaluate to a number');
+    }
   }
 }

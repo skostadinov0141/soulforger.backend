@@ -2,7 +2,6 @@ import { PropertyGraph } from '../property-graph/property-graph.entity';
 import { CharacterProperty } from './character-property.entity';
 import { PropertyTypes } from '../../enums/property-types.enum';
 import { DerivedNumberMetadata } from './derived-number-metadata.entity';
-import { Parser } from 'expr-eval';
 import { Character } from '../character/character.entity';
 import { ExpressionManager } from '../expression-manager.entity';
 
@@ -36,22 +35,6 @@ export class PropertyManager {
   }
 
   /**
-   * Safely evaluates a mathematical expression
-   * @param expression The expression to evaluate
-   * @returns The result of the expression
-   */
-  private evaluateExpression(expression: string): number {
-    const expr = new Parser().parse(expression);
-    const result = expr.evaluate();
-    // Check if the result is a number
-    if (typeof result === 'number') {
-      return result;
-    } else {
-      throw new Error('Expression did not evaluate to a number');
-    }
-  }
-
-  /**
    * Calculates the properties based on their dependencies
    * @param properties Array of CharacterProperty
    * @returns Array of CharacterProperty with calculated values
@@ -66,10 +49,9 @@ export class PropertyManager {
         const expression = new ExpressionManager(
           (property.metadata as DerivedNumberMetadata).expression,
         );
+        const parsedExpression = expression.parseExpression(properties);
         // Set the value of the property to the result
-        property.value = this.evaluateExpression(
-          expression.parseExpression(properties),
-        );
+        property.value = expression.evaluateExpression(parsedExpression);
       }
     }
     return properties;
