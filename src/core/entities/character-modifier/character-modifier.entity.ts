@@ -4,7 +4,7 @@ import { CharacterLocations } from '../../enums/character-locations.enum';
 
 export class CharacterModifier {
   @Prop()
-  correlationId: string;
+  guid: string;
   @Prop({ type: String, enum: ModifierTypes })
   modifierType: ModifierTypes;
   @Prop()

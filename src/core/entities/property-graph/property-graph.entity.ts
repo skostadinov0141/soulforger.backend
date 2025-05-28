@@ -38,7 +38,7 @@ export class PropertyGraph {
               // Remove the ${} from the match to get the correlation ID
               match = match.replace('${', '').replace('}', '');
               // Find the corresponding node in the node array and return it
-              return nodes.find((n) => n.content.correlationId === match);
+              return nodes.find((n) => n.content.guid === match);
             });
           } else {
             // If no matches are found, set an empty array
@@ -63,18 +63,18 @@ export class PropertyGraph {
 
     // Add all nodes
     this.nodes.forEach((node) => {
-      const nodeId = this.sanitizeId(node.content.correlationId);
+      const nodeId = this.sanitizeId(node.content.guid);
       const nodeType = node.content.type;
-      mermaidString += `    ${nodeId}["${node.content.correlationId} (${nodeType})"]\n`;
+      mermaidString += `    ${nodeId}["${node.content.guid} (${nodeType})"]\n`;
     });
 
     // Add all dependencies
     this.nodes.forEach((node) => {
-      const sourceId = this.sanitizeId(node.content.correlationId);
+      const sourceId = this.sanitizeId(node.content.guid);
 
       node.dependsOn.forEach((dependency) => {
         if (dependency) {
-          const targetId = this.sanitizeId(dependency.content.correlationId);
+          const targetId = this.sanitizeId(dependency.content.guid);
           mermaidString += `    ${sourceId} --> ${targetId}\n`;
         }
       });
@@ -210,6 +210,6 @@ export class PropertyGraph {
 
     // Return the correlation IDs of the nodes in topologically sorted order
     // Reverse the result to get the correct order
-    return result.reverse().map((i) => i.content.correlationId);
+    return result.reverse().map((i) => i.content.guid);
   }
 }

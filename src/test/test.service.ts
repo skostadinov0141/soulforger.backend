@@ -13,7 +13,7 @@ export class TestService {
       {
         type: PropertyTypes.NUMBER,
         autoUpdateDependants: false,
-        correlationId: 'strength',
+        guid: 'strength',
         name: [
           {
             locale: Locales.EN,
@@ -31,7 +31,7 @@ export class TestService {
       {
         type: PropertyTypes.NUMBER,
         autoUpdateDependants: false,
-        correlationId: 'dexterity',
+        guid: 'dexterity',
         name: [
           {
             locale: Locales.EN,
@@ -49,7 +49,7 @@ export class TestService {
       {
         type: PropertyTypes.DERIVED_NUMBER,
         autoUpdateDependants: false,
-        correlationId: 'strength-cross-dexterity',
+        guid: 'strength-cross-dexterity',
         name: [
           {
             locale: Locales.EN,
@@ -68,7 +68,7 @@ export class TestService {
       {
         type: PropertyTypes.DERIVED_NUMBER,
         autoUpdateDependants: false,
-        correlationId: 'doubled-dexterity',
+        guid: 'doubled-dexterity',
         name: [
           {
             locale: Locales.EN,
@@ -87,7 +87,7 @@ export class TestService {
       {
         type: PropertyTypes.DERIVED_NUMBER,
         autoUpdateDependants: false,
-        correlationId: 'deine-mudda',
+        guid: 'deine-mudda',
         name: [
           {
             locale: Locales.EN,

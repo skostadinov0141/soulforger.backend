@@ -11,7 +11,7 @@ export class CharacterProperty {
   @Prop({ enum: PropertyTypes })
   type: PropertyTypes;
   @Prop()
-  correlationId: string;
+  guid: string;
   @Prop()
   autoUpdateDependants: boolean = true;
   @Prop()

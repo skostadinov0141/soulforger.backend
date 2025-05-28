@@ -21,7 +21,7 @@ export class CharacterModifierManager {
     for (const target in character.modifiers) {
       // find the index of the modifier
       const index = character.modifiers[target].findIndex(
-        (modifier) => modifier.correlationId === modifierId,
+        (modifier) => modifier.guid === modifierId,
       );
       // if the modifier exists, remove it
       if (index !== -1) {

@@ -25,7 +25,7 @@ export class PropertyManager {
     for (const correlationId of calculationOrder) {
       // Find the corresponding property in the original properties array
       const property: CharacterProperty = properties.find(
-        (p: CharacterProperty) => p.correlationId === correlationId,
+        (p: CharacterProperty) => p.guid === correlationId,
       );
       // If found, push it to the final order
       if (property) {
@@ -86,12 +86,12 @@ export class PropertyManager {
   ): Character {
     // Check if the property already exists in the character
     const existingProperty = character.properties.find(
-      (p) => p.correlationId === property.correlationId,
+      (p) => p.guid === property.guid,
     );
     // If it exists throw an error
     if (existingProperty) {
       throw new Error(
-        `Property with correlation ID ${property.correlationId} already exists in character`,
+        `Property with correlation ID ${property.guid} already exists in character`,
       );
     }
     // Add the property to the character
