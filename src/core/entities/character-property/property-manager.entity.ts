@@ -4,6 +4,7 @@ import { PropertyTypes } from '../../enums/property-types.enum';
 import { DerivedNumberMetadata } from './derived-number-metadata.entity';
 import { Parser } from 'expr-eval';
 import { Character } from '../character/character.entity';
+import { ExpressionManager } from '../expression-manager.entity';
 
 export class PropertyManager {
   /**
@@ -35,52 +36,6 @@ export class PropertyManager {
   }
 
   /**
-   * Parses a derived number expression and replaces its correlation IDs with their corresponding values
-   * @param property The correlation ID of the property to parse
-   * @param properties Array of CharacterProperty
-   * @returns The parsed expression with correlation IDs replaced by their values
-   */
-  private parseExpression(
-    property: string,
-    properties: CharacterProperty[],
-  ): string {
-    const propertyObject: CharacterProperty = properties.find(
-      (p: CharacterProperty) => p.correlationId === property,
-    );
-    // If property is not found, throw an error
-    if (!propertyObject) throw new Error('Property not found');
-    // If the property is not a derived number, throw an error
-    if (propertyObject.type !== PropertyTypes.DERIVED_NUMBER)
-      throw new Error('Property is not a derived number');
-    // Extract all correlation IDs from the expression
-    const regex = /\$\{([a-zA-Z_][a-zA-Z0-9_-]*)}/g;
-    const matches = (
-      propertyObject.metadata as DerivedNumberMetadata
-    ).expression.match(regex);
-    // If no matches are found, return the expression as is
-    if (!matches)
-      return (propertyObject.metadata as DerivedNumberMetadata).expression;
-    // Iterate through all matches and replace them with the corresponding property value
-    let expression = (propertyObject.metadata as DerivedNumberMetadata)
-      .expression;
-    matches.forEach((match) => {
-      // Remove the ${} from the match to get the correlation ID
-      const correlationId = match.replace('${', '').replace('}', '');
-      // Find the corresponding property in the original properties array
-      const foundProperty: CharacterProperty = properties.find(
-        (p: CharacterProperty) => p.correlationId === correlationId,
-      );
-      // If the property is not found, throw an error
-      if (!foundProperty)
-        throw new Error(`Property ${correlationId} not found`);
-      // If found, replace the match with its value
-      expression = expression.replace(match, foundProperty.value);
-    });
-    // Return the modified expression
-    return expression;
-  }
-
-  /**
    * Safely evaluates a mathematical expression
    * @param expression The expression to evaluate
    * @returns The result of the expression
@@ -108,12 +63,13 @@ export class PropertyManager {
     for (const property of calculationOrder) {
       // If the property is a derived number, parse and evaluate its expression
       if (property.type === PropertyTypes.DERIVED_NUMBER) {
-        const expression = this.parseExpression(
-          property.correlationId,
-          properties,
+        const expression = new ExpressionManager(
+          (property.metadata as DerivedNumberMetadata).expression,
         );
         // Set the value of the property to the result
-        property.value = this.evaluateExpression(expression);
+        property.value = this.evaluateExpression(
+          expression.parseExpression(properties),
+        );
       }
     }
     return properties;
