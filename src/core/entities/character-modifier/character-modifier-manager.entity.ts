@@ -93,7 +93,7 @@ export class CharacterModifierManager {
     }
     // Init the resulting expression
     let resultingExpression = '';
-    // Apply the modifier based on its type
+    // Generate the resulting expression based on the modifier type
     switch (modifier.modifierType) {
       case ModifierTypes.ADD:
         resultingExpression = `${currentValue} + ${expressionValue}`;
@@ -127,5 +127,19 @@ export class CharacterModifierManager {
         `Target "${target}" does not exist in location "${location}".`,
       );
     }
+  }
+
+  /**
+   * Apply all modifiers to the character's properties.
+   * This method iterates through all modifiers and applies them to the character.
+   * @param character - The character whose properties will be modified.
+   */
+  applyModifiersToCharacter(character: Character): void {
+    // Iterate through each modifier in the character
+    for (const target in character.modifiers) {
+      // Apply the modifier to the character's properties
+      this.applyModifierToCharacter(character, 'properties', target);
+    }
+    // Optionally, you can also apply modifiers to other locations like 'skills', 'abilities', etc.
   }
 }
