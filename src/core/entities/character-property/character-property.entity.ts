@@ -10,20 +10,26 @@ import { SchemaTypes } from 'mongoose';
 export class CharacterProperty {
   @Prop({ enum: PropertyTypes })
   type: PropertyTypes;
-  @Prop()
+
+  @Prop({ required: true, unique: true })
   guid: string;
-  @Prop()
+
+  @Prop({ default: true })
   autoUpdateDependants: boolean = true;
-  @Prop()
+
+  @Prop({ required: true })
   name: TextTranslation[];
-  @Prop()
+
+  @Prop({ required: false })
   description: TextTranslation[];
+
   @Prop({ type: SchemaTypes.Mixed })
   metadata:
     | DerivedNumberMetadata
     | NumberMetadata
     | TextMetadata
     | BooleanMetadata;
+
   @Prop({ type: SchemaTypes.Mixed })
   value?: any;
 }
