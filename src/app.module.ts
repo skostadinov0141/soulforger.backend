@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import * as process from 'node:process';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
 import { TestModule } from './test/test.module';
 import * as path from 'node:path';
