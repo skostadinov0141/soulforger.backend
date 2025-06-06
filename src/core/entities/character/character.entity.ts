@@ -8,9 +8,15 @@ export class Character {
   createdAt: Date;
   updatedAt: Date;
 
+  /*
+   * The properties that define the character.
+   */
   @Prop({ type: [CharacterProperty] })
   properties: CharacterProperty[];
 
+  /*
+   * The modifiers that change the character's properties.
+   */
   @Prop({ type: Object })
   modifiers: Record<string, CharacterModifier[]>;
 }
