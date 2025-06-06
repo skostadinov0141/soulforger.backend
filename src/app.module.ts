@@ -4,6 +4,8 @@ import { I18nModule, QueryResolver } from 'nestjs-i18n';
 import { TestModule } from './test/test.module';
 import { CharacterModelModule } from './character-model/character-model.module';
 import * as path from 'node:path';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -19,9 +21,10 @@ import * as path from 'node:path';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    // MongooseModule.forRoot(
-    //   `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
-    // ),
+    MongooseModule.forRoot(
+      `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
+    ),
+    CacheModule.register(),
     TestModule,
     CharacterModelModule,
   ],
