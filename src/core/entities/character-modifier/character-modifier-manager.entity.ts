@@ -136,9 +136,9 @@ export class CharacterModifierManager {
    */
   applyModifiersToCharacter(character: Character): void {
     // Iterate through each modifier in the character
-    for (const target in character.modifiers) {
+    for (const modifiers in character.modifiers) {
       // Apply the modifier to the character's properties
-      this.applyModifierToCharacter(character, 'properties', target);
+      this.applyModifierToCharacter(character, 'properties', modifiers);
     }
     // Optionally, you can also apply modifiers to other locations like 'skills', 'abilities', etc.
   }
