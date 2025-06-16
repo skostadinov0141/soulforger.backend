@@ -7,6 +7,10 @@ import { CreateCharacterModelDto } from './dtos/create-character-model.dto';
 import { CharacterProperty } from '../core/entities/character-property/character-property.entity';
 import { AddPropertyToModelDto } from './dtos/add-property-to-model.dto';
 import { v4 } from 'uuid';
+import { AddModifierToModelDto } from './dtos/add-modifier-to-model.dto';
+import { CharacterModifier } from '../core/entities/character-modifier/character-modifier.entity';
+import { PropertyManager } from '../core/entities/character-property/property-manager.entity';
+import { CharacterModifierManager } from '../core/entities/character-modifier/character-modifier-manager.entity';
 
 @Injectable()
 export class CharacterModelService {
@@ -24,6 +28,8 @@ export class CharacterModelService {
     payload: CreateCharacterModelDto,
   ): Promise<CharacterModel> {
     const characterModel = new this.characterModel(payload);
+    characterModel.properties = [];
+    characterModel.modifiers = {};
     return await characterModel.save();
   }
 
@@ -39,12 +45,36 @@ export class CharacterModelService {
     const characterModel = await this.characterModel.findById(id);
     if (!characterModel)
       // TODO: translation
-      throw new NotFoundException();
+      throw new NotFoundException('Character model not found');
     const finalProperty: CharacterProperty = {
       ...payload,
       guid: v4(),
     };
-    characterModel.properties.push(finalProperty);
+    new PropertyManager().addPropertyToCharacter(characterModel, finalProperty);
+    return characterModel.save();
+  }
+
+  /**
+   * Adds a modifier to an existing character model.
+   * @param id - The ID of the character model to which the modifier will be added.
+   * @param payload - The modifier data to be added to the character model.
+   */
+  async addModifierToCharacterModel(
+    id: string,
+    payload: AddModifierToModelDto,
+  ): Promise<CharacterModel> {
+    const characterModel = await this.characterModel.findById(id);
+    if (!characterModel)
+      // TODO: translation
+      throw new NotFoundException('Character model not found');
+    const finalModifier: CharacterModifier = {
+      ...payload,
+      guid: v4(),
+    };
+    new CharacterModifierManager().addModifierToCharacter(
+      characterModel,
+      finalModifier,
+    );
     return characterModel.save();
   }
 }
