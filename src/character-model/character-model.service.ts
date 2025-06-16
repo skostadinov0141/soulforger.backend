@@ -11,6 +11,7 @@ import { AddModifierToModelDto } from './dtos/add-modifier-to-model.dto';
 import { CharacterModifier } from '../core/entities/character-modifier/character-modifier.entity';
 import { PropertyManager } from '../core/entities/character-property/property-manager.entity';
 import { CharacterModifierManager } from '../core/entities/character-modifier/character-modifier-manager.entity';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class CharacterModelService {

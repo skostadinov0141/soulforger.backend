@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { I18nModule, QueryResolver } from 'nestjs-i18n';
-import { TestModule } from './test/test.module';
 import { CharacterModelModule } from './character-model/character-model.module';
 import * as path from 'node:path';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -24,8 +23,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     MongooseModule.forRoot(
       `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`,
     ),
-    CacheModule.register(),
-    TestModule,
+    CacheModule.register({ isGlobal: true }),
     CharacterModelModule,
   ],
   controllers: [],

@@ -3,6 +3,7 @@ name: soulforger-backend-dev
 services:
 
   mongo-db:
+    platform: linux/arm64
     container_name: mongo
     image: mongo:latest
     restart: always
