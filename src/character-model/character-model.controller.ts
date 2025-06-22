@@ -4,11 +4,16 @@ import { CreateCharacterModelDto } from './dtos/create-character-model.dto';
 import { AddPropertyToModelDto } from './dtos/add-property-to-model.dto';
 import { AddModifierToModelDto } from './dtos/add-modifier-to-model.dto';
 import { CharacterModel } from '../core/entities/character/character-model.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Character Model')
 @Controller('character-models')
 export class CharacterModelController {
   constructor(private readonly characterModelService: CharacterModelService) {}
 
+  /**
+   * Creates a new character model.
+   */
   @Post()
   async createCharacterModel(
     @Body() payload: CreateCharacterModelDto,
@@ -16,6 +21,9 @@ export class CharacterModelController {
     return this.characterModelService.createCharacterModel(payload);
   }
 
+  /**
+   * Adds a property to an existing character model.
+   */
   @Post(':id/properties')
   async addPropertyToCharacterModel(
     @Param('id') id: string,
@@ -24,6 +32,9 @@ export class CharacterModelController {
     return this.characterModelService.addPropertyToCharacterModel(id, payload);
   }
 
+  /**
+   * Adds a modifier to an existing character model.
+   */
   @Post(':id/modifiers')
   async addModifierToCharacterModel(
     @Param('id') id: string,
