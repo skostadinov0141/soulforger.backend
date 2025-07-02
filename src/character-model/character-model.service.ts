@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { InjectModel } from '@nestjs/mongoose';
 import { CharacterModel } from '../core/entities/character/character-model.entity';
@@ -77,5 +82,24 @@ export class CharacterModelService {
       finalModifier,
     );
     return characterModel.save();
+  }
+
+  /**
+   * Retrieves a character model by its ID.
+   * @param id - The ID of the character model to retrieve.
+   */
+  async getCharacterModelById(id: string): Promise<CharacterModel> {
+    const characterModel = await this.characterModel.findById(id);
+    if (!characterModel) {
+      throw new NotFoundException();
+    }
+    return characterModel;
+  }
+
+  /**
+   * Retrieves all character models.
+   */
+  async getAllCharacterModels(): Promise<CharacterModel[]> {
+    return this.characterModel.find();
   }
 }

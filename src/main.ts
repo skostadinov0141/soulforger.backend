@@ -13,7 +13,9 @@ async function bootstrap() {
     .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('swagger', app, document, {
+    jsonDocumentUrl: 'swagger/json',
+  });
 
   // Configure CORS
   app.enableCors({

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get } from '@nestjs/common';
 import { CharacterModelService } from './character-model.service';
 import { CreateCharacterModelDto } from './dtos/create-character-model.dto';
 import { AddPropertyToModelDto } from './dtos/add-property-to-model.dto';
@@ -7,7 +7,7 @@ import { CharacterModel } from '../core/entities/character/character-model.entit
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Character Model')
-@Controller('character-models')
+@Controller('character-model')
 export class CharacterModelController {
   constructor(private readonly characterModelService: CharacterModelService) {}
 
@@ -41,5 +41,23 @@ export class CharacterModelController {
     @Body() payload: AddModifierToModelDto,
   ): Promise<CharacterModel> {
     return this.characterModelService.addModifierToCharacterModel(id, payload);
+  }
+
+  /**
+   * Retrieves a character model by its ID.
+   */
+  @Get(':id')
+  async getCharacterModelById(
+    @Param('id') id: string,
+  ): Promise<CharacterModel> {
+    return this.characterModelService.getCharacterModelById(id);
+  }
+
+  /**
+   * Retrieves all character models.
+   */
+  @Get()
+  async getAllCharacterModels(): Promise<CharacterModel[]> {
+    return this.characterModelService.getAllCharacterModels();
   }
 }
