@@ -1,5 +1,4 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { TextTranslation } from './text-translation.entity';
 import { PropertyTypes } from '../../enums/property-types.enum';
 import { DerivedNumberMetadata } from './derived-number-metadata.entity';
 import { NumberMetadata } from './number-metadata.entity';
@@ -31,7 +30,7 @@ export class CharacterProperty {
    * @see TextTranslation
    */
   @Prop({ required: true })
-  name: TextTranslation[];
+  name: string;
 
   /**
    * The description of the property.
@@ -40,7 +39,7 @@ export class CharacterProperty {
    * @see TextTranslation
    */
   @Prop({ required: false })
-  description: TextTranslation[];
+  description: string;
 
   /**
    * The metadata associated with the property.

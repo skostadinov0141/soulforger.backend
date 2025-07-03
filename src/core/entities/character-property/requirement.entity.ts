@@ -1,11 +1,10 @@
-import { TextTranslation } from './text-translation.entity';
 import { Prop } from '@nestjs/mongoose';
 
 export class Requirement {
   @Prop()
-  title: TextTranslation[];
+  title: string;
   @Prop()
-  description: TextTranslation[];
+  description: string;
   @Prop()
   expression: string;
 }
